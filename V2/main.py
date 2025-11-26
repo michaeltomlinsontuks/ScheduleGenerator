@@ -1,5 +1,5 @@
-
 import os
+import time
 from datetime import datetime, timedelta
 import pytz
 
@@ -52,9 +52,11 @@ def main():
             print("\nAdding events to your Google Calendar. This may take a moment...")
             # 5. Prepare and add events to Google Calendar
             for event_data in processed_events:
-                # Assign color
-                module_prefix = event_data.get('Module', '').split()[0]
-                color_name = MODULE_COLORS.get(module_prefix, MODULE_COLORS['Default'])
+                # Assign color based on specific module code or module prefix
+                module_code = event_data.get('Module', '').strip()
+                module_prefix = module_code.split()[0] if module_code else ''
+
+                color_name = MODULE_COLORS.get(module_code, MODULE_COLORS.get(module_prefix, MODULE_COLORS['Default']))
                 event_data['colorId'] = COLOR_ID_MAP.get(color_name, "0")
 
                 # Set datetimes and recurrence
@@ -76,14 +78,27 @@ def main():
                     start_dt = TIMEZONE.localize(datetime.combine(first_day, start_time))
                     end_dt = TIMEZONE.localize(datetime.combine(first_day, end_time))
                     
+                    print(f"DEBUG: Event start_dt: {start_dt}")
+                    print(f"DEBUG: Event end_dt: {end_dt}")
+
                     # Set recurrence rule
-                    until_date = SEMESTER_END_DATE.strftime("%Y%m%dT%H%M%SZ")
-                    event_data['rrule'] = f"FREQ=WEEKLY;UNTIL={until_date}"
+                    # Calculate the UNTIL date - Google Calendar expects UNTIL to be end of day in UTC
+                    # Use end of semester date at 23:59:59 local time, then convert to UTC
+                    semester_end_eod = TIMEZONE.localize(
+                        datetime.combine(SEMESTER_END_DATE, datetime.strptime("23:59:59", "%H:%M:%S").time())
+                    )
+                    # Convert to UTC for RRULE format
+                    until_date_utc = semester_end_eod.astimezone(pytz.utc)
+                    # Format for RRULE - Google Calendar expects YYYYMMDDTHHMMSSZ format
+                    until_date_str = until_date_utc.strftime("%Y%m%dT%H%M%SZ")
+                    print(f"DEBUG: Generated UNTIL date string: {until_date_str}") # DEBUG PRINT
+                    event_data['rrule'] = f"RRULE:FREQ=WEEKLY;UNTIL={until_date_str}"
 
                 event_data['start_dt'] = start_dt
                 event_data['end_dt'] = end_dt
 
                 add_event_to_calendar(service, event_data)
+                time.sleep(0.1) # Add a 100ms delay to avoid hitting rate limits
             
             print("\nSuccess! Your schedule has been added to your Google Calendar.")
         else:

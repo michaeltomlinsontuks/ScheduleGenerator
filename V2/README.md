@@ -25,30 +25,19 @@ The system includes a mandatory preview and approval step to ensure your calenda
 
 ### 2. Initial Setup
 
-Follow these steps to set up the application for the first time.
-
-**a. Clone the Repository**
-If you haven't already, clone this repository to your local machine.
-
-**b. Create a Virtual Environment**
-It is highly recommended to run this application in a virtual environment to manage its dependencies.
+Follow these steps to set up the application for the first time. **Ensure you are in the root directory of the `ScheduleGenerator` project before starting.**
 
 ```bash
-# Navigate to the V2 directory
-cd /path/to/ScheduleGenerator/V2
+# Navigate into the V2 directory
+cd V2
 
-# Create a virtual environment
+# Create a virtual environment named 'venv' inside the V2 directory
 python3 -m venv venv
-```
 
-**c. Install Dependencies**
-Activate the virtual environment and install the required Python packages.
-
-```bash
 # Activate the virtual environment
 source venv/bin/activate
 
-# Install packages from requirements.txt
+# Install required Python packages into the virtual environment
 pip install -r requirements.txt
 ```
 
@@ -63,34 +52,50 @@ To allow the application to add events to your calendar, you must authorize it. 
     -   Search for "Google Calendar API" and click **Enable**.
 4.  **Configure the OAuth Consent Screen**:
     -   Go to **APIs & Services > OAuth consent screen**.
-    -   Select **External** and click **Create**.
-    -   **App Information**:
-        -   App name: `UP Schedule Generator`
-        -   User support email: Your email address.
-        -   Developer contact information: Your email address.
-    -   **Scopes**: You can skip this page.
-    -   **Test Users**: Click **Add Users** and add the Google account email address for the calendar you want to modify. **This is a critical step.**
+    -   For **User Type**, select **External** and click **Create**. This means your app will be available to any Google user with a Google Account. For personal use, this is sufficient, and you won't need to go through the verification process.
+    -   **OAuth consent screen configuration**:
+        -   **App Information**:
+            -   App name: `UP Schedule Generator` (or any name you prefer)
+            -   User support email: Your email address.
+            -   Developer contact information: Your email address.
+        -   Click **SAVE AND CONTINUE**.
+    -   **Scopes**:
+        -   On the "Scopes" page, you don't need to add any scopes manually here. The application will request the necessary scopes during the first run.
+        -   Click **SAVE AND CONTINUE**.
+    -   **Test Users**:
+        -   On the "Test users" page, click **+ ADD USERS**.
+        -   Add the Google account email address(es) for the calendar(s) you want to modify. **This is a critical step for testing mode.**
+        -   Click **SAVE AND CONTINUE**.
+    -   **Summary**: Review the summary and click **BACK TO DASHBOARD**. Your publishing status should be "Testing".
+
 5.  **Create Credentials**:
     -   Go to **APIs & Services > Credentials**.
-    -   Click **+ CREATE CREDENTIALS** and select **OAuth client ID**.
-    -   Set the **Application type** to **Desktop app**.
-    -   Give it a name, like `ScheduleGeneratorCLI`.
+    -   Click **+ CREATE CREDENTIALS** at the top and select **OAuth client ID** from the dropdown.
+    -   For **Application type**, select **Desktop app**. This type is suitable for applications that run on a user's computer.
+    -   Give your client ID a descriptive name, such as `ScheduleGeneratorCLI`.
     -   Click **Create**.
 6.  **Download and Save Credentials**:
-    -   A window will appear. Click **DOWNLOAD JSON**.
-    -   Rename the downloaded file to `credentials.json`.
-    -   Place this `credentials.json` file inside the `V2` directory of this project.
+    -   A window will pop up displaying your client ID and client secret.
+    -   Click the **DOWNLOAD JSON** button. This will download a file named `client_secret_YOUR_CLIENT_ID.json` (or similar).
+    -   **Rename** the downloaded file to `credentials.json`.
+    -   **Place this `credentials.json` file inside the `V2` directory of this project.** This file contains sensitive information and should be kept secure and not shared publicly or committed to version control.
 
 ### 4. Running the Application
 
-Once the setup is complete, you can run the application from your terminal.
+Once the setup is complete and you have placed your `credentials.json` file in the `V2` directory, you can run the application from your terminal. **Ensure you are in the `V2` directory and your virtual environment is active.**
 
 ```bash
-# Make sure you are in the V2 directory and your virtual environment is active
-python3 main.py
+# Make sure you are in the V2 directory
+cd V2
+
+# Activate the virtual environment (if not already active)
+source venv/bin/activate
+
+# Run the application
+venv/bin/python3 main.py
 ```
 
--   The script will first ask for the path to your schedule PDF.
+-   The script will first ask for the full path to your schedule PDF.
 -   The first time you run it, a browser window will open, asking you to log in and grant the application permission to access your calendar.
 -   After authentication, it will display a preview of all the events found.
 -   Review the preview carefully. If it looks correct, type `yes` to add the events to your Google Calendar.

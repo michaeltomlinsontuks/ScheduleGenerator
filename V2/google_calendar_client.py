@@ -3,7 +3,7 @@ import pickle
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from V2.config import CLIENT_SECRETS_FILE, SCOPES, APPLICATION_NAME
+from config import CLIENT_SECRETS_FILE, SCOPES, APPLICATION_NAME
 
 # Mapping of color names to Google Calendar API color IDs
 # See: https://developers.google.com/calendar/api/v3/reference/colors
@@ -27,7 +27,7 @@ def get_calendar_service():
     Handles the OAuth 2.0 flow and token storage.
     """
     creds = None
-    token_path = 'V2/token.pickle'
+    token_path = 'token.pickle'
 
     # Load credentials from the token file if it exists.
     if os.path.exists(token_path):
@@ -40,12 +40,12 @@ def get_calendar_service():
             creds.refresh(Request())
         else:
             # Ensure the credentials.json file exists
-            if not os.path.exists("V2/" + CLIENT_SECRETS_FILE):
+            if not os.path.exists(CLIENT_SECRETS_FILE):
                 raise FileNotFoundError(
-                    f"Error: The credentials file was not found at V2/{CLIENT_SECRETS_FILE}. "
+                    f"Error: The credentials file was not found at {CLIENT_SECRETS_FILE}. "
                     f"Please follow the setup instructions to get your credentials."
                 )
-            flow = InstalledAppFlow.from_client_secrets_file("V2/" + CLIENT_SECRETS_FILE, SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
         
         # Save the credentials for the next run
@@ -87,6 +87,10 @@ def add_event_to_calendar(service, event_data):
     if event_data.get('colorId'):
         event['colorId'] = event_data['colorId']
 
+    print()
+    print("""--- Event Body Sent to Google API ---""")
+    print(event)
+    print("""-------------------------------------""")
     created_event = service.events().insert(calendarId='primary', body=event).execute()
     print(f"Event created: {created_event.get('htmlLink')}")
 
