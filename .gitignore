@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Google OAuth secrets - NEVER COMMIT THESE
+credentials.json
+token.pickle
+*.pickle
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+.next/
+*.egg-info/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Docker volumes (if local)
+postgres_data/
+redis_data/
+minio_data/
