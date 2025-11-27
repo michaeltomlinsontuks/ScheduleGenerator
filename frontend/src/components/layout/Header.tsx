@@ -78,13 +78,20 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
   return (
     <header className="bg-base-100 border-b border-base-300">
       {/* Top Navigation Bar */}
-      <div className="navbar">
-        <div className="navbar-start">
+      <div className="navbar px-4">
+        <div className="navbar-start flex items-center gap-2">
           <Sidebar />
-          <Link href="/" className="btn btn-ghost text-xl font-bold text-primary ml-2">
+          <Link href="/" className="btn btn-ghost text-xl font-bold text-primary">
             UP Schedule
           </Link>
         </div>
+
+        {/* Stepper in Center (when enabled) */}
+        {showStepper && currentStep && (
+          <div className="navbar-center hidden lg:flex flex-1 max-w-2xl">
+            <Stepper currentStep={currentStep} />
+          </div>
+        )}
 
         <div className="navbar-end gap-2">
           {/* Auth UI - Show login button or user avatar based on auth state */}
@@ -130,12 +137,10 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
         </div>
       </div>
 
-      {/* Stepper Bar (when enabled) */}
+      {/* Mobile Stepper (below navbar on small screens) */}
       {showStepper && currentStep && (
-        <div className="px-4 py-3 border-t border-base-300">
-          <div className="max-w-4xl mx-auto">
-            <Stepper currentStep={currentStep} />
-          </div>
+        <div className="lg:hidden px-4 py-3 border-t border-base-300">
+          <Stepper currentStep={currentStep} />
         </div>
       )}
     </header>
