@@ -122,71 +122,70 @@ export default function CustomizePage() {
         <h1 className="text-2xl font-bold text-base-content">
           Customize Your Calendar
         </h1>
-          <p className="mt-2 text-base-content/70">
-            Assign colors to your modules and set your semester dates
-          </p>
-        </div>
-
-        {/* Module Color Picker */}
-        <Card bordered className="mb-6">
-          <ModuleColorPicker
-            modules={uniqueModules}
-            colors={moduleColors}
-            onChange={setModuleColor}
-          />
-        </Card>
-
-        {/* Date Range Picker */}
-        <Card bordered className="mb-6">
-          <DateRangePicker
-            startDate={semesterStart}
-            endDate={semesterEnd}
-            onStartChange={setSemesterStart}
-            onEndChange={setSemesterEnd}
-            error={dateError}
-          />
-        </Card>
-
-        {/* Calendar Selector - Only shown when authenticated */}
-        {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
-        {isAuthenticated && (
-          <Card bordered className="mb-6">
-            <div className="p-4">
-              <h3 className="text-lg font-semibold mb-4">Google Calendar Integration</h3>
-              <p className="text-sm text-base-content/70 mb-4">
-                Select a calendar to sync your events to Google Calendar, or create a new one.
-              </p>
-              <CalendarSelector
-                calendars={calendars}
-                selectedId={selectedCalendarId}
-                onSelect={setSelectedCalendarId}
-                onCreate={handleCreateCalendar}
-                isLoading={isCalendarsLoading}
-              />
-            </div>
-          </Card>
-        )}
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between mt-8">
-          <Button variant="ghost" onClick={handleBack}>
-            ← Back
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleGenerate}
-            disabled={!isValid}
-          >
-            Generate Calendar →
-          </Button>
-        </div>
-
-        {!isValid && !dateError && (
-          <p className="text-center text-warning text-sm mt-2">
-            Please set both start and end dates to continue
-          </p>
-        )}
+        <p className="mt-2 text-base-content/70">
+          Assign colors to your modules and set your semester dates
+        </p>
       </div>
+
+      {/* Module Color Picker */}
+      <Card bordered className="mb-6">
+        <ModuleColorPicker
+          modules={uniqueModules}
+          colors={moduleColors}
+          onChange={setModuleColor}
+        />
+      </Card>
+
+      {/* Date Range Picker */}
+      <Card bordered className="mb-6">
+        <DateRangePicker
+          startDate={semesterStart}
+          endDate={semesterEnd}
+          onStartChange={setSemesterStart}
+          onEndChange={setSemesterEnd}
+          error={dateError}
+        />
+      </Card>
+
+      {/* Calendar Selector - Only shown when authenticated */}
+      {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
+      {isAuthenticated && (
+        <Card bordered className="mb-6">
+          <div className="p-4">
+            <h3 className="text-lg font-semibold mb-4">Google Calendar Integration</h3>
+            <p className="text-sm text-base-content/70 mb-4">
+              Select a calendar to sync your events to Google Calendar, or create a new one.
+            </p>
+            <CalendarSelector
+              calendars={calendars}
+              selectedId={selectedCalendarId}
+              onSelect={setSelectedCalendarId}
+              onCreate={handleCreateCalendar}
+              isLoading={isCalendarsLoading}
+            />
+          </div>
+        </Card>
+      )}
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between mt-8">
+        <Button variant="ghost" onClick={handleBack}>
+          ← Back
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleGenerate}
+          disabled={!isValid}
+        >
+          Generate Calendar →
+        </Button>
+      </div>
+
+      {!isValid && !dateError && (
+        <p className="text-center text-warning text-sm mt-2">
+          Please set both start and end dates to continue
+        </p>
+      )}
     </div>
   );
 }
