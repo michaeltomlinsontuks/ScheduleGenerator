@@ -37,34 +37,36 @@ export function DateRangePicker({
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Semester Date Range</h3>
-      <p className="text-sm text-base-content/70">
-        Set the start and end dates for your semester to generate recurring events.
-      </p>
+    <div className="space-y-3">
+      <div>
+        <h3 className="text-base font-semibold">Semester Date Range</h3>
+        <p className="text-xs text-base-content/70 mt-1">
+          Set the start and end dates for your semester to generate recurring events.
+        </p>
+      </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div className="form-control">
-          <label className="label" htmlFor="start-date">
-            <span className="label-text font-medium">Start Date</span>
+          <label className="label py-1" htmlFor="start-date">
+            <span className="label-text text-sm font-medium">Start Date</span>
           </label>
           <input
             id="start-date"
             type="date"
-            className={`input input-bordered w-full ${error ? 'input-error' : ''}`}
+            className={`input input-bordered input-sm w-full ${error ? 'input-error' : ''}`}
             value={formatDateForInput(startDate)}
             onChange={handleStartChange}
           />
         </div>
 
         <div className="form-control">
-          <label className="label" htmlFor="end-date">
-            <span className="label-text font-medium">End Date</span>
+          <label className="label py-1" htmlFor="end-date">
+            <span className="label-text text-sm font-medium">End Date</span>
           </label>
           <input
             id="end-date"
             type="date"
-            className={`input input-bordered w-full ${error ? 'input-error' : ''}`}
+            className={`input input-bordered input-sm w-full ${error ? 'input-error' : ''}`}
             value={formatDateForInput(endDate)}
             onChange={handleEndChange}
           />

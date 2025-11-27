@@ -116,9 +116,9 @@ export default function CustomizePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-6xl">
+    <div className="container mx-auto px-4 py-4 max-w-6xl">
       {/* Page Header */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-4">
         <h1 className="text-2xl font-bold text-base-content">
           Customize Your Calendar
         </h1>
@@ -128,7 +128,7 @@ export default function CustomizePage() {
       </div>
 
       {/* Two Column Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
         {/* Left Column - Module Colors */}
         <Card bordered className="h-fit">
           <ModuleColorPicker
@@ -139,7 +139,7 @@ export default function CustomizePage() {
         </Card>
 
         {/* Right Column - Date Range & Calendar Integration */}
-        <div className="space-y-6">
+        <div className="space-y-4">
           <Card bordered>
             <DateRangePicker
               startDate={semesterStart}
@@ -155,8 +155,8 @@ export default function CustomizePage() {
           {isAuthenticated && (
             <Card bordered>
               <div className="p-4">
-                <h3 className="text-lg font-semibold mb-4">Google Calendar Integration</h3>
-                <p className="text-sm text-base-content/70 mb-4">
+                <h3 className="text-base font-semibold mb-2">Google Calendar Integration</h3>
+                <p className="text-xs text-base-content/70 mb-3">
                   Select a calendar to sync your events to Google Calendar, or create a new one.
                 </p>
                 <CalendarSelector

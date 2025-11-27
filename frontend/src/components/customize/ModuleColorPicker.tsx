@@ -20,13 +20,15 @@ export function ModuleColorPicker({
   };
 
   return (
-    <div className="space-y-4">
-      <h3 className="text-lg font-semibold">Module Colors</h3>
-      <p className="text-sm text-base-content/70">
-        Assign colors to each module for easy identification in your calendar.
-      </p>
+    <div className="space-y-3">
+      <div>
+        <h3 className="text-base font-semibold">Module Colors</h3>
+        <p className="text-xs text-base-content/70 mt-1">
+          Assign colors to each module for easy identification in your calendar.
+        </p>
+      </div>
       
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {modules.map((module) => {
           const selectedColor = getModuleColor(module);
 
