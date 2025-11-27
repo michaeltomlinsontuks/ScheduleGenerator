@@ -39,7 +39,7 @@ export function Stepper({ currentStep, completedSteps = [] }: StepperProps) {
   };
 
   return (
-    <ul className="steps steps-horizontal w-full">
+    <ul className="steps steps-horizontal w-full text-xs">
       {STEPS.map((step) => {
         const status = getStepStatus(step.number);
         const isCompleted = status === 'completed';
@@ -47,10 +47,10 @@ export function Stepper({ currentStep, completedSteps = [] }: StepperProps) {
         return (
           <li
             key={step.number}
-            className={getStepClasses(status)}
+            className={`${getStepClasses(status)} min-h-0`}
             data-content={isCompleted ? '✓' : step.number}
           >
-            {step.label}
+            <span className="text-xs">{step.label}</span>
           </li>
         );
       })}

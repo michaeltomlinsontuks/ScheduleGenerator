@@ -88,7 +88,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
 
         {/* Stepper in Center (when enabled) */}
         {showStepper && currentStep && (
-          <div className="navbar-center hidden lg:flex flex-1 max-w-2xl">
+          <div className="navbar-center hidden lg:flex flex-1 max-w-3xl px-4">
             <Stepper currentStep={currentStep} />
           </div>
         )}
