@@ -1,7 +1,10 @@
+'use client';
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header, Footer, ThemeProvider } from "@/components/layout";
+import { usePathname } from 'next/navigation';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,10 +16,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "UP Schedule Generator",
-  description: "Convert your UP PDF schedule to calendar events",
-};
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  
+  // Determine stepper state based on current path
+  const getStepperProps = () => {
+    if (pathname === '/upload') return { showStepper: true, currentStep: 1 as const };
+    if (pathname === '/preview') return { showStepper: true, currentStep: 2 as const };
+    if (pathname === '/customize') return { showStepper: true, currentStep: 3 as const };
+    if (pathname === '/generate') return { showStepper: true, currentStep: 4 as const };
+    return { showStepper: false };
+  };
+
+  const stepperProps = getStepperProps();
+
+  return (
+    <ThemeProvider>
+      <Header {...stepperProps} />
+      <main className="flex-1">
+        {children}
+      </main>
+      <Footer />
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -25,16 +48,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="schedule-light" suppressHydrationWarning>
+      <head>
+        <title>UP Schedule Generator</title>
+        <meta name="description" content="Convert your UP PDF schedule to calendar events" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-base-100 flex flex-col`}
       >
-        <ThemeProvider>
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </ThemeProvider>
+        <LayoutContent>{children}</LayoutContent>
       </body>
     </html>
   );

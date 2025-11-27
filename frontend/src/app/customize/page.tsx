@@ -2,7 +2,6 @@
 
 import { useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Stepper } from '@/components/layout';
 import { ModuleColorPicker, DateRangePicker, CalendarSelector } from '@/components/customize';
 import { Button, Card } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
@@ -101,8 +100,6 @@ export default function CustomizePage() {
   if (events.length === 0 || selectedIds.size === 0) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Stepper currentStep={3} />
-        
         <div className="mt-8 text-center">
           <h1 className="text-2xl font-bold text-base-content mb-4">
             No Events Selected
@@ -120,14 +117,11 @@ export default function CustomizePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Stepper currentStep={3} />
-      
-      <div className="mt-8">
-        {/* Page Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-base-content">
-            Customize Your Calendar
-          </h1>
+      {/* Page Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold text-base-content">
+          Customize Your Calendar
+        </h1>
           <p className="mt-2 text-base-content/70">
             Assign colors to your modules and set your semester dates
           </p>

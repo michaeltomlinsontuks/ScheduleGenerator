@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Stepper } from '@/components/layout';
 import { Button, Card, Alert } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
@@ -178,8 +177,6 @@ export default function GeneratePage() {
   if (events.length === 0 || selectedIds.size === 0) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Stepper currentStep={4} />
-        
         <div className="mt-8 text-center">
           <h1 className="text-2xl font-bold text-base-content mb-4">
             No Events Selected
@@ -198,17 +195,14 @@ export default function GeneratePage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <Stepper currentStep={4} />
-      
-      <div className="mt-8">
-        {/* Page Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-base-content">
-            Generate Your Calendar
-          </h1>
-          <p className="mt-2 text-base-content/70">
-            Review your configuration and download your calendar
-          </p>
+      {/* Page Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold text-base-content">
+          Generate Your Calendar
+        </h1>
+        <p className="mt-2 text-base-content/70">
+          Review your configuration and download your calendar
+        </p>
         </div>
 
         {/* Status Alerts */}

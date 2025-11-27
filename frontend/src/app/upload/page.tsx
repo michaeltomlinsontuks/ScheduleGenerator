@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { Stepper } from '@/components/layout';
 import { DropZone, FilePreview, UploadProgress } from '@/components/upload';
 import { Button } from '@/components/common';
 import { useUpload, useJobStatus } from '@/hooks';
@@ -103,66 +102,62 @@ export default function UploadPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <Stepper currentStep={1} />
-      
-      <div className="mt-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-base-content">
-            Upload Your Schedule
-          </h1>
-          <p className="mt-2 text-base-content/70">
-            Upload your UP PDF schedule to get started
-          </p>
-        </div>
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold text-base-content">
+          Upload Your Schedule
+        </h1>
+        <p className="mt-2 text-base-content/70">
+          Upload your UP PDF schedule to get started
+        </p>
+      </div>
 
-        <div className="space-y-6">
-          {/* DropZone or FilePreview */}
-          {!selectedFile ? (
-            <DropZone
-              onFileSelect={handleFileSelect}
-              onFileRemove={handleFileRemove}
-              disabled={isProcessing}
-            />
-          ) : (
-            <FilePreview
-              file={selectedFile}
-              onRemove={handleFileRemove}
-            />
-          )}
+      <div className="space-y-6">
+        {/* DropZone or FilePreview */}
+        {!selectedFile ? (
+          <DropZone
+            onFileSelect={handleFileSelect}
+            onFileRemove={handleFileRemove}
+            disabled={isProcessing}
+          />
+        ) : (
+          <FilePreview
+            file={selectedFile}
+            onRemove={handleFileRemove}
+          />
+        )}
 
-          {/* Upload Progress */}
-          {(uploadStatus === 'uploading' || uploadStatus === 'processing' || uploadStatus === 'complete' || uploadStatus === 'error') && (
-            <UploadProgress
-              progress={displayProgress}
-              status={uploadStatus}
-              message={errorMessage || undefined}
-            />
-          )}
+        {/* Upload Progress */}
+        {(uploadStatus === 'uploading' || uploadStatus === 'processing' || uploadStatus === 'complete' || uploadStatus === 'error') && (
+          <UploadProgress
+            progress={displayProgress}
+            status={uploadStatus}
+            message={errorMessage || undefined}
+          />
+        )}
 
-          {/* Error Retry Button */}
-          {uploadStatus === 'error' && (
-            <div className="flex justify-center">
-              <Button variant="outline" onClick={handleRetry}>
-                Try Again
-              </Button>
-            </div>
-          )}
+        {/* Error Retry Button */}
+        {uploadStatus === 'error' && (
+          <div className="flex justify-center">
+            <Button variant="outline" onClick={handleRetry}>
+              Try Again
+            </Button>
+          </div>
+        )}
 
-          {/* Upload Button */}
-          {selectedFile && uploadStatus === 'idle' && (
-            <div className="flex justify-center">
-              <Button
-                variant="primary"
-                size="lg"
-                onClick={handleUpload}
-                disabled={!selectedFile || isProcessing}
-                loading={isUploading}
-              >
-                Upload & Process
-              </Button>
-            </div>
-          )}
-        </div>
+        {/* Upload Button */}
+        {selectedFile && uploadStatus === 'idle' && (
+          <div className="flex justify-center">
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={handleUpload}
+              disabled={!selectedFile || isProcessing}
+              loading={isUploading}
+            >
+              Upload & Process
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
