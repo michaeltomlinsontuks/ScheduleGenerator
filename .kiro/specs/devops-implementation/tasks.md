@@ -1,0 +1,128 @@
+# Implementation Plan
+
+- [x] 1. Create environment configuration
+  - [x] 1.1 Create .env.example file with all required environment variables
+    - Include DOMAIN, database, Redis, MinIO, Google OAuth, and Traefik variables
+    - Add descriptive comments for each variable section
+    - _Requirements: 8.1, 8.2_
+  - [x] 1.2 Update .gitignore to ensure .env is not committed
+    - Verify .env, .env.local, and .env.*.local patterns are present
+    - _Requirements: 8.1_
+
+- [x] 2. Create PDF Worker service
+  - [x] 2.1 Create pdf-worker directory structure
+    - Create pdf-worker/parser/ directory
+    - Copy pdf_parser.py, data_processor.py, utils.py from V2
+    - Create __init__.py files
+    - _Requirements: 5.1, 5.2_
+  - [x] 2.2 Create pdf-worker/requirements.txt
+    - Include pdfplumber, fastapi, uvicorn, gunicorn, python-multipart
+    - _Requirements: 5.5_
+  - [x] 2.3 Create pdf-worker/app.py FastAPI application
+    - Implement GET /health endpoint
+    - Implement POST /parse endpoint that accepts PDF file upload
+    - Return parsed events as JSON with type field
+    - Handle errors with appropriate status codes
+    - _Requirements: 5.1, 5.2, 5.3_
+  - [ ]* 2.4 Write property test for PDF parsing valid response
+    - **Property 1: PDF Parsing Returns Valid JSON Structure**
+    - **Validates: Requirements 5.2**
+  - [ ]* 2.5 Write property test for invalid PDF error handling
+    - **Property 2: Invalid PDF Returns Error Response**
+    - **Validates: Requirements 5.3**
+  - [x] 2.6 Create pdf-worker/Dockerfile
+    - Use python:3.11-slim base image
+    - Install libpoppler-cpp-dev system dependency
+    - Use Gunicorn for production
+    - _Requirements: 5.4, 5.5_
+
+- [x] 3. Create Frontend Dockerfiles
+  - [x] 3.1 Update frontend/next.config.ts for standalone output
+    - Add output: 'standalone' configuration
+    - _Requirements: 6.2_
+  - [x] 3.2 Create frontend/Dockerfile for production
+    - Multi-stage build with deps, builder, runner stages
+    - Use node:20-alpine base image
+    - Create non-root user (nextjs:nodejs)
+    - Copy standalone output and static files
+    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+  - [x] 3.3 Create frontend/Dockerfile.dev for development
+    - Single stage with npm install
+    - Run npm run dev command
+    - _Requirements: 6.5_
+
+- [x] 4. Create Backend Development Dockerfile
+  - [x] 4.1 Create backend/Dockerfile.dev
+    - Single stage with npm install
+    - Run npm run start:dev command
+    - _Requirements: 7.5_
+
+- [x] 5. Create Traefik configuration
+  - [x] 5.1 Create traefik/traefik.yml static configuration
+    - Configure entrypoints for web (80), websecure (443), dashboard (8080)
+    - Configure Docker provider with schedgen network
+    - Configure Let's Encrypt certificate resolver
+    - Enable HTTP to HTTPS redirect
+    - _Requirements: 4.1, 4.5_
+  - [x] 5.2 Create traefik/dynamic/middlewares.yml
+    - Configure secure-headers middleware (HSTS, XSS protection)
+    - Configure rate-limit middleware (100 avg, 50 burst)
+    - _Requirements: 3.5_
+
+- [x] 6. Create Docker Compose files
+  - [x] 6.1 Create docker-compose.yml main configuration
+    - Define all 7 services: traefik, frontend, backend, pdf-worker, postgres, redis, minio
+    - Configure schedgen network
+    - Configure persistent volumes
+    - Set Traefik labels for routing
+    - Configure environment variables from .env
+    - Set depends_on for service dependencies
+    - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 4.2, 4.3, 4.4, 4.6_
+  - [x] 6.2 Create docker-compose.dev.yml development overrides
+    - Override Dockerfiles to use .dev versions
+    - Mount source directories as volumes
+    - Configure localhost routing without TLS
+    - Set development environment variables
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
+  - [x] 6.3 Create docker-compose.prod.yml production overrides
+    - Enable TLS on all routers
+    - Apply secure-headers middleware
+    - Configure health checks for all services
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
+
+- [x] 7. Create helper scripts
+  - [x] 7.1 Create scripts/init-minio.sh
+    - Wait for MinIO to be ready
+    - Create bucket using mc client
+    - Set bucket policy
+    - _Requirements: 9.1_
+  - [x] 7.2 Create scripts/backup-db.sh
+    - Create timestamped PostgreSQL backup
+    - Compress with gzip
+    - Remove backups older than 7 days
+    - _Requirements: 9.2_
+  - [x] 7.3 Create scripts/deploy.sh
+    - Pull latest code from git
+    - Build containers with production compose
+    - Run database migrations
+    - Restart services
+    - Clean up old images
+    - _Requirements: 9.3_
+
+- [x] 8. Checkpoint - Verify development environment
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 9. Add health checks to services
+  - [x] 9.1 Add health check to backend service in docker-compose.yml
+    - Configure health check for /health endpoint
+    - Set interval, timeout, retries, start_period
+    - _Requirements: 10.1, 10.2_
+  - [x] 9.2 Add health check to pdf-worker service
+    - Configure health check for /health endpoint
+    - _Requirements: 10.1, 10.2_
+  - [x] 9.3 Add health check to frontend service
+    - Configure health check for root endpoint
+    - _Requirements: 10.1, 10.2_
+
+- [x] 10. Final Checkpoint - Verify complete infrastructure
+  - Ensure all tests pass, ask the user if questions arise.

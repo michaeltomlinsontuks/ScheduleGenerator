@@ -1,0 +1,249 @@
+# Implementation Plan
+
+- [-] 1. Initialize NestJS project and configure core infrastructure
+  - [x] 1.1 Create NestJS project with TypeScript configuration
+    - Initialize new NestJS project in `backend/` directory
+    - Configure TypeScript with strict mode
+    - Set up ESLint and Prettier
+    - _Requirements: 1.1_
+  - [x] 1.2 Configure environment and ConfigModule
+    - Create `src/config/configuration.ts` with all environment variable mappings
+    - Create `src/config/config.module.ts` with global ConfigModule setup
+    - Add `.env.example` with all required variables
+    - _Requirements: 1.1_
+  - [ ] 1.3 Write property test for configuration loading
+    - **Property 1: Configuration Loading Consistency**
+    - **Validates: Requirements 1.1**
+  - [x] 1.4 Set up global exception filter
+    - Create `src/common/filters/http-exception.filter.ts`
+    - Register filter globally in `main.ts`
+    - _Requirements: 1.5_
+  - [ ]* 1.5 Write property test for error response format
+    - **Property 2: Error Response Format Consistency**
+    - **Validates: Requirements 1.5**
+  - [x] 1.6 Configure CORS and security middleware
+    - Add CORS configuration in `main.ts` using frontend URL from config
+    - Add Helmet middleware for security headers
+    - _Requirements: 1.4_
+  - [ ] 1.7 Write property test for CORS validation
+    - **Property 3: CORS Origin Validation**
+    - **Validates: Requirements 1.4**
+  - [x] 1.8 Set up Swagger documentation
+    - Configure Swagger in `main.ts` with API metadata
+    - Set up OAuth2 and Bearer auth in Swagger config
+    - _Requirements: 1.3, 8.1, 8.4_
+
+- [x] 2. Implement database and storage infrastructure
+  - [x] 2.1 Configure TypeORM with PostgreSQL
+    - Add TypeORM configuration in AppModule
+    - Create database connection using ConfigService
+    - _Requirements: 1.2_
+  - [x] 2.2 Create Job entity and migration
+    - Create `src/jobs/entities/job.entity.ts` with all fields
+    - Create initial migration for jobs table
+    - _Requirements: 3.3, 3.4_
+  - [x] 2.3 Implement StorageModule for MinIO
+    - Create `src/storage/storage.module.ts`
+    - Create `src/storage/storage.service.ts` with upload, download, delete, getSignedUrl methods
+    - _Requirements: 2.5, 4.1, 4.5_
+  - [x] 2.4 Write unit tests for StorageService
+    - Test upload, download, delete operations with mocked MinIO client
+    - _Requirements: 2.5_
+
+- [x] 3. Implement file upload functionality
+  - [x] 3.1 Create FileValidationPipe
+    - Create `src/common/pipes/file-validation.pipe.ts`
+    - Validate content type is `application/pdf`
+    - Validate file size is under 10MB
+    - _Requirements: 2.1, 2.2_
+  - [x] 3.2 Write property tests for file validation
+    - **Property 4: PDF Content Type Validation**
+    - **Property 5: PDF Size Validation**
+    - **Validates: Requirements 2.1, 2.2**
+  - [x] 3.3 Implement PDF content validation
+    - Create function to scan PDF buffer for UP schedule keywords
+    - Detect "Lectures" for weekly schedules, "Semester Tests" for test schedules
+    - Return PdfType enum value
+    - _Requirements: 2.3, 2.4_
+  - [x] 3.4 Write property test for content detection
+    - **Property 6: UP Schedule Content Detection**
+    - **Validates: Requirements 2.3, 2.4**
+  - [x] 3.5 Create UploadModule with controller and service
+    - Create `src/upload/upload.module.ts`
+    - Create `src/upload/upload.controller.ts` with POST `/api/upload` endpoint
+    - Create `src/upload/upload.service.ts` with processUpload method
+    - Create `src/upload/dto/upload-response.dto.ts`
+    - _Requirements: 2.5_
+  - [x] 3.6 Write property test for valid upload response
+    - **Property 7: Valid Upload Returns Job ID**
+    - **Validates: Requirements 2.5**
+
+- [x] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 5. Implement job queue and processing
+  - [x] 5.1 Configure BullMQ with Redis
+    - Add BullModule configuration in AppModule
+    - Create `pdf-processing` queue
+    - _Requirements: 4.1_
+  - [x] 5.2 Create JobsModule with service
+    - Create `src/jobs/jobs.module.ts`
+    - Create `src/jobs/jobs.service.ts` with createJob, getJobById, updateJobStatus methods
+    - _Requirements: 3.1, 3.3, 3.4_
+  - [x] 5.3 Create JobsController
+    - Create `src/jobs/jobs.controller.ts`
+    - Implement GET `/api/jobs/:id` for status
+    - Implement GET `/api/jobs/:id/result` for results
+    - Create DTOs: `job-status.dto.ts`, `job-result.dto.ts`
+    - _Requirements: 3.1, 3.5_
+  - [x] 5.4 Write property tests for job retrieval
+    - **Property 8: Job Status Retrieval**
+    - **Property 9: Non-Existent Job Returns 404**
+    - **Property 11: Completed Job Results Retrieval**
+    - **Validates: Requirements 3.1, 3.2, 3.5**
+  - [x] 5.5 Implement JobsProcessor
+    - Create `src/jobs/jobs.processor.ts` with BullMQ processor
+    - Download PDF from MinIO
+    - Call parser service
+    - Update job status on completion/failure
+    - Delete PDF from MinIO after processing
+    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+  - [x] 5.6 Write property tests for job processing
+    - **Property 10: Job State Transition Integrity**
+    - **Property 12: PDF Cleanup After Processing**
+    - **Validates: Requirements 3.3, 3.4, 4.3, 4.4, 4.5**
+
+- [x] 6. Implement parser service communication
+  - [x] 6.1 Create ParserModule
+    - Create `src/parser/parser.module.ts`
+    - Create `src/parser/parser.service.ts` with HTTP client to Python service
+    - Create `src/parser/dto/parsed-event.dto.ts`
+    - _Requirements: 4.2_
+  - [x] 6.2 Write unit tests for ParserService
+    - Test HTTP communication with mocked responses
+    - Test error handling for parser failures
+    - _Requirements: 4.2_
+
+- [x] 7. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 8. Implement Google OAuth authentication
+  - [x] 8.1 Create AuthModule with Passport Google strategy
+    - Create `src/auth/auth.module.ts`
+    - Create `src/auth/strategies/google.strategy.ts` with calendar scopes
+    - Create `src/auth/guards/google-auth.guard.ts`
+    - _Requirements: 5.1, 5.2_
+  - [x] 8.2 Create AuthController
+    - Create `src/auth/auth.controller.ts`
+    - Implement GET `/api/auth/google` to initiate OAuth
+    - Implement GET `/api/auth/google/callback` for OAuth callback
+    - Implement GET `/api/auth/status` for auth status check
+    - Implement POST `/api/auth/logout` for session clearing
+    - Create `src/auth/dto/auth-response.dto.ts`
+    - _Requirements: 5.1, 5.2, 5.3, 5.4_
+  - [x] 8.3 Create AuthService
+    - Create `src/auth/auth.service.ts`
+    - Implement token storage and retrieval
+    - Implement session management
+    - _Requirements: 5.2, 5.3, 5.4_
+  - [x] 8.4 Write property tests for auth status
+    - **Property 13: Auth Status Consistency**
+    - **Property 14: Logout Clears Session**
+    - **Validates: Requirements 5.3, 5.4**
+
+- [x] 9. Implement calendar functionality
+  - [x] 9.1 Create IcsService
+    - Create `src/calendar/ics.service.ts`
+    - Implement generateIcs method for creating ICS content
+    - Implement createRecurringEvent with RRULE for weekly events
+    - Implement createSingleEvent for one-time events
+    - _Requirements: 7.1, 7.2, 7.3_
+  - [x] 9.2 Write property tests for ICS generation
+    - **Property 15: ICS Generation Validity**
+    - **Property 16: ICS Recurring Event RRULE**
+    - **Property 17: ICS Single Event No RRULE**
+    - **Validates: Requirements 7.1, 7.2, 7.3**
+  - [x] 9.3 Create GoogleCalendarService
+    - Create `src/calendar/calendar.service.ts`
+    - Implement listCalendars using Google Calendar API
+    - Implement createCalendar for new calendar creation
+    - Implement addEvents for batch event creation
+    - _Requirements: 6.1, 6.2, 6.3_
+  - [x] 9.4 Create CalendarController
+    - Create `src/calendar/calendar.controller.ts`
+    - Implement GET `/api/calendars` for listing calendars
+    - Implement POST `/api/calendars` for creating calendars
+    - Implement POST `/api/calendars/events` for adding events
+    - Implement POST `/api/generate/ics` for ICS file generation
+    - _Requirements: 6.1, 6.2, 6.3, 7.1, 7.4_
+  - [x] 9.5 Create CalendarModule and DTOs
+    - Create `src/calendar/calendar.module.ts`
+    - Create `src/calendar/dto/generate-ics.dto.ts`
+    - Create `src/calendar/dto/add-events.dto.ts`
+    - Create `src/calendar/dto/event-config.dto.ts`
+    - Create `src/calendar/dto/calendar-list.dto.ts`
+    - _Requirements: 6.1, 6.2, 6.3, 7.1_
+  - [x] 9.6 Write unit tests for CalendarService
+    - Test Google Calendar API interactions with mocked client
+    - Test error handling for API failures
+    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+
+- [-] 10. Implement DTO validation
+  - [x] 10.1 Add validation decorators to all DTOs
+    - Add class-validator decorators to ParsedEventDto
+    - Add class-validator decorators to EventConfigDto
+    - Add class-validator decorators to GenerateIcsDto
+    - Add class-validator decorators to AddEventsDto
+    - _Requirements: 10.1, 10.2, 10.3, 10.4_
+  - [x] 10.2 Configure global validation pipe
+    - Add ValidationPipe globally in main.ts
+    - Configure to return detailed error messages
+    - _Requirements: 10.1_
+  - [ ] 10.3 Write property tests for DTO validation
+    - **Property 18: DTO Validation Rejects Invalid Data**
+    - **Property 19: Time Format Validation**
+    - **Property 20: Date String Validation**
+    - **Validates: Requirements 10.1, 10.2, 10.3, 10.4**
+
+- [x] 11. Implement health checks
+  - [x] 11.1 Create HealthModule
+    - Create `src/health/health.module.ts`
+    - Create `src/health/health.controller.ts`
+    - Implement GET `/health` endpoint
+    - Add database health indicator
+    - Add Redis health indicator
+    - Add MinIO health indicator
+    - _Requirements: 9.1, 9.2, 9.3_
+  - [x] 11.2 Write unit tests for health checks
+    - Test health endpoint returns correct structure
+    - Test individual health indicators
+    - _Requirements: 9.1, 9.2, 9.3_
+
+- [x] 12. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 13. Wire up AppModule and finalize
+  - [x] 13.1 Create AppModule with all imports
+    - Import all feature modules
+    - Configure global providers
+    - _Requirements: 1.1, 1.2_
+  - [x] 13.2 Create main.ts entry point
+    - Bootstrap NestJS application
+    - Apply global filters, pipes, interceptors
+    - Configure Swagger
+    - Configure CORS
+    - Start server on configured port
+    - _Requirements: 1.1, 1.3, 1.4, 1.5_
+  - [x] 13.3 Create Dockerfile
+    - Multi-stage build for production
+    - Install dependencies and build
+    - Run with Node.js
+    - _Requirements: 1.1_
+  - [x] 13.4 Write E2E tests for critical paths
+    - Test upload flow end-to-end
+    - Test ICS generation end-to-end
+    - Test job status polling
+    - _Requirements: 2.5, 3.1, 7.1_
+
+- [x] 14. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

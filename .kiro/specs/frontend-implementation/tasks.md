@@ -1,0 +1,307 @@
+# Implementation Plan
+
+- [x] 1. Project Setup and Theme Configuration
+  - [x] 1.1 Initialize Next.js 14+ project with TypeScript and App Router
+    - Run `npx create-next-app@latest frontend --typescript --tailwind --app --src-dir`
+    - Install dependencies: `npm i zustand axios date-fns`
+    - Install dev dependencies: `npm i -D daisyui@latest vitest @testing-library/react fast-check`
+    - _Requirements: 1.1_
+  - [x] 1.2 Configure Tailwind CSS 4 and DaisyUI 5 with custom themes
+    - Update `src/styles/globals.css` with Tailwind imports and DaisyUI plugin
+    - Add schedule-light and schedule-dark custom themes with electric blue primary
+    - _Requirements: 1.2, 1.3_
+  - [x] 1.3 Create project directory structure
+    - Create folders: components/{layout,upload,preview,customize,common}, hooks, stores, services, types, utils
+    - _Requirements: 1.5_
+  - [ ]* 1.4 Write property test for theme persistence
+    - **Property 1: Theme persistence round-trip**
+    - **Validates: Requirements 1.4**
+
+- [x] 2. Layout Components (Header, Footer, Container, Theme Toggle)
+  - [x] 2.1 Create Container component
+    - Implement Container with size variants (sm, md, lg, xl) using max-width classes
+    - _Requirements: 2.5_
+  - [x] 2.2 Create Header component with theme toggle
+    - Implement navbar with navbar-start (logo), navbar-center (nav links), navbar-end (theme toggle)
+    - Add swap component for sun/moon theme toggle icons
+    - Implement theme switching logic with localStorage persistence
+    - _Requirements: 2.1, 2.3, 2.4, 1.4_
+  - [x] 2.3 Create Footer component
+    - Implement footer with copyright and links using DaisyUI footer component
+    - _Requirements: 2.2_
+  - [x] 2.4 Create root layout with Header and Footer
+    - Update `src/app/layout.tsx` to include Header, main content area, and Footer
+    - Add theme provider logic to apply saved theme on load
+    - _Requirements: 2.1, 2.2_
+
+- [x] 3. Checkpoint - Review Layout in Browser
+  - Ensure all tests pass, ask the user if questions arise.
+  - Run `npm run dev` and verify Header, Footer, theme toggle work correctly
+
+- [x] 4. Common UI Components
+  - [x] 4.1 Create Button component
+    - Implement with variants: primary, secondary, ghost, outline
+    - Add size props (sm, md, lg) and loading state
+    - _Requirements: 9.1_
+  - [ ]* 4.2 Write property test for Button variants
+    - **Property 15: Button variant applies correct classes**
+    - **Validates: Requirements 9.1**
+  - [x] 4.3 Create Alert component
+    - Implement with types: info, success, warning, error
+    - Add optional dismiss button
+    - _Requirements: 9.4_
+  - [ ]* 4.4 Write property test for Alert types
+    - **Property 16: Alert type applies correct styling**
+    - **Validates: Requirements 9.4**
+  - [x] 4.5 Create Loading component
+    - Implement with size variants using DaisyUI loading-spinner
+    - Add optional text prop
+    - _Requirements: 9.5_
+  - [ ]* 4.6 Write property test for Loading sizes
+    - **Property 17: Loading size applies correct classes**
+    - **Validates: Requirements 9.5**
+  - [x] 4.7 Create Card component
+    - Implement with DaisyUI card, card-body, optional card-border
+    - _Requirements: 9.2_
+  - [x] 4.8 Create Modal component
+    - Implement using DaisyUI modal with dialog element
+    - Add backdrop click to close and close button
+    - _Requirements: 9.3_
+
+- [x] 5. Checkpoint - Review Common Components
+  - Ensure all tests pass, ask the user if questions arise.
+  - Create a temporary demo page to showcase all common components
+
+- [x] 6. Stepper Component
+  - [x] 6.1 Create Stepper component
+    - Implement 4-step stepper: Upload, Preview, Customize, Generate
+    - Use DaisyUI steps component with steps-horizontal
+    - Style completed steps with checkmark and step-primary
+    - Style current step with step-primary highlight
+    - Style future steps with neutral/muted colors
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
+  - [ ]* 6.2 Write property test for Stepper state styling
+    - **Property 2: Stepper state styling consistency**
+    - **Validates: Requirements 3.2, 3.3, 3.4**
+
+- [x] 7. Checkpoint - Review Stepper
+  - Ensure all tests pass, ask the user if questions arise.
+  - Add Stepper to demo page with different currentStep values
+
+- [x] 8. Home/Landing Page
+  - [x] 8.1 Create home page with hero section
+    - Implement hero with title "UP Schedule Generator", description, and "Get Started" button
+    - Use DaisyUI hero component
+    - _Requirements: 4.1, 4.4_
+  - [x] 8.2 Add feature cards section
+    - Create 3 cards: Upload PDF, Preview Events, Export Calendar
+    - Use card-border style with hover effects
+    - _Requirements: 4.2, 4.5_
+  - [x] 8.3 Implement navigation to /upload
+    - Wire "Get Started" button to navigate to /upload page
+    - _Requirements: 4.3_
+
+- [x] 9. Checkpoint - Review Home Page
+  - Ensure all tests pass, ask the user if questions arise.
+  - Verify home page layout, hero, cards, and navigation
+
+- [x] 10. Type Definitions and Utilities
+  - [x] 10.1 Create type definitions
+    - Define ParsedEvent, ProcessingJob, GenerateRequest interfaces in `types/`
+    - Define Google Calendar colors constant in `utils/colors.ts`
+    - _Requirements: 7.3_
+  - [x] 10.2 Create date utilities
+    - Implement date formatting helpers in `utils/dates.ts`
+    - _Requirements: 7.6_
+  - [ ]* 10.3 Write property test for date range validation
+    - **Property 12: Date range validation**
+    - **Validates: Requirements 7.6**
+  - [x] 10.4 Create validation utilities
+    - Implement file validation (type, size) in `utils/validation.ts`
+    - _Requirements: 5.5, 5.6_
+  - [ ]* 10.5 Write property test for file validation
+    - **Property 3: File validation rejects invalid files**
+    - **Validates: Requirements 5.5, 5.6, 12.3**
+
+- [x] 11. State Management (Zustand Stores)
+  - [x] 11.1 Create eventStore
+    - Implement events array, selectedIds Set, jobId, jobStatus
+    - Add actions: setEvents, toggleEvent, selectAll, deselectAll, reset
+    - _Requirements: 10.1_
+  - [ ]* 11.2 Write property test for event store selection
+    - **Property 18: Event store maintains selection state**
+    - **Validates: Requirements 10.1**
+  - [x] 11.3 Create configStore
+    - Implement semesterStart, semesterEnd, moduleColors, theme
+    - Add localStorage persistence for colors and theme
+    - _Requirements: 10.2, 10.3, 10.4_
+  - [ ]* 11.4 Write property test for config store persistence
+    - **Property 13: Color preferences localStorage round-trip**
+    - **Validates: Requirements 7.7, 7.8, 10.3, 10.4**
+
+- [x] 12. Checkpoint - Review State Management
+  - Ensure all tests pass, ask the user if questions arise.
+  - Verify stores work correctly with React DevTools or console logging
+
+- [x] 13. Upload Page Components
+  - [x] 13.1 Create DropZone component
+    - Implement drag-and-drop area with visual feedback on drag over
+    - Accept only PDF files, validate file type and size
+    - Show error alerts for invalid files
+    - _Requirements: 5.2, 5.3, 5.5, 5.6_
+  - [x] 13.2 Create FilePreview component
+    - Display filename, formatted file size, and remove button
+    - _Requirements: 5.4_
+  - [ ]* 13.3 Write property test for FilePreview
+    - **Property 4: Valid PDF displays correct information**
+    - **Validates: Requirements 5.4**
+  - [x] 13.4 Create UploadProgress component
+    - Show progress bar during upload using DaisyUI progress
+    - Display status messages for uploading/processing/complete/error
+    - _Requirements: 5.7_
+  - [x] 13.5 Create Upload page
+    - Combine Stepper (step 1), DropZone, FilePreview, UploadProgress
+    - Add "Upload & Process" button
+    - _Requirements: 5.1, 5.8_
+
+- [x] 14. Checkpoint - Review Upload Page
+  - Ensure all tests pass, ask the user if questions arise.
+  - Test drag-drop, file selection, validation errors, file preview
+
+- [x] 15. Preview Page Components
+  - [x] 15.1 Create EventCard component
+    - Display module code, event type, time range, location
+    - Include checkbox for selection
+    - _Requirements: 6.4, 6.5_
+  - [ ]* 15.2 Write property test for EventCard
+    - **Property 7: Event card displays all required fields**
+    - **Validates: Requirements 6.4**
+  - [x] 15.3 Create BulkActions component
+    - Implement "Select All" and "Deselect All" buttons
+    - Show selected count vs total count
+    - _Requirements: 6.6, 6.7_
+  - [ ]* 15.4 Write property test for bulk selection
+    - **Property 8: Bulk selection operations**
+    - **Validates: Requirements 6.6, 6.7**
+  - [x] 15.5 Create EventFilter component
+    - Dropdown to filter by module (or "All Modules")
+    - _Requirements: 6.8_
+  - [ ]* 15.6 Write property test for module filter
+    - **Property 9: Module filter shows only matching events**
+    - **Validates: Requirements 6.8**
+  - [x] 15.7 Create EventList component
+    - Group events by day of week
+    - Render EventCard for each event
+    - _Requirements: 6.3_
+  - [ ]* 15.8 Write property test for event grouping
+    - **Property 6: Events grouped by day correctly**
+    - **Validates: Requirements 6.3**
+  - [x] 15.9 Create Preview page
+    - Combine Stepper (step 2), summary, BulkActions, EventFilter, EventList
+    - Add "Continue" button to navigate to /customize
+    - _Requirements: 6.1, 6.2, 6.9_
+  - [ ]* 15.10 Write property test for event summary
+    - **Property 5: Event summary shows correct counts**
+    - **Validates: Requirements 6.2**
+
+- [x] 16. Checkpoint - Review Preview Page
+  - Ensure all tests pass, ask the user if questions arise.
+  - Test with mock events: selection, filtering, bulk actions, grouping
+
+- [x] 17. Customize Page Components
+  - [x] 17.1 Create ColorSwatch component
+    - Display color circle with name, highlight when selected
+    - _Requirements: 7.4_
+  - [x] 17.2 Create ModuleColorPicker component
+    - List unique modules with color dropdown
+    - Show all 11 Google Calendar colors with actual hex values
+    - Update swatch preview on selection
+    - _Requirements: 7.2, 7.3, 7.4_
+  - [ ]* 17.3 Write property test for unique modules
+    - **Property 10: Unique modules have color pickers**
+    - **Validates: Requirements 7.2**
+  - [ ]* 17.4 Write property test for color swatch
+    - **Property 11: Color selection updates swatch**
+    - **Validates: Requirements 7.4**
+  - [x] 17.5 Create DateRangePicker component
+    - Start date and end date inputs
+    - Validate end date is after start date
+    - _Requirements: 7.5, 7.6_
+  - [x] 17.6 Create Customize page
+    - Combine Stepper (step 3), ModuleColorPicker, DateRangePicker
+    - Add "Back" and "Generate" buttons
+    - Persist color preferences to localStorage
+    - _Requirements: 7.1, 7.7, 7.8, 7.9_
+
+- [x] 18. Checkpoint - Review Customize Page
+  - Ensure all tests pass, ask the user if questions arise.
+  - Test color selection, date validation, localStorage persistence
+
+- [x] 19. Generate Page
+  - [x] 19.1 Create Generate page
+    - Display Stepper (step 4) and configuration summary
+    - Show selected event count, module count, date range
+    - _Requirements: 8.1, 8.2_
+  - [ ]* 19.2 Write property test for generate summary
+    - **Property 14: Generate summary shows correct values**
+    - **Validates: Requirements 8.2**
+  - [x] 19.3 Add output option cards
+    - "Download ICS" card and "Add to Google Calendar" card
+    - _Requirements: 8.3_
+  - [x] 19.4 Implement ICS download
+    - Trigger file download when "Download ICS" is clicked
+    - Show success/error alerts
+    - _Requirements: 8.4, 8.5, 8.6_
+  - [x] 19.5 Add "Upload Another PDF" button
+    - Navigate to /upload and reset state
+    - _Requirements: 8.7_
+
+- [x] 20. Checkpoint - Review Generate Page
+  - Ensure all tests pass, ask the user if questions arise.
+  - Test summary display, download trigger, reset flow
+
+- [ ] 21. API Service Layer
+  - [ ] 21.1 Create Axios instance and base configuration
+    - Set up base URL, default headers, interceptors
+    - _Requirements: 11.1_
+  - [ ] 21.2 Create uploadService
+    - Implement uploadPdf with multipart/form-data and progress tracking
+    - _Requirements: 11.2_
+  - [ ] 21.3 Create jobService
+    - Implement pollJobStatus with 1-second interval
+    - _Requirements: 11.3_
+  - [ ] 21.4 Create calendarService
+    - Implement generateIcs with blob response handling
+    - _Requirements: 11.4_
+  - [ ] 21.5 Create error handler utility
+    - Transform API errors to user-friendly messages
+    - _Requirements: 11.5_
+  - [ ]* 21.6 Write property test for error transformation
+    - **Property 19: API errors transform to user-friendly messages**
+    - **Validates: Requirements 11.5**
+
+- [ ] 22. Error Handling and Loading States
+  - [ ] 22.1 Add error handling to Upload page
+    - Display network errors with retry, processing errors with retry button
+    - _Requirements: 12.1, 12.2_
+  - [ ] 22.2 Add loading states throughout
+    - Show skeletons or spinners during data loading
+    - _Requirements: 12.5_
+  - [ ] 22.3 Add success feedback
+    - Display success toasts/alerts after operations complete
+    - _Requirements: 12.4_
+
+- [ ] 23. Integration and Polish
+  - [ ] 23.1 Wire up Upload page to API
+    - Connect DropZone → uploadService → jobService polling → navigate to Preview
+    - _Requirements: 5.7, 5.8_
+  - [ ] 23.2 Wire up Generate page to API
+    - Connect Generate button → calendarService → download/success
+    - _Requirements: 8.4, 8.5, 8.6_
+  - [ ] 23.3 Add page transitions and polish
+    - Ensure smooth navigation between steps
+    - Verify responsive behavior on different screen sizes
+
+- [ ] 24. Final Checkpoint - Full Flow Review
+  - Ensure all tests pass, ask the user if questions arise.
+  - Test complete flow: Home → Upload → Preview → Customize → Generate → Download

@@ -1,0 +1,180 @@
+# Implementation Plan
+
+- [x] 1. Create API service layer foundation
+  - [x] 1.1 Create base API client with Axios configuration
+    - Create `frontend/src/services/api.ts` with Axios instance
+    - Configure baseURL from environment variable `NEXT_PUBLIC_API_URL`
+    - Set `withCredentials: true` for session-based auth
+    - Add response interceptor for error handling
+    - Export `ApiError` interface
+    - _Requirements: 1.1, 1.2, 1.3, 1.4_
+  - [ ]* 1.2 Write property test for API error parsing
+    - **Property 1: API Error Response Parsing**
+    - **Validates: Requirements 1.4**
+  - [x] 1.3 Create auth service module
+    - Create `frontend/src/services/authService.ts`
+    - Implement `getLoginUrl()` returning OAuth endpoint
+    - Implement `getStatus()` calling `/api/auth/status`
+    - Implement `logout()` calling `/api/auth/logout`
+    - Export `AuthUser` and `AuthStatus` interfaces
+    - _Requirements: 3.1, 3.2, 3.4_
+  - [x] 1.4 Create upload service module
+    - Create `frontend/src/services/uploadService.ts`
+    - Implement `uploadPdf()` with FormData and progress callback
+    - Export `UploadResponse` interface
+    - _Requirements: 2.1_
+  - [x] 1.5 Create job service module
+    - Create `frontend/src/services/jobService.ts`
+    - Implement `getStatus()` calling `/api/jobs/:id`
+    - Export `JobStatus` interface matching backend response
+    - _Requirements: 2.3_
+  - [x] 1.6 Create calendar service module
+    - Create `frontend/src/services/calendarService.ts`
+    - Implement `listCalendars()` calling `/api/calendars`
+    - Implement `createCalendar()` calling `POST /api/calendars`
+    - Implement `addEvents()` calling `POST /api/calendars/events`
+    - Implement `generateIcs()` calling `POST /api/generate/ics` with blob response
+    - Export `Calendar`, `GenerateIcsRequest`, `AddEventsRequest` interfaces
+    - _Requirements: 4.1, 4.4, 5.1, 6.1_
+  - [x] 1.7 Create services barrel export
+    - Create `frontend/src/services/index.ts` exporting all services
+    - _Requirements: 1.1_
+
+- [x] 2. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 3. Create auth store and hook
+  - [x] 3.1 Create auth Zustand store
+    - Create `frontend/src/stores/authStore.ts`
+    - Implement state: `isAuthenticated`, `user`, `isLoading`, `error`
+    - Implement `checkStatus()` action calling authService
+    - Implement `logout()` action calling authService and clearing state
+    - Implement `setError()` and `reset()` actions
+    - _Requirements: 3.2, 3.3, 3.4, 3.5_
+  - [x] 3.2 Create useAuth hook
+    - Create `frontend/src/hooks/useAuth.ts`
+    - Use authStore for state
+    - Call `checkStatus()` on mount via useEffect
+    - Implement `login()` function redirecting to OAuth URL
+    - Return `{ isAuthenticated, user, isLoading, error, login, logout }`
+    - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 8.1_
+  - [ ]* 3.3 Write property test for useAuth hook interface
+    - **Property 4: useAuth Hook Interface Consistency**
+    - **Validates: Requirements 8.1**
+
+- [x] 4. Create upload and job polling hooks
+  - [x] 4.1 Create useUpload hook
+    - Create `frontend/src/hooks/useUpload.ts`
+    - Implement state: `progress`, `isUploading`, `error`
+    - Implement `upload()` function calling uploadService
+    - Update eventStore with jobId on success
+    - Return `{ upload, progress, isUploading, error, reset }`
+    - _Requirements: 2.1, 2.2, 8.2_
+  - [ ]* 4.2 Write property test for useUpload hook interface
+    - **Property 5: useUpload Hook Interface Consistency**
+    - **Validates: Requirements 8.2**
+  - [x] 4.3 Create useJobStatus hook
+    - Create `frontend/src/hooks/useJobStatus.ts`
+    - Accept `jobId` parameter
+    - Implement polling with 1-second interval
+    - Stop polling on `completed` or `failed` status
+    - Update eventStore with parsed events on completion
+    - Return `{ status, isPolling, error }`
+    - _Requirements: 2.3, 2.4, 2.5, 8.3_
+
+- [x] 5. Create calendar hook
+  - [x] 5.1 Create useCalendars hook
+    - Create `frontend/src/hooks/useCalendars.ts`
+    - Implement state: `calendars`, `isLoading`, `error`
+    - Implement `fetchCalendars()` calling calendarService
+    - Implement `createCalendar()` adding to local state
+    - Return `{ calendars, isLoading, error, fetchCalendars, createCalendar }`
+    - _Requirements: 4.1, 4.2, 4.4, 8.4_
+  - [ ]* 5.2 Write property test for useCalendars hook interface
+    - **Property 6: useCalendars Hook Interface Consistency**
+    - **Validates: Requirements 8.4**
+  - [x] 5.3 Create hooks barrel export
+    - Create `frontend/src/hooks/index.ts` exporting all hooks
+    - _Requirements: 8.1, 8.2, 8.3, 8.4_
+
+- [x] 6. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.
+
+- [x] 7. Create auth UI components
+  - [x] 7.1 Create GoogleLoginButton component
+    - Create `frontend/src/components/auth/GoogleLoginButton.tsx`
+    - Use useAuth hook for login function
+    - Display Google icon and "Sign in with Google" text
+    - Show loading state during auth check
+    - _Requirements: 3.1, 7.1_
+  - [x] 7.2 Create UserAvatar component
+    - Create `frontend/src/components/auth/UserAvatar.tsx`
+    - Display user profile picture and name
+    - Include dropdown with email and logout option
+    - _Requirements: 3.3, 3.4_
+  - [x] 7.3 Create CalendarSelector component
+    - Create `frontend/src/components/customize/CalendarSelector.tsx`
+    - Display dropdown of calendars with primary highlighted
+    - Include option to create new calendar with name input
+    - Show loading state while fetching
+    - _Requirements: 4.2, 4.3, 4.4_
+  - [x] 7.4 Create auth components barrel export
+    - Create `frontend/src/components/auth/index.ts`
+    - _Requirements: 3.1, 3.3_
+
+- [x] 8. Integrate API services into upload page
+  - [x] 8.1 Update upload page to use real API
+    - Modify `frontend/src/app/upload/page.tsx`
+    - Replace simulated upload with useUpload hook
+    - Replace simulated polling with useJobStatus hook
+    - Navigate to preview on job completion
+    - Display error from job result on failure
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 7.1, 7.3, 7.4_
+
+- [x] 9. Integrate API services into customize page
+  - [x] 9.1 Update customize page with calendar selector
+    - Modify `frontend/src/app/customize/page.tsx`
+    - Add useAuth hook to check authentication
+    - Add useCalendars hook to fetch calendars when authenticated
+    - Add CalendarSelector component for authenticated users
+    - Store selected calendar ID in configStore
+    - _Requirements: 4.1, 4.2, 4.3_
+
+- [x] 10. Integrate API services into generate page
+  - [x] 10.1 Create event mapping utility
+    - Create `frontend/src/utils/eventMapper.ts`
+    - Implement `mapEventsToConfig()` function
+    - Map ParsedEvent array to EventConfig array with colors
+    - _Requirements: 5.1, 6.1_
+  - [ ]* 10.2 Write property test for ICS request formatting
+    - **Property 2: ICS Request Payload Formatting**
+    - **Validates: Requirements 5.1**
+  - [ ]* 10.3 Write property test for calendar events request formatting
+    - **Property 3: Calendar Events Request Formatting**
+    - **Validates: Requirements 6.1**
+  - [x] 10.4 Update generate page to use backend ICS generation
+    - Modify `frontend/src/app/generate/page.tsx`
+    - Replace client-side ICS generation with calendarService.generateIcs()
+    - Handle blob response and trigger download
+    - Show loading state during generation
+    - Display error on failure
+    - _Requirements: 5.1, 5.2, 5.3, 7.1, 7.2, 7.3_
+  - [x] 10.5 Add Google Calendar sync to generate page
+    - Add useAuth hook to check authentication
+    - Enable "Add to Google Calendar" button when authenticated
+    - Call calendarService.addEvents() with mapped events
+    - Display success message with event count
+    - Handle 401 error with re-auth prompt
+    - Display other errors appropriately
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.3_
+
+- [x] 11. Add auth UI to header/layout
+  - [x] 11.1 Update header with auth state
+    - Modify `frontend/src/components/layout/Header.tsx`
+    - Add useAuth hook
+    - Show GoogleLoginButton when not authenticated
+    - Show UserAvatar when authenticated
+    - _Requirements: 3.1, 3.3, 3.4, 3.5_
+
+- [x] 12. Final Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

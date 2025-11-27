@@ -1,0 +1,36 @@
+# Traefik Static Configuration - Development Mode
+# UP Schedule Generator V3 - DevOps Infrastructure
+# No HTTPS redirect, no TLS for local development
+
+api:
+  dashboard: true
+  insecure: true
+
+entryPoints:
+  # HTTP entrypoint - no redirect in development
+  web:
+    address: ":80"
+
+  # Dashboard entrypoint
+  dashboard:
+    address: ":8080"
+
+providers:
+  # Docker provider configuration
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: schedgen
+    watch: true
+
+  # File provider for dynamic configuration
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+log:
+  level: DEBUG
+  format: common
+
+accessLog:
+  format: common

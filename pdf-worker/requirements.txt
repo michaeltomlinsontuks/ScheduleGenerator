@@ -1,0 +1,12 @@
+# PDF Worker dependencies
+# FastAPI framework
+fastapi==0.109.2
+uvicorn==0.27.1
+gunicorn==21.2.0
+python-multipart==0.0.9
+
+# PDF parsing
+pdfplumber==0.10.4
+
+# Data processing
+pandas==2.2.0

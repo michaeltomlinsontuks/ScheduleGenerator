@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Light Theme - Clean professional with electric blue accent */
+@plugin "daisyui/theme" {
+  name: "schedule-light";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(97% 0.005 240);
+  --color-base-300: oklch(94% 0.01 240);
+  --color-base-content: oklch(25% 0.02 240);
+  --color-primary: oklch(65% 0.19 220);
+  --color-primary-content: oklch(100% 0 0);
+  --color-secondary: oklch(55% 0.03 240);
+  --color-secondary-content: oklch(100% 0 0);
+  --color-accent: oklch(65% 0.19 220);
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: oklch(35% 0.02 240);
+  --color-neutral-content: oklch(98% 0 0);
+  --color-info: oklch(70% 0.15 230);
+  --color-info-content: oklch(100% 0 0);
+  --color-success: oklch(65% 0.2 145);
+  --color-success-content: oklch(100% 0 0);
+  --color-warning: oklch(80% 0.18 85);
+  --color-warning-content: oklch(25% 0.05 85);
+  --color-error: oklch(60% 0.22 25);
+  --color-error-content: oklch(100% 0 0);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* Dark Theme - Deep blacks with electric blue accent */
+@plugin "daisyui/theme" {
+  name: "schedule-dark";
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: oklch(15% 0.015 250);
+  --color-base-200: oklch(20% 0.02 250);
+  --color-base-300: oklch(25% 0.025 250);
+  --color-base-content: oklch(92% 0.01 240);
+  --color-primary: oklch(70% 0.19 220);
+  --color-primary-content: oklch(15% 0.02 220);
+  --color-secondary: oklch(60% 0.03 250);
+  --color-secondary-content: oklch(15% 0.02 250);
+  --color-accent: oklch(70% 0.19 220);
+  --color-accent-content: oklch(15% 0.02 220);
+  --color-neutral: oklch(30% 0.02 250);
+  --color-neutral-content: oklch(90% 0.01 250);
+  --color-info: oklch(70% 0.15 230);
+  --color-info-content: oklch(15% 0.02 230);
+  --color-success: oklch(70% 0.2 145);
+  --color-success-content: oklch(15% 0.02 145);
+  --color-warning: oklch(80% 0.18 85);
+  --color-warning-content: oklch(20% 0.05 85);
+  --color-error: oklch(65% 0.22 25);
+  --color-error-content: oklch(15% 0.02 25);
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}

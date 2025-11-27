@@ -1,0 +1,60 @@
+# Traefik Static Configuration
+# UP Schedule Generator V3 - DevOps Infrastructure
+
+api:
+  dashboard: true
+  insecure: false
+
+entryPoints:
+  # HTTP entrypoint - redirects to HTTPS in production
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+
+  # HTTPS entrypoint - main secure traffic
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certResolver: letsencrypt
+
+  # Dashboard entrypoint
+  dashboard:
+    address: ":8080"
+
+providers:
+  # Docker provider configuration
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    network: schedgen
+    watch: true
+
+  # File provider for dynamic configuration
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+certificatesResolvers:
+  # Let's Encrypt certificate resolver
+  letsencrypt:
+    acme:
+      email: "${ACME_EMAIL}"
+      storage: /etc/traefik/certs/acme.json
+      httpChallenge:
+        entryPoint: web
+
+log:
+  level: INFO
+  format: common
+
+accessLog:
+  format: common
+  filters:
+    statusCodes:
+      - "400-599"
