@@ -64,8 +64,8 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_CALLBACK_URL=https://api.${DOMAIN}/api/auth/google/callback
-      - PDF_WORKER_URL=http://pdf-worker:5000
-      - PARSER_URL=http://pdf-worker:5000
+      - PDF_WORKER_URL=http://pdf-worker:5001
+      - PARSER_URL=http://pdf-worker:5001
       - FRONTEND_URL=https://${DOMAIN}
     labels:
       - "traefik.enable=true"
@@ -86,8 +86,11 @@ services:
   # PDF Worker - Production with Health Check
   # =============================================================================
   pdf-worker:
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=5001
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')"]
       interval: 30s
       timeout: 10s
       retries: 3

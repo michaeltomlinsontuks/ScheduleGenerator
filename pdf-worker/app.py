@@ -108,4 +108,5 @@ async def parse_schedule(file: UploadFile = File(...)) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5000)
+    port = int(os.getenv("PORT", "5001"))
+    uvicorn.run(app, host="0.0.0.0", port=port)

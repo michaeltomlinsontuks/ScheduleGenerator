@@ -115,14 +115,18 @@ export default function PreviewPage() {
           />
         </div>
 
-        {/* Event List */}
-        <EventList
-          events={events}
-          selectedIds={selectedIds}
-          onToggle={toggleEvent}
-          filterModule={filterModule}
-          moduleColors={moduleColors}
-        />
+        {/* Event List - Scrollable Container */}
+        <div className="card card-border bg-base-100 max-h-[60vh] overflow-y-auto">
+          <div className="card-body">
+            <EventList
+              events={events}
+              selectedIds={selectedIds}
+              onToggle={toggleEvent}
+              filterModule={filterModule}
+              moduleColors={moduleColors}
+            />
+          </div>
+        </div>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between mt-8">

@@ -4,7 +4,7 @@ import { Job as BullJob } from 'bullmq';
 import { JobsService } from './jobs.service.js';
 import { StorageService } from '../storage/storage.service.js';
 import { JobStatus, PdfType, ParsedEvent } from './entities/job.entity.js';
-import { PDF_PROCESSING_QUEUE } from './jobs.module.js';
+// Queue name constant defined in jobs.module.ts
 
 export interface PdfJobData {
   jobId: string;
@@ -22,7 +22,7 @@ export interface IParserService {
 export const PARSER_SERVICE = 'PARSER_SERVICE';
 
 @Injectable()
-@Processor(PDF_PROCESSING_QUEUE)
+@Processor('pdf-processing')
 export class JobsProcessor extends WorkerHost {
   private readonly logger = new Logger(JobsProcessor.name);
 

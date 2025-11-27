@@ -52,9 +52,11 @@ services:
       context: ./backend
       dockerfile: Dockerfile.dev
     volumes:
-      - ./backend:/app
-      - /app/node_modules
-      - /app/dist
+      - ./backend/src:/app/src
+      - ./backend/test:/app/test
+      - ./backend/tsconfig.json:/app/tsconfig.json
+      - ./backend/tsconfig.build.json:/app/tsconfig.build.json
+      - ./backend/nest-cli.json:/app/nest-cli.json
     environment:
       - NODE_ENV=development
       - PORT=3001
@@ -75,8 +77,8 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_CALLBACK_URL=http://localhost:3001/api/auth/google/callback
-      - PDF_WORKER_URL=http://pdf-worker:5000
-      - PARSER_URL=http://pdf-worker:5000
+      - PDF_WORKER_URL=http://pdf-worker:5001
+      - PARSER_URL=http://pdf-worker:5001
       - FRONTEND_URL=http://localhost:3000
     labels:
       - "traefik.enable=true"
@@ -94,15 +96,16 @@ services:
       - ./pdf-worker:/app
     environment:
       - PYTHONUNBUFFERED=1
+      - PORT=5001
     ports:
-      - "5000:5000"
+      - "5001:5001"
 
   # =============================================================================
   # PostgreSQL - Development with exposed port
   # =============================================================================
   postgres:
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-schedgen}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-devpassword}

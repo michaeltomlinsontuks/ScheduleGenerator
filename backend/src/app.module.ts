@@ -28,7 +28,7 @@ import { HealthModule } from './health/health.module.js';
         database: configService.get<string>('database.database'),
         entities: [Job],
         autoLoadEntities: true,
-        synchronize: false,
+        synchronize: process.env.NODE_ENV === 'development',
       }),
     }),
     BullModule.forRootAsync({

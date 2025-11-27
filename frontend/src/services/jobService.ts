@@ -30,6 +30,14 @@ export interface JobStatus {
 }
 
 /**
+ * Job result response from backend
+ */
+export interface JobResult {
+  id: string;
+  events: ParsedEvent[];
+}
+
+/**
  * Job service for checking processing status
  */
 export const jobService = {
@@ -38,4 +46,10 @@ export const jobService = {
    * @param jobId - The job ID to check
    */
   getStatus: (jobId: string) => api.get<JobStatus>(`/api/jobs/${jobId}`),
+  
+  /**
+   * Get the results (parsed events) of a completed job
+   * @param jobId - The job ID to get results for
+   */
+  getResult: (jobId: string) => api.get<JobResult>(`/api/jobs/${jobId}/result`),
 };

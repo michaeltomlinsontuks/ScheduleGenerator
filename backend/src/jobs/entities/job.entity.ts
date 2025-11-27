@@ -55,7 +55,7 @@ export class Job {
   @Column({ type: 'jsonb', nullable: true })
   result!: ParsedEvent[] | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   error!: string | null;
 
   @CreateDateColumn()
@@ -64,6 +64,6 @@ export class Job {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   completedAt!: Date | null;
 }

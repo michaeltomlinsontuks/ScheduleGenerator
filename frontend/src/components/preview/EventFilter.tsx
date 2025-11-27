@@ -17,7 +17,7 @@ export function EventFilter({ modules, selectedModule, onChange }: EventFilterPr
         <span className="label-text">Filter by Module</span>
       </label>
       <select
-        className="select select-bordered"
+        className="select select-bordered focus:outline-none focus:border-primary"
         value={selectedModule}
         onChange={(e) => onChange(e.target.value)}
       >

@@ -98,10 +98,20 @@ const useJobPollingStore = create<JobPollingState>((set, get) => ({
         if (jobStatus.status === 'completed') {
           const intervalId = get().intervalId;
           if (intervalId) clearInterval(intervalId);
-          set({ status: jobStatus, isPolling: false, intervalId: null });
-          if (jobStatus.result) {
-            const mappedEvents = jobStatus.result.map(mapParsedEvent);
+          
+          // Fetch the results separately
+          try {
+            const resultResponse = await jobService.getResult(jobId);
+            const mappedEvents = resultResponse.data.events.map(mapParsedEvent);
+            set({ status: jobStatus, isPolling: false, intervalId: null });
             onComplete(mappedEvents);
+          } catch (resultErr) {
+            set({
+              status: jobStatus,
+              isPolling: false,
+              error: resultErr instanceof Error ? resultErr.message : 'Failed to fetch job results',
+              intervalId: null,
+            });
           }
         } else if (jobStatus.status === 'failed') {
           const intervalId = get().intervalId;
@@ -166,39 +176,36 @@ export function useJobStatus(jobId: string | null): UseJobStatusReturn {
   const setEvents = useEventStore((state) => state.setEvents);
   const setJobStatus = useEventStore((state) => state.setJobStatus);
   
-  const { status, isPolling, error, currentJobId, startPolling, stopPolling } =
-    useJobPollingStore();
+  const status = useJobPollingStore((state) => state.status);
+  const isPolling = useJobPollingStore((state) => state.isPolling);
+  const error = useJobPollingStore((state) => state.error);
 
-  // Memoize callbacks to prevent unnecessary re-renders
-  const handleComplete = useCallback(
-    (events: ParsedEvent[]) => {
-      setEvents(events);
-    },
-    [setEvents]
-  );
-
-  const handleStatusChange = useCallback(
-    (status: 'pending' | 'processing' | 'complete' | 'failed') => {
-      setJobStatus(status);
-    },
-    [setJobStatus]
-  );
-
-  // Start/stop polling based on jobId changes
+  // Start/stop polling based on jobId changes - only depend on jobId
   useEffect(() => {
-    if (jobId && jobId !== currentJobId) {
-      startPolling(jobId, handleComplete, handleStatusChange);
-    } else if (!jobId && currentJobId) {
-      stopPolling();
+    if (!jobId) {
+      return;
     }
 
-    return () => {
-      // Cleanup on unmount
-      if (jobId) {
-        stopPolling();
-      }
+    // Check if we're already polling this job
+    const currentState = useJobPollingStore.getState();
+    if (currentState.currentJobId === jobId && currentState.isPolling) {
+      return; // Already polling this job
+    }
+
+    const handleComplete = (events: ParsedEvent[]) => {
+      setEvents(events);
     };
-  }, [jobId, currentJobId, startPolling, stopPolling, handleComplete, handleStatusChange]);
+
+    const handleStatusChange = (status: 'pending' | 'processing' | 'complete' | 'failed') => {
+      setJobStatus(status);
+    };
+
+    useJobPollingStore.getState().startPolling(jobId, handleComplete, handleStatusChange);
+
+    return () => {
+      useJobPollingStore.getState().stopPolling();
+    };
+  }, [jobId, setEvents, setJobStatus]);
 
   return useMemo(
     () => ({

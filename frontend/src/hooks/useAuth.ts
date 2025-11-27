@@ -4,7 +4,7 @@
  */
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useAuthStore } from '@/stores/authStore';
 import { authService } from '@/services/authService';
 
@@ -15,10 +15,14 @@ import { authService } from '@/services/authService';
 export function useAuth() {
   const { isAuthenticated, user, isLoading, error, checkStatus, logout, setError } =
     useAuthStore();
+  const hasChecked = useRef(false);
 
-  // Check auth status on mount
+  // Check auth status on mount (only once)
   useEffect(() => {
-    checkStatus();
+    if (!hasChecked.current) {
+      hasChecked.current = true;
+      checkStatus();
+    }
   }, [checkStatus]);
 
   /**

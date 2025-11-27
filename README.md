@@ -63,7 +63,7 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
 5. Access the application:
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:3001
-   - Traefik Dashboard: http://traefik.localhost:8080
+   - Traefik Dashboard: http://localhost:8081
    - MinIO Console: http://localhost:9001
 
 ### Development Features
@@ -76,8 +76,8 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
 |---------|------|
 | Frontend | 3000 |
 | Backend | 3001 |
-| PDF Worker | 5000 |
-| PostgreSQL | 5432 |
+| PDF Worker | 5001 |
+| PostgreSQL | 5433 |
 | Redis | 6379 |
 | MinIO API | 9000 |
 | MinIO Console | 9001 |
