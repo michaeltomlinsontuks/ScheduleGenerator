@@ -37,17 +37,17 @@ export function DateRangePicker({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div>
         <h3 className="text-base font-semibold">Semester Date Range</h3>
-        <p className="text-xs text-base-content/70 mt-1">
+        <p className="text-xs text-base-content/70 mt-0.5">
           Set the start and end dates for your semester to generate recurring events.
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div className="form-control">
-          <label className="label py-1" htmlFor="start-date">
+          <label className="label py-0.5" htmlFor="start-date">
             <span className="label-text text-sm font-medium">Start Date</span>
           </label>
           <input
@@ -60,7 +60,7 @@ export function DateRangePicker({
         </div>
 
         <div className="form-control">
-          <label className="label py-1" htmlFor="end-date">
+          <label className="label py-0.5" htmlFor="end-date">
             <span className="label-text text-sm font-medium">End Date</span>
           </label>
           <input

@@ -20,22 +20,22 @@ export function ModuleColorPicker({
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <div>
         <h3 className="text-base font-semibold">Module Colors</h3>
-        <p className="text-xs text-base-content/70 mt-1">
+        <p className="text-xs text-base-content/70 mt-0.5">
           Assign colors to each module for easy identification in your calendar.
         </p>
       </div>
       
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         {modules.map((module) => {
           const selectedColor = getModuleColor(module);
 
           return (
             <div
               key={module}
-              className="flex items-center justify-between p-2 bg-base-200 rounded-lg"
+              className="flex items-center justify-between px-2 py-1.5 bg-base-200 rounded-lg"
             >
               <div className="flex items-center gap-2">
                 <span
