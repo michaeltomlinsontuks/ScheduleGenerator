@@ -138,37 +138,39 @@ export default function CustomizePage() {
           />
         </Card>
 
-        {/* Right Column - Date Range */}
-        <Card bordered className="h-fit">
-          <DateRangePicker
-            startDate={semesterStart}
-            endDate={semesterEnd}
-            onStartChange={setSemesterStart}
-            onEndChange={setSemesterEnd}
-            error={dateError}
-          />
-        </Card>
-      </div>
-
-      {/* Calendar Selector - Full Width Bottom */}
-      {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
-      {isAuthenticated && (
-        <Card bordered className="mb-6">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold mb-4">Google Calendar Integration</h3>
-            <p className="text-sm text-base-content/70 mb-4">
-              Select a calendar to sync your events to Google Calendar, or create a new one.
-            </p>
-            <CalendarSelector
-              calendars={calendars}
-              selectedId={selectedCalendarId}
-              onSelect={setSelectedCalendarId}
-              onCreate={handleCreateCalendar}
-              isLoading={isCalendarsLoading}
+        {/* Right Column - Date Range & Calendar Integration */}
+        <div className="space-y-6">
+          <Card bordered>
+            <DateRangePicker
+              startDate={semesterStart}
+              endDate={semesterEnd}
+              onStartChange={setSemesterStart}
+              onEndChange={setSemesterEnd}
+              error={dateError}
             />
-          </div>
-        </Card>
-      )}
+          </Card>
+
+          {/* Calendar Selector - Below Date Range */}
+          {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
+          {isAuthenticated && (
+            <Card bordered>
+              <div className="p-4">
+                <h3 className="text-lg font-semibold mb-4">Google Calendar Integration</h3>
+                <p className="text-sm text-base-content/70 mb-4">
+                  Select a calendar to sync your events to Google Calendar, or create a new one.
+                </p>
+                <CalendarSelector
+                  calendars={calendars}
+                  selectedId={selectedCalendarId}
+                  onSelect={setSelectedCalendarId}
+                  onCreate={handleCreateCalendar}
+                  isLoading={isCalendarsLoading}
+                />
+              </div>
+            </Card>
+          )}
+        </div>
+      </div>
 
       {/* Navigation Buttons */}
       <div className="flex justify-between">
