@@ -203,147 +203,146 @@ export default function GeneratePage() {
         <p className="mt-2 text-base-content/70">
           Review your configuration and download your calendar
         </p>
+      </div>
+
+      {/* Status Alerts */}
+      {(downloadStatus === 'success' || syncStatus === 'success') && successMessage && (
+        <div className="mb-6">
+          <Alert
+            type="success"
+            message={successMessage}
+            onDismiss={clearAlerts}
+          />
+        </div>
+      )}
+      
+      {(downloadStatus === 'error' || syncStatus === 'error') && errorMessage && (
+        <div className="mb-6">
+          <Alert
+            type="error"
+            message={errorMessage}
+            onDismiss={clearAlerts}
+          />
+        </div>
+      )}
+
+      {/* Configuration Summary */}
+      <Card bordered className="mb-6">
+        <h2 className="text-lg font-semibold text-base-content mb-4">
+          Configuration Summary
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Selected Events */}
+          <div className="stat bg-base-200 rounded-lg p-4">
+            <div className="stat-title text-base-content/70">Selected Events</div>
+            <div className="stat-value text-primary">{selectedEvents.length}</div>
+          </div>
+
+          {/* Module Count */}
+          <div className="stat bg-base-200 rounded-lg p-4">
+            <div className="stat-title text-base-content/70">Modules</div>
+            <div className="stat-value text-primary">{uniqueModules.length}</div>
+          </div>
+
+          {/* Date Range */}
+          <div className="stat bg-base-200 rounded-lg p-4">
+            <div className="stat-title text-base-content/70">Date Range</div>
+            <div className="stat-value text-sm text-primary">{dateRangeDisplay}</div>
+          </div>
         </div>
 
-        {/* Status Alerts */}
-        {(downloadStatus === 'success' || syncStatus === 'success') && successMessage && (
-          <div className="mb-6">
-            <Alert
-              type="success"
-              message={successMessage}
-              onDismiss={clearAlerts}
-            />
-          </div>
-        )}
-        
-        {(downloadStatus === 'error' || syncStatus === 'error') && errorMessage && (
-          <div className="mb-6">
-            <Alert
-              type="error"
-              message={errorMessage}
-              onDismiss={clearAlerts}
-            />
-          </div>
-        )}
-
-        {/* Configuration Summary */}
-        <Card bordered className="mb-6">
-          <h2 className="text-lg font-semibold text-base-content mb-4">
-            Configuration Summary
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Selected Events */}
-            <div className="stat bg-base-200 rounded-lg p-4">
-              <div className="stat-title text-base-content/70">Selected Events</div>
-              <div className="stat-value text-primary">{selectedEvents.length}</div>
-            </div>
-
-            {/* Module Count */}
-            <div className="stat bg-base-200 rounded-lg p-4">
-              <div className="stat-title text-base-content/70">Modules</div>
-              <div className="stat-value text-primary">{uniqueModules.length}</div>
-            </div>
-
-            {/* Date Range */}
-            <div className="stat bg-base-200 rounded-lg p-4">
-              <div className="stat-title text-base-content/70">Date Range</div>
-              <div className="stat-value text-sm text-primary">{dateRangeDisplay}</div>
-            </div>
-          </div>
-
-          {/* Module Colors Preview */}
-          <div className="mt-6">
-            <h3 className="text-sm font-medium text-base-content/70 mb-2">Module Colors</h3>
-            <div className="flex flex-wrap gap-2">
-              {uniqueModules.map((module) => {
-                const colorId = moduleColors[module] || '1';
-                const color = getColorById(colorId);
-                return (
+        {/* Module Colors Preview */}
+        <div className="mt-6">
+          <h3 className="text-sm font-medium text-base-content/70 mb-2">Module Colors</h3>
+          <div className="flex flex-wrap gap-2">
+            {uniqueModules.map((module) => {
+              const colorId = moduleColors[module] || '1';
+              const color = getColorById(colorId);
+              return (
+                <div
+                  key={module}
+                  className="flex items-center gap-2 px-3 py-1 bg-base-200 rounded-full"
+                >
                   <div
-                    key={module}
-                    className="flex items-center gap-2 px-3 py-1 bg-base-200 rounded-full"
-                  >
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: color?.hex || '#7986cb' }}
-                    />
-                    <span className="text-sm text-base-content">{module}</span>
-                  </div>
-                );
-              })}
-            </div>
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: color?.hex || '#7986cb' }}
+                  />
+                  <span className="text-sm text-base-content">{module}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </Card>
+
+      {/* Output Options */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        {/* Download ICS Card */}
+        <Card bordered className="hover:shadow-lg transition-shadow">
+          <div className="text-center">
+            <div className="text-4xl mb-4">📅</div>
+            <h3 className="text-lg font-semibold text-base-content mb-2">
+              Download ICS
+            </h3>
+            <p className="text-sm text-base-content/70 mb-4">
+              Download as an ICS file to import into any calendar app
+            </p>
+            <Button
+              variant="primary"
+              onClick={handleDownloadICS}
+              loading={isGeneratingIcs}
+              disabled={isGeneratingIcs || !semesterStart || !semesterEnd}
+              className="w-full"
+            >
+              {isGeneratingIcs ? 'Generating...' : 'Download ICS File'}
+            </Button>
           </div>
         </Card>
 
-        {/* Output Options */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {/* Download ICS Card */}
-          <Card bordered className="hover:shadow-lg transition-shadow">
-            <div className="text-center">
-              <div className="text-4xl mb-4">📅</div>
-              <h3 className="text-lg font-semibold text-base-content mb-2">
-                Download ICS
-              </h3>
-              <p className="text-sm text-base-content/70 mb-4">
-                Download as an ICS file to import into any calendar app
+        {/* Google Calendar Card */}
+        <Card bordered className="hover:shadow-lg transition-shadow">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🔗</div>
+            <h3 className="text-lg font-semibold text-base-content mb-2">
+              Add to Google Calendar
+            </h3>
+            <p className="text-sm text-base-content/70 mb-4">
+              {isAuthenticated 
+                ? 'Sync directly to your Google Calendar account'
+                : 'Sign in with Google to sync your calendar'}
+            </p>
+            <Button
+              variant={isAuthenticated ? 'primary' : 'outline'}
+              onClick={handleAddToGoogleCalendar}
+              loading={isSyncingCalendar}
+              disabled={isSyncingCalendar || (isAuthenticated && (!semesterStart || !semesterEnd || !selectedCalendarId))}
+              className="w-full"
+            >
+              {isSyncingCalendar 
+                ? 'Syncing...' 
+                : isAuthenticated 
+                  ? 'Add to Google Calendar' 
+                  : 'Sign in with Google'}
+            </Button>
+            {isAuthenticated && !selectedCalendarId && (
+              <p className="text-xs text-warning mt-2">
+                Please select a calendar in the customize step
               </p>
-              <Button
-                variant="primary"
-                onClick={handleDownloadICS}
-                loading={isGeneratingIcs}
-                disabled={isGeneratingIcs || !semesterStart || !semesterEnd}
-                className="w-full"
-              >
-                {isGeneratingIcs ? 'Generating...' : 'Download ICS File'}
-              </Button>
-            </div>
-          </Card>
+            )}
+          </div>
+        </Card>
+      </div>
 
-          {/* Google Calendar Card */}
-          <Card bordered className="hover:shadow-lg transition-shadow">
-            <div className="text-center">
-              <div className="text-4xl mb-4">🔗</div>
-              <h3 className="text-lg font-semibold text-base-content mb-2">
-                Add to Google Calendar
-              </h3>
-              <p className="text-sm text-base-content/70 mb-4">
-                {isAuthenticated 
-                  ? 'Sync directly to your Google Calendar account'
-                  : 'Sign in with Google to sync your calendar'}
-              </p>
-              <Button
-                variant={isAuthenticated ? 'primary' : 'outline'}
-                onClick={handleAddToGoogleCalendar}
-                loading={isSyncingCalendar}
-                disabled={isSyncingCalendar || (isAuthenticated && (!semesterStart || !semesterEnd || !selectedCalendarId))}
-                className="w-full"
-              >
-                {isSyncingCalendar 
-                  ? 'Syncing...' 
-                  : isAuthenticated 
-                    ? 'Add to Google Calendar' 
-                    : 'Sign in with Google'}
-              </Button>
-              {isAuthenticated && !selectedCalendarId && (
-                <p className="text-xs text-warning mt-2">
-                  Please select a calendar in the customize step
-                </p>
-              )}
-            </div>
-          </Card>
-        </div>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between items-center mt-8">
-          <Button variant="ghost" onClick={handleBack}>
-            ← Back
-          </Button>
-          
-          <Button variant="secondary" onClick={handleUploadAnother}>
-            Upload Another PDF
-          </Button>
-        </div>
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center mt-8">
+        <Button variant="ghost" onClick={handleBack}>
+          ← Back
+        </Button>
+        
+        <Button variant="secondary" onClick={handleUploadAnother}>
+          Upload Another PDF
+        </Button>
       </div>
     </div>
   );
