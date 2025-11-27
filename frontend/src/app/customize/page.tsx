@@ -116,38 +116,41 @@ export default function CustomizePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
       {/* Page Header */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <h1 className="text-2xl font-bold text-base-content">
           Customize Your Calendar
         </h1>
-        <p className="mt-2 text-base-content/70">
+        <p className="mt-1 text-sm text-base-content/70">
           Assign colors to your modules and set your semester dates
         </p>
       </div>
 
-      {/* Module Color Picker */}
-      <Card bordered className="mb-6">
-        <ModuleColorPicker
-          modules={uniqueModules}
-          colors={moduleColors}
-          onChange={setModuleColor}
-        />
-      </Card>
+      {/* Two Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Left Column - Module Colors */}
+        <Card bordered className="h-fit">
+          <ModuleColorPicker
+            modules={uniqueModules}
+            colors={moduleColors}
+            onChange={setModuleColor}
+          />
+        </Card>
 
-      {/* Date Range Picker */}
-      <Card bordered className="mb-6">
-        <DateRangePicker
-          startDate={semesterStart}
-          endDate={semesterEnd}
-          onStartChange={setSemesterStart}
-          onEndChange={setSemesterEnd}
-          error={dateError}
-        />
-      </Card>
+        {/* Right Column - Date Range */}
+        <Card bordered className="h-fit">
+          <DateRangePicker
+            startDate={semesterStart}
+            endDate={semesterEnd}
+            onStartChange={setSemesterStart}
+            onEndChange={setSemesterEnd}
+            error={dateError}
+          />
+        </Card>
+      </div>
 
-      {/* Calendar Selector - Only shown when authenticated */}
+      {/* Calendar Selector - Full Width Bottom */}
       {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
       {isAuthenticated && (
         <Card bordered className="mb-6">
@@ -168,7 +171,7 @@ export default function CustomizePage() {
       )}
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between mt-8">
+      <div className="flex justify-between">
         <Button variant="ghost" onClick={handleBack}>
           ← Back
         </Button>

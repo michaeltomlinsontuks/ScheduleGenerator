@@ -43,10 +43,10 @@ export function DateRangePicker({
         Set the start and end dates for your semester to generate recurring events.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-4">
         <div className="form-control">
           <label className="label" htmlFor="start-date">
-            <span className="label-text">Start Date</span>
+            <span className="label-text font-medium">Start Date</span>
           </label>
           <input
             id="start-date"
@@ -59,7 +59,7 @@ export function DateRangePicker({
 
         <div className="form-control">
           <label className="label" htmlFor="end-date">
-            <span className="label-text">End Date</span>
+            <span className="label-text font-medium">End Date</span>
           </label>
           <input
             id="end-date"

@@ -26,21 +26,21 @@ export function ModuleColorPicker({
         Assign colors to each module for easy identification in your calendar.
       </p>
       
-      <div className="space-y-3">
+      <div className="space-y-2">
         {modules.map((module) => {
           const selectedColor = getModuleColor(module);
 
           return (
             <div
               key={module}
-              className="flex items-center justify-between p-3 bg-base-200 rounded-lg"
+              className="flex items-center justify-between p-2 bg-base-200 rounded-lg"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <span
-                  className="w-5 h-5 rounded-full border border-base-300 flex-shrink-0"
+                  className="w-4 h-4 rounded-full border border-base-300 flex-shrink-0"
                   style={{ backgroundColor: selectedColor.hex }}
                 />
-                <span className="font-medium">{module}</span>
+                <span className="font-medium text-sm font-mono">{module}</span>
               </div>
 
               <ColorDropdown
