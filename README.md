@@ -190,15 +190,42 @@ See [.env.example](.env.example) for all available configuration options.
 ├── pdf-worker/        # Python PDF parsing service
 ├── traefik/           # Reverse proxy configuration
 ├── scripts/           # Deployment and utility scripts
+├── docs/              # Comprehensive documentation
+├── e2e/               # End-to-end tests
 ├── SourceFiles/       # Sample UP PDF schedules
 ├── V1/                # Legacy CLI version (deprecated)
-├── V2/                # CLI version with Google Calendar API
-└── docs/              # Additional documentation
+└── V2/                # CLI version with Google Calendar API
 ```
+
+## Documentation
+
+Comprehensive documentation is available in the `docs/` directory:
+
+### Quick Links
+- **[Documentation Index](docs/INDEX.md)** - Complete documentation overview
+- **[Getting Started Guide](docs/guides/getting-started.md)** - Setup and first use
+- **[Architecture Overview](docs/architecture/overview.md)** - System design
+- **[API Documentation](backend/API_DOCUMENTATION.md)** - REST API reference
+
+### Documentation Structure
+- **Architecture**: System design, data flow, deployment
+- **Components**: Frontend, backend, PDF worker, infrastructure
+- **Guides**: User guides, troubleshooting, FAQ
+- **Development**: Setup, testing, contributing, standards
+- **Operations**: Deployment, monitoring, backup, security
+
+See [docs/INDEX.md](docs/INDEX.md) for the complete documentation index.
 
 ## Legacy CLI Versions
 
 The `V1/` and `V2/` directories contain standalone Python CLI tools for PDF-to-calendar conversion. See [V2/README.md](V2/README.md) for CLI usage.
+
+## Contributing
+
+Contributions are welcome! Please see:
+- [Contributing Guide](docs/development/contributing.md)
+- [Development Setup](docs/development/setup.md)
+- [Code Standards](docs/development/code-standards.md)
 
 ## License
 
