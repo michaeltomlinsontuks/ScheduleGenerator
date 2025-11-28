@@ -128,15 +128,15 @@ export class GoogleCalendarService {
    * @param accessToken - Google OAuth access token
    * @param calendarId - Target calendar ID
    * @param events - Array of events to add
-   * @param semesterStart - Semester start date (ISO string)
-   * @param semesterEnd - Semester end date (ISO string)
+   * @param semesterStart - Semester start date (ISO string, optional for test/exam modes)
+   * @param semesterEnd - Semester end date (ISO string, optional for test/exam modes)
    */
   async addEvents(
     accessToken: string,
     calendarId: string,
     events: EventConfigDto[],
-    semesterStart: string,
-    semesterEnd: string,
+    semesterStart?: string,
+    semesterEnd?: string,
   ): Promise<void> {
     const headers = {
       Authorization: `Bearer ${accessToken}`,
@@ -170,10 +170,13 @@ export class GoogleCalendarService {
    */
   private convertToGoogleEvent(
     event: EventConfigDto,
-    semesterStart: string,
-    semesterEnd: string,
+    semesterStart?: string,
+    semesterEnd?: string,
   ): object {
     if (event.isRecurring) {
+      if (!semesterStart || !semesterEnd) {
+        throw new Error('Semester start and end dates are required for recurring events');
+      }
       return this.createRecurringGoogleEvent(event, semesterStart, semesterEnd);
     }
     return this.createSingleGoogleEvent(event);
@@ -231,7 +234,7 @@ export class GoogleCalendarService {
     startDate.setHours(startHours, startMinutes, 0, 0);
     endDate.setHours(endHours, endMinutes, 0, 0);
 
-    return {
+    const googleEvent: Record<string, unknown> = {
       summary: event.summary,
       location: event.location,
       start: {
@@ -244,6 +247,13 @@ export class GoogleCalendarService {
       },
       colorId: event.colorId,
     };
+
+    // Add description/notes if present (for unfinalised exams)
+    if (event.notes) {
+      googleEvent.description = event.notes;
+    }
+
+    return googleEvent;
   }
 
   /**

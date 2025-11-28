@@ -10,7 +10,7 @@ export class CreateJobsTable1732700000000 implements MigrationInterface {
     `);
 
     await queryRunner.query(`
-      CREATE TYPE "pdf_type_enum" AS ENUM ('weekly', 'test')
+      CREATE TYPE "jobs_pdftype_enum" AS ENUM ('weekly', 'test')
     `);
 
     // Create jobs table
@@ -32,7 +32,7 @@ export class CreateJobsTable1732700000000 implements MigrationInterface {
           },
           {
             name: 'pdfType',
-            type: 'pdf_type_enum',
+            type: 'jobs_pdftype_enum',
           },
           {
             name: 's3Key',
@@ -75,6 +75,6 @@ export class CreateJobsTable1732700000000 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('jobs');
     await queryRunner.query(`DROP TYPE "job_status_enum"`);
-    await queryRunner.query(`DROP TYPE "pdf_type_enum"`);
+    await queryRunner.query(`DROP TYPE "jobs_pdftype_enum"`);
   }
 }

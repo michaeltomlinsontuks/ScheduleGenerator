@@ -24,7 +24,7 @@ type AuthStore = AuthState & AuthActions;
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  isLoading: false,
+  isLoading: false, // Start as false to show login button immediately
   error: null,
 };
 
@@ -32,20 +32,21 @@ export const useAuthStore = create<AuthStore>((set) => ({
   ...initialState,
 
   checkStatus: async () => {
-    set({ isLoading: true, error: null });
+    // Don't set loading state - keep UI responsive
+    set({ error: null });
+    
     try {
       const response = await authService.getStatus();
       set({
         isAuthenticated: response.data.authenticated,
         user: response.data.user || null,
-        isLoading: false,
       });
     } catch (err) {
+      // Silently fail - just show login button
       set({
         isAuthenticated: false,
         user: null,
-        isLoading: false,
-        error: err instanceof Error ? err.message : 'Failed to check auth status',
+        error: null, // Don't show error, just assume not authenticated
       });
     }
   },

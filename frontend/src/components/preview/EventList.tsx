@@ -11,7 +11,7 @@ export interface EventListProps {
   moduleColors?: Record<string, string>;
 }
 
-type DayOfWeek = ParsedEvent['dayOfWeek'];
+type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
 
 const DAYS_ORDER: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -28,7 +28,9 @@ function groupEventsByDay(events: ParsedEvent[]): Record<DayOfWeek, ParsedEvent[
   };
 
   for (const event of events) {
-    grouped[event.dayOfWeek].push(event);
+    if (event.day && event.day in grouped) {
+      grouped[event.day as DayOfWeek].push(event);
+    }
   }
 
   // Sort events within each day by start time
@@ -52,7 +54,7 @@ export function EventList({
 }: EventListProps) {
   // Filter events by module if specified
   const filteredEvents = filterModule && filterModule !== 'all'
-    ? events.filter((e) => e.moduleCode === filterModule)
+    ? events.filter((e) => e.module === filterModule)
     : events;
 
   const groupedEvents = groupEventsByDay(filteredEvents);
@@ -91,7 +93,7 @@ export function EventList({
                   event={event}
                   selected={selectedIds.has(event.id)}
                   onToggle={() => onToggle(event.id)}
-                  colorHex={getColorHex(event.moduleCode)}
+                  colorHex={getColorHex(event.module)}
                 />
               ))}
             </div>

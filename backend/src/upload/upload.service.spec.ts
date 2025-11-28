@@ -8,10 +8,14 @@ import { Job, JobStatus, PdfType } from '../jobs/entities/job.entity';
 import { StorageService } from '../storage/storage.service';
 import { MulterFile } from '../common/pipes/file-validation.pipe';
 import { PDF_PROCESSING_QUEUE } from '../jobs/jobs.module';
+import * as validator from '../common/validators/pdf-content.validator';
 
 // UUID v4 regex pattern
 const UUID_V4_REGEX =
   /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// Mock the validator module
+jest.mock('../common/validators/pdf-content.validator');
 
 describe('UploadService', () => {
   let service: UploadService;
@@ -53,6 +57,9 @@ describe('UploadService', () => {
     service = module.get<UploadService>(UploadService);
     jobRepository = module.get(getRepositoryToken(Job));
     storageService = module.get(StorageService);
+
+    // Reset mocks
+    jest.clearAllMocks();
   });
 
   /**
@@ -63,15 +70,21 @@ describe('UploadService', () => {
    * containing a valid UUID job ID.
    */
   describe('Property 7: Valid Upload Returns Job ID', () => {
-    it('should return a valid UUID job ID for any valid weekly schedule upload', () => {
+    it('should return a valid UUID job ID for any valid lecture schedule upload', () => {
       return fc.assert(
         fc.asyncProperty(
           // Generate random file names
           fc.string({ minLength: 1, maxLength: 50 }).filter((s) => s.length > 0),
           async (filename) => {
-            // Create a valid weekly schedule PDF content
+            // Mock the validator to return LECTURE
+            jest.spyOn(validator, 'validatePdfContent').mockResolvedValue(PdfType.LECTURE);
+
+            // Create a valid lecture schedule PDF content with magic bytes
             const content = `Some PDF content with Lectures keyword`;
-            const buffer = Buffer.from(content, 'utf-8');
+            const buffer = Buffer.concat([
+              Buffer.from('%PDF-1.4\n'),
+              Buffer.from(content, 'utf-8'),
+            ]);
 
             const file: MulterFile = {
               fieldname: 'file',
@@ -87,7 +100,7 @@ describe('UploadService', () => {
             const mockJob: Partial<Job> = {
               id: mockJobId,
               status: JobStatus.PENDING,
-              pdfType: PdfType.WEEKLY,
+              pdfType: PdfType.LECTURE,
               s3Key: 'test-key',
             };
 
@@ -100,7 +113,7 @@ describe('UploadService', () => {
             // Verify the response contains a valid UUID
             return (
               UUID_V4_REGEX.test(result.jobId) &&
-              result.pdfType === PdfType.WEEKLY &&
+              result.pdfType === PdfType.LECTURE &&
               typeof result.message === 'string' &&
               result.message.length > 0
             );
@@ -115,9 +128,15 @@ describe('UploadService', () => {
         fc.asyncProperty(
           fc.string({ minLength: 1, maxLength: 50 }).filter((s) => s.length > 0),
           async (filename) => {
-            // Create a valid test schedule PDF content
+            // Mock the validator to return TEST
+            jest.spyOn(validator, 'validatePdfContent').mockResolvedValue(PdfType.TEST);
+
+            // Create a valid test schedule PDF content with magic bytes
             const content = `Some PDF content with Semester Tests keyword`;
-            const buffer = Buffer.from(content, 'utf-8');
+            const buffer = Buffer.concat([
+              Buffer.from('%PDF-1.4\n'),
+              Buffer.from(content, 'utf-8'),
+            ]);
 
             const file: MulterFile = {
               fieldname: 'file',
@@ -158,13 +177,18 @@ describe('UploadService', () => {
       return fc.assert(
         fc.asyncProperty(
           fc.string({ minLength: 1, maxLength: 50 }).filter((s) => s.length > 0),
-          fc.constantFrom('Lectures', 'Semester Tests'),
-          async (filename, keyword) => {
+          fc.string(),
+          async (filename, content) => {
             // Reset mocks before each iteration
             jest.clearAllMocks();
 
-            const content = `PDF content with ${keyword}`;
-            const buffer = Buffer.from(content, 'utf-8');
+            // Mock the validator to return LECTURE
+            jest.spyOn(validator, 'validatePdfContent').mockResolvedValue(PdfType.LECTURE);
+
+            const buffer = Buffer.concat([
+              Buffer.from('%PDF-1.4\n'),
+              Buffer.from(content, 'utf-8'),
+            ]);
 
             const file: MulterFile = {
               fieldname: 'file',
@@ -175,13 +199,12 @@ describe('UploadService', () => {
               buffer,
             };
 
-            const expectedPdfType =
-              keyword === 'Semester Tests' ? PdfType.TEST : PdfType.WEEKLY;
+            // Validator now detects type based on content
             const mockJobId = 'c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f';
             const mockJob: Partial<Job> = {
               id: mockJobId,
               status: JobStatus.PENDING,
-              pdfType: expectedPdfType,
+              pdfType: PdfType.LECTURE,
               s3Key: 'test-key',
             };
 
@@ -201,7 +224,7 @@ describe('UploadService', () => {
               uploadCalled &&
               createCalled &&
               createArgs.status === JobStatus.PENDING &&
-              createArgs.pdfType === expectedPdfType
+              createArgs.pdfType === PdfType.LECTURE
             );
           },
         ),

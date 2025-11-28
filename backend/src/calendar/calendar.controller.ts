@@ -78,14 +78,59 @@ export class CalendarController {
 
   @Post('calendars/events')
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Add events to a Google Calendar' })
-  @ApiResponse({ status: 201, description: 'Events added successfully' })
+  @ApiOperation({
+    summary: 'Add events to a Google Calendar',
+    description:
+      'Add parsed schedule events to a Google Calendar. ' +
+      'For lecture mode (recurring events), semesterStart and semesterEnd are required. ' +
+      'For test and exam modes (non-recurring events), semester dates are optional.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Events added successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: { type: 'string', example: 'Events added successfully' },
+        count: { type: 'number', example: 15 },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid request (missing semester dates for lecture mode)',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 400 },
+        message: {
+          type: 'string',
+          example:
+            'Semester start and end dates are required for recurring events (lecture mode)',
+        },
+        error: { type: 'string', example: 'MISSING_SEMESTER_DATES' },
+      },
+    },
+  })
   @ApiResponse({ status: 401, description: 'Not authenticated' })
   @ApiResponse({ status: 500, description: 'Google Calendar API error' })
   async addEvents(
     @Req() req: RequestWithUser,
     @Body() dto: AddEventsDto,
   ): Promise<{ message: string; count: number }> {
+    // Validate semester dates are provided for lecture mode
+    const hasRecurringEvents = dto.events.some(event => event.isRecurring);
+    if (hasRecurringEvents && (!dto.semesterStart || !dto.semesterEnd)) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Semester start and end dates are required for recurring events (lecture mode)',
+          error: 'MISSING_SEMESTER_DATES',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const accessToken = this.getAccessToken(req);
     await this.calendarService.addEvents(
       accessToken,
@@ -101,13 +146,38 @@ export class CalendarController {
   }
 
   @Post('generate/ics')
-  @ApiOperation({ summary: 'Generate ICS file from events' })
+  @ApiOperation({
+    summary: 'Generate ICS file from events',
+    description:
+      'Generate an ICS (iCalendar) file from parsed schedule events. ' +
+      'For lecture mode (recurring events), semesterStart and semesterEnd are required. ' +
+      'For test and exam modes (non-recurring events), semester dates are optional. ' +
+      'The generated file can be imported into any calendar application.',
+  })
   @ApiResponse({
     status: 200,
     description: 'ICS file content',
     content: {
       'text/calendar': {
         schema: { type: 'string' },
+        example:
+          'BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//UP Schedule Generator//EN\n...',
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid request (missing semester dates for lecture mode)',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 400 },
+        message: {
+          type: 'string',
+          example:
+            'Semester start and end dates are required for recurring events (lecture mode)',
+        },
+        error: { type: 'string', example: 'MISSING_SEMESTER_DATES' },
       },
     },
   })
@@ -115,6 +185,19 @@ export class CalendarController {
     @Body() dto: GenerateIcsDto,
     @Res() res: Response,
   ): Promise<void> {
+    // Validate semester dates are provided for lecture mode
+    const hasRecurringEvents = dto.events.some(event => event.isRecurring);
+    if (hasRecurringEvents && (!dto.semesterStart || !dto.semesterEnd)) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.BAD_REQUEST,
+          message: 'Semester start and end dates are required for recurring events (lecture mode)',
+          error: 'MISSING_SEMESTER_DATES',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const icsContent = this.icsService.generateIcs(
       dto.events,
       dto.semesterStart,

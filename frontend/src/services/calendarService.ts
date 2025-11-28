@@ -31,15 +31,22 @@ export interface EventConfig {
   date?: string;
   isRecurring: boolean;
   colorId: string;
+  notes?: string;
 }
+
+/**
+ * PDF mode type
+ */
+export type PdfType = 'lecture' | 'test' | 'exam';
 
 /**
  * Request payload for ICS file generation
  */
 export interface GenerateIcsRequest {
   events: EventConfig[];
-  semesterStart: string;
-  semesterEnd: string;
+  semesterStart?: string;
+  semesterEnd?: string;
+  pdfType?: PdfType;
 }
 
 /**

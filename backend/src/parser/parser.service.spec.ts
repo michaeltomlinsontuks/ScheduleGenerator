@@ -74,7 +74,7 @@ describe('ParserService', () => {
 
       mockHttpService.post.mockReturnValue(of(mockResponse));
 
-      const result = await service.parsePdf(mockPdfBuffer, PdfType.WEEKLY);
+      const result = await service.parsePdf(mockPdfBuffer, PdfType.LECTURE);
 
       expect(result).toEqual(mockParsedEvents);
       expect(mockHttpService.post).toHaveBeenCalledWith(
@@ -123,7 +123,7 @@ describe('ParserService', () => {
       );
 
       await expect(
-        service.parsePdf(mockPdfBuffer, PdfType.WEEKLY),
+        service.parsePdf(mockPdfBuffer, PdfType.LECTURE),
       ).rejects.toThrow(`Failed to parse PDF: ${errorMessage}`);
     });
 
@@ -133,7 +133,7 @@ describe('ParserService', () => {
       );
 
       await expect(
-        service.parsePdf(mockPdfBuffer, PdfType.WEEKLY),
+        service.parsePdf(mockPdfBuffer, PdfType.LECTURE),
       ).rejects.toThrow('Failed to parse PDF: Unknown error');
     });
 
@@ -148,7 +148,7 @@ describe('ParserService', () => {
 
       mockHttpService.post.mockReturnValue(of(mockResponse));
 
-      const result = await service.parsePdf(mockPdfBuffer, PdfType.WEEKLY);
+      const result = await service.parsePdf(mockPdfBuffer, PdfType.LECTURE);
 
       expect(result).toEqual([]);
       expect(result.length).toBe(0);

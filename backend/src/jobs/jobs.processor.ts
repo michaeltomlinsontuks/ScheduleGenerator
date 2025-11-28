@@ -74,7 +74,7 @@ export class JobsProcessor extends WorkerHost {
       return parsedEvents;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      this.logger.error(`Job ${jobId} failed: ${errorMessage}`);
+      this.logger.error(`Job ${jobId} (pdfType: ${pdfType}) failed: ${errorMessage}`);
 
       // Update job status to failed with error message
       await this.jobsService.updateJobStatus(

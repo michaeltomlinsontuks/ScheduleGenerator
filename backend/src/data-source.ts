@@ -9,6 +9,7 @@ export const AppDataSource = new DataSource({
   password: process.env.POSTGRES_PASSWORD ?? 'postgres',
   database: process.env.POSTGRES_DB ?? 'up_schedule',
   entities: [Job],
-  migrations: ['src/migrations/*.ts'],
+  migrations: ['dist/migrations/*.js'],
+  migrationsTableName: 'migrations',
   synchronize: false,
 });

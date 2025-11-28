@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { EventList, BulkActions, EventFilter } from '@/components/preview';
+import { BulkActions, EventFilter } from '@/components/preview';
 import { Button } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
@@ -13,15 +13,17 @@ const DAYS_ORDER: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 
 /**
  * Preview Page - Display parsed events with selection and filtering
- * Requirements: 6.1, 6.2, 6.9
+ * Requirements: 6.1, 6.2, 6.9, 1.1, 2.1, 3.1
  */
 export default function PreviewPage() {
   const router = useRouter();
   const [filterModule, setFilterModule] = useState<string>('all');
   const [activeDay, setActiveDay] = useState<DayOfWeek>('Monday');
+  const [activeDate, setActiveDate] = useState<string>('');
 
   // Event store
   const events = useEventStore((state) => state.events);
+  const pdfType = useEventStore((state) => state.pdfType);
   const selectedIds = useEventStore((state) => state.selectedIds);
   const toggleEvent = useEventStore((state) => state.toggleEvent);
   const selectAll = useEventStore((state) => state.selectAll);
@@ -32,12 +34,12 @@ export default function PreviewPage() {
 
   // Get unique modules for filter dropdown
   const uniqueModules = useMemo(() => {
-    const modules = new Set(events.map((e) => e.moduleCode));
+    const modules = new Set(events.map((e) => e.module));
     return Array.from(modules).sort();
   }, [events]);
 
-  // Group events by day
-  const eventsByDay = useMemo(() => {
+  // Group events by day (for lecture mode)
+  const groupByDay = useMemo(() => {
     const grouped: Record<DayOfWeek, ParsedEvent[]> = {
       Monday: [],
       Tuesday: [],
@@ -47,7 +49,9 @@ export default function PreviewPage() {
     };
 
     for (const event of events) {
-      grouped[event.dayOfWeek as DayOfWeek].push(event);
+      if (event.day) {
+        grouped[event.day as DayOfWeek].push(event);
+      }
     }
 
     // Sort events within each day by start time
@@ -57,6 +61,49 @@ export default function PreviewPage() {
 
     return grouped;
   }, [events]);
+
+  // Group events by date (for test/exam modes)
+  const groupByDate = useMemo(() => {
+    const grouped: Record<string, ParsedEvent[]> = {};
+
+    for (const event of events) {
+      // For test/exam events, we need to extract the date
+      // Assuming events have a 'date' field or we can derive it from other fields
+      const eventDate = (event as any).date || 'Unknown Date';
+      
+      if (!grouped[eventDate]) {
+        grouped[eventDate] = [];
+      }
+      grouped[eventDate].push(event);
+    }
+
+    // Sort events within each date by start time
+    for (const date in grouped) {
+      grouped[date].sort((a, b) => a.startTime.localeCompare(b.startTime));
+    }
+
+    return grouped;
+  }, [events]);
+
+  // Get sorted date keys for test/exam modes
+  const sortedDates = useMemo(() => {
+    return Object.keys(groupByDate).sort((a, b) => {
+      // Try to parse as dates for proper sorting
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      if (!isNaN(dateA.getTime()) && !isNaN(dateB.getTime())) {
+        return dateA.getTime() - dateB.getTime();
+      }
+      return a.localeCompare(b);
+    });
+  }, [groupByDate]);
+
+  // Set initial active date when dates are available
+  useMemo(() => {
+    if (pdfType !== 'lecture' && sortedDates.length > 0 && !activeDate) {
+      setActiveDate(sortedDates[0]);
+    }
+  }, [pdfType, sortedDates, activeDate]);
 
   // Summary stats
   const totalEvents = events.length;
@@ -83,14 +130,23 @@ export default function PreviewPage() {
     return colors[colorId];
   };
 
-  // Filter events for active day
-  const filteredDayEvents = useMemo(() => {
-    const dayEvents = eventsByDay[activeDay];
-    if (filterModule && filterModule !== 'all') {
-      return dayEvents.filter((e) => e.moduleCode === filterModule);
+  // Filter events based on mode
+  const filteredEvents = useMemo(() => {
+    let eventsToFilter: ParsedEvent[];
+    
+    if (pdfType === 'lecture') {
+      // Use day-based grouping for lectures
+      eventsToFilter = groupByDay[activeDay];
+    } else {
+      // Use date-based grouping for tests/exams
+      eventsToFilter = groupByDate[activeDate] || [];
     }
-    return dayEvents;
-  }, [eventsByDay, activeDay, filterModule]);
+    
+    if (filterModule && filterModule !== 'all') {
+      return eventsToFilter.filter((e) => e.module === filterModule);
+    }
+    return eventsToFilter;
+  }, [pdfType, groupByDay, groupByDate, activeDay, activeDate, filterModule]);
 
   // If no events, show empty state
   if (events.length === 0) {
@@ -111,13 +167,27 @@ export default function PreviewPage() {
     );
   }
 
+  // Get page title based on mode
+  const getPageTitle = () => {
+    switch (pdfType) {
+      case 'lecture':
+        return 'Lecture Schedule Preview';
+      case 'test':
+        return 'Test Schedule Preview';
+      case 'exam':
+        return 'Exam Schedule Preview';
+      default:
+        return 'Preview Your Schedule';
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
       {/* Page Header with Summary */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-base-content">
-            Preview Your Schedule
+            {getPageTitle()}
           </h1>
           <p className="mt-1 text-sm text-base-content/70">
             Review and select events to include
@@ -157,28 +227,45 @@ export default function PreviewPage() {
         />
       </div>
 
-      {/* Day Tabs */}
-      <div className="tabs tabs-boxed mb-4 bg-base-200">
-        {DAYS_ORDER.map((day) => (
-          <button
-            key={day}
-            className={`tab ${activeDay === day ? 'tab-active' : ''}`}
-            onClick={() => setActiveDay(day)}
-          >
-            {day}
-            <span className="ml-1 text-xs opacity-70">
-              ({eventsByDay[day].length})
-            </span>
-          </button>
-        ))}
-      </div>
+      {/* Day/Date Tabs - Show days for lectures, dates for tests/exams */}
+      {pdfType === 'lecture' ? (
+        <div className="tabs tabs-boxed mb-4 bg-base-200">
+          {DAYS_ORDER.map((day) => (
+            <button
+              key={day}
+              className={`tab ${activeDay === day ? 'tab-active' : ''}`}
+              onClick={() => setActiveDay(day)}
+            >
+              {day}
+              <span className="ml-1 text-xs opacity-70">
+                ({groupByDay[day].length})
+              </span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="tabs tabs-boxed mb-4 bg-base-200 overflow-x-auto">
+          {sortedDates.map((date) => (
+            <button
+              key={date}
+              className={`tab ${activeDate === date ? 'tab-active' : ''}`}
+              onClick={() => setActiveDate(date)}
+            >
+              {date}
+              <span className="ml-1 text-xs opacity-70">
+                ({groupByDate[date].length})
+              </span>
+            </button>
+          ))}
+        </div>
+      )}
 
-      {/* Event List for Active Day */}
+      {/* Event List */}
       <div className="card card-border bg-base-100 min-h-[50vh]">
         <div className="card-body">
-          {filteredDayEvents.length > 0 ? (
+          {filteredEvents.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredDayEvents.map((event) => {
+              {filteredEvents.map((event) => {
                 const EventCard = require('@/components/preview/EventCard').EventCard;
                 return (
                   <EventCard
@@ -186,14 +273,16 @@ export default function PreviewPage() {
                     event={event}
                     selected={selectedIds.has(event.id)}
                     onToggle={() => toggleEvent(event.id)}
-                    colorHex={getColorHex(event.moduleCode)}
+                    colorHex={getColorHex(event.module)}
+                    pdfType={pdfType || undefined}
                   />
                 );
               })}
             </div>
           ) : (
             <div className="text-center py-12 text-base-content/60">
-              No events found for {activeDay}
+              No events found
+              {pdfType === 'lecture' ? ` for ${activeDay}` : ` on ${activeDate}`}
               {filterModule && filterModule !== 'all' ? ` in ${filterModule}` : ''}.
             </div>
           )}

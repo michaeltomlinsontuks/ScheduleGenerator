@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
@@ -24,7 +24,7 @@ export class UploadService {
 
   /**
    * Process an uploaded PDF file:
-   * 1. Validate PDF content to determine type (weekly/test)
+   * 1. Validate PDF content to determine type (lecture/test/exam)
    * 2. Upload to MinIO storage
    * 3. Create job record in database
    * 4. Queue job for processing
@@ -32,10 +32,19 @@ export class UploadService {
    *
    * @param file - The uploaded PDF file
    * @returns UploadResponseDto with job ID and PDF type
+   * @throws BadRequestException if PDF validation fails
    */
   async processUpload(file: MulterFile): Promise<UploadResponseDto> {
-    // Validate PDF content and determine type
-    const pdfType: PdfType = validatePdfContent(file.buffer);
+    // Validate PDF content and determine type (async operation)
+    let pdfType: PdfType;
+    try {
+      pdfType = await validatePdfContent(file.buffer);
+    } catch (error) {
+      // Convert validation errors to BadRequestException (400 status)
+      const message =
+        error instanceof Error ? error.message : 'PDF validation failed';
+      throw new BadRequestException(message);
+    }
 
     // Generate unique S3 key for storage
     const s3Key = `${uuidv4()}-${file.originalname}`;
@@ -43,7 +52,7 @@ export class UploadService {
     // Upload file to MinIO
     await this.storageService.uploadFile(s3Key, file.buffer, file.mimetype);
 
-    // Create job record
+    // Create job record with detected PDF type
     const job = this.jobRepository.create({
       status: JobStatus.PENDING,
       pdfType,
@@ -54,11 +63,11 @@ export class UploadService {
 
     const savedJob = await this.jobRepository.save(job);
 
-    // Queue job for processing with BullMQ
+    // Queue job for processing with BullMQ, passing detected pdfType
     await this.pdfProcessingQueue.add('process-pdf', {
       jobId: savedJob.id,
       s3Key,
-      pdfType,
+      pdfType, // Ensure pdfType is correctly passed to job queue
     });
 
     return {

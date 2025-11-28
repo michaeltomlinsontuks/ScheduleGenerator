@@ -13,7 +13,7 @@ export class JobsService {
   /**
    * Create a new job record
    * @param s3Key - The S3/MinIO key where the PDF is stored
-   * @param pdfType - The type of PDF (weekly or test)
+   * @param pdfType - The type of PDF (lecture, test, or exam)
    * @returns The created job
    */
   async createJob(s3Key: string, pdfType: PdfType): Promise<Job> {

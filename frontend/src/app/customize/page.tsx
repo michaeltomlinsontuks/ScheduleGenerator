@@ -3,7 +3,7 @@
 import { useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ModuleColorPicker, DateRangePicker, CalendarSelector } from '@/components/customize';
-import { Button, Card } from '@/components/common';
+import { Button, Card, Alert } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
 import { useAuth } from '@/hooks/useAuth';
@@ -11,7 +11,7 @@ import { useCalendars } from '@/hooks/useCalendars';
 
 /**
  * Customize Page - Assign colors to modules and set semester dates
- * Requirements: 7.1, 7.7, 7.8, 7.9
+ * Requirements: 7.1, 7.7, 7.8, 7.9, 1.1, 2.1, 3.1
  */
 export default function CustomizePage() {
   const router = useRouter();
@@ -26,6 +26,7 @@ export default function CustomizePage() {
   const events = useEventStore((state) => state.events);
   const selectedIds = useEventStore((state) => state.selectedIds);
   const getSelectedEvents = useEventStore((state) => state.getSelectedEvents);
+  const pdfType = useEventStore((state) => state.pdfType);
 
   // Config store
   const semesterStart = useConfigStore((state) => state.semesterStart);
@@ -40,7 +41,7 @@ export default function CustomizePage() {
   // Get unique modules from selected events
   const uniqueModules = useMemo(() => {
     const selectedEvents = getSelectedEvents();
-    const modules = new Set(selectedEvents.map((e) => e.moduleCode));
+    const modules = new Set(selectedEvents.map((e) => e.module));
     return Array.from(modules).sort();
   }, [getSelectedEvents, selectedIds]);
 
@@ -55,14 +56,23 @@ export default function CustomizePage() {
   }, [semesterStart, semesterEnd]);
 
   // Check if form is valid
+  // Requirements: 1.1, 2.1, 3.1 - Only require semester dates for lecture mode
   const isValid = useMemo(() => {
-    return (
-      semesterStart !== null &&
-      semesterEnd !== null &&
-      !dateError &&
-      selectedIds.size > 0
-    );
-  }, [semesterStart, semesterEnd, dateError, selectedIds.size]);
+    const hasSelectedEvents = selectedIds.size > 0;
+    
+    // For lecture mode, require semester dates
+    if (pdfType === 'lecture') {
+      return (
+        semesterStart !== null &&
+        semesterEnd !== null &&
+        !dateError &&
+        hasSelectedEvents
+      );
+    }
+    
+    // For test/exam modes, semester dates are not required
+    return hasSelectedEvents;
+  }, [pdfType, semesterStart, semesterEnd, dateError, selectedIds.size]);
 
   // Initialize default colors for modules that don't have one
   useEffect(() => {
@@ -115,15 +125,36 @@ export default function CustomizePage() {
     );
   }
 
+  // Get page title based on mode - Requirements: 1.1, 2.1, 3.1
+  const pageTitle = useMemo(() => {
+    switch (pdfType) {
+      case 'lecture':
+        return 'Customize Your Lecture Schedule';
+      case 'test':
+        return 'Customize Your Test Schedule';
+      case 'exam':
+        return 'Customize Your Exam Schedule';
+      default:
+        return 'Customize Your Calendar';
+    }
+  }, [pdfType]);
+
+  const pageSubtitle = useMemo(() => {
+    if (pdfType === 'lecture') {
+      return 'Assign colors to your modules and set your semester dates';
+    }
+    return 'Assign colors to your modules';
+  }, [pdfType]);
+
   return (
     <div className="container mx-auto px-4 py-2 max-w-6xl">
       {/* Page Header */}
       <div className="text-center mb-2">
         <h1 className="text-2xl font-bold text-base-content">
-          Customize Your Calendar
+          {pageTitle}
         </h1>
         <p className="mt-0.5 text-sm text-base-content/70">
-          Assign colors to your modules and set your semester dates
+          {pageSubtitle}
         </p>
       </div>
 
@@ -140,15 +171,30 @@ export default function CustomizePage() {
 
         {/* Right Column - Date Range & Calendar Integration */}
         <div className="space-y-3">
-          <Card bordered>
-            <DateRangePicker
-              startDate={semesterStart}
-              endDate={semesterEnd}
-              onStartChange={setSemesterStart}
-              onEndChange={setSemesterEnd}
-              error={dateError}
+          {/* Conditionally render DateRangePicker only for lecture mode - Requirements: 1.1, 2.1, 3.1 */}
+          {pdfType === 'lecture' ? (
+            <Card bordered>
+              <DateRangePicker
+                startDate={semesterStart}
+                endDate={semesterEnd}
+                onStartChange={setSemesterStart}
+                onEndChange={setSemesterEnd}
+                error={dateError}
+              />
+            </Card>
+          ) : (
+            /* Show info alert for test/exam modes - Requirements: 2.1, 3.1 */
+            <Alert
+              type="info"
+              message={
+                pdfType === 'test'
+                  ? 'Test schedules use fixed dates from the PDF. No semester date range is needed.'
+                  : pdfType === 'exam'
+                  ? 'Exam schedules use fixed dates from the PDF. No semester date range is needed.'
+                  : 'Events use fixed dates from the PDF. No semester date range is needed.'
+              }
             />
-          </Card>
+          )}
 
           {/* Calendar Selector - Below Date Range */}
           {/* Requirements: 4.1, 4.2, 4.3, 4.4 */}
@@ -186,7 +232,7 @@ export default function CustomizePage() {
         </Button>
       </div>
 
-      {!isValid && !dateError && (
+      {!isValid && !dateError && pdfType === 'lecture' && (
         <p className="text-center text-warning text-sm mt-2">
           Please set both start and end dates to continue
         </p>

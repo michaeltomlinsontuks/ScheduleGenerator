@@ -32,21 +32,27 @@ export class IcsService {
   /**
    * Generates a complete ICS file content from an array of events
    * @param events - Array of event configurations
-   * @param semesterStart - ISO date string for semester start
-   * @param semesterEnd - ISO date string for semester end
+   * @param semesterStart - ISO date string for semester start (optional for test/exam modes)
+   * @param semesterEnd - ISO date string for semester end (optional for test/exam modes)
    * @returns Valid ICS file content as string
    */
   generateIcs(
     events: EventConfigDto[],
-    semesterStart: string,
-    semesterEnd: string,
+    semesterStart?: string,
+    semesterEnd?: string,
   ): string {
     const vevents = events
-      .map((event) =>
-        event.isRecurring
-          ? this.createRecurringEvent(event, semesterStart, semesterEnd)
-          : this.createSingleEvent(event),
-      )
+      .map((event) => {
+        if (event.isRecurring) {
+          // Recurring events require semester dates
+          if (!semesterStart || !semesterEnd) {
+            throw new Error('Semester start and end dates are required for recurring events');
+          }
+          return this.createRecurringEvent(event, semesterStart, semesterEnd);
+        } else {
+          return this.createSingleEvent(event);
+        }
+      })
       .join('\r\n');
 
     return [
@@ -102,7 +108,7 @@ export class IcsService {
     const dtstart = this.formatDateTime(eventDate, event.startTime);
     const dtend = this.formatDateTime(eventDate, event.endTime);
 
-    return [
+    const veventLines = [
       'BEGIN:VEVENT',
       `UID:${event.id}@upschedulegen`,
       `DTSTAMP:${this.formatNow()}`,
@@ -110,8 +116,16 @@ export class IcsService {
       `DTEND:${dtend}`,
       `SUMMARY:${this.escapeText(event.summary)}`,
       `LOCATION:${this.escapeText(event.location)}`,
-      'END:VEVENT',
-    ].join('\r\n');
+    ];
+
+    // Add notes/description if present (for unfinalised exams)
+    if (event.notes) {
+      veventLines.push(`DESCRIPTION:${this.escapeText(event.notes)}`);
+    }
+
+    veventLines.push('END:VEVENT');
+
+    return veventLines.join('\r\n');
   }
 
   /**

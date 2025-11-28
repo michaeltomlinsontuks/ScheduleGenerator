@@ -18,6 +18,7 @@ interface UseJobStatusReturn {
 
 /**
  * Map backend ParsedEvent to frontend ParsedEvent type
+ * Since frontend types now match backend, this is a simple pass-through
  */
 function mapParsedEvent(event: {
   id: string;
@@ -31,16 +32,7 @@ function mapParsedEvent(event: {
   venue: string;
   isRecurring: boolean;
 }): ParsedEvent {
-  return {
-    id: event.id,
-    moduleCode: event.module,
-    eventType: event.activity.toLowerCase() as ParsedEvent['eventType'],
-    dayOfWeek: (event.day || 'Monday') as ParsedEvent['dayOfWeek'],
-    startTime: event.startTime,
-    endTime: event.endTime,
-    location: event.venue,
-    group: event.group,
-  };
+  return event;
 }
 
 // Internal store for job polling state
@@ -52,7 +44,7 @@ interface JobPollingState {
   intervalId: NodeJS.Timeout | null;
   startPolling: (
     jobId: string,
-    onComplete: (events: ParsedEvent[]) => void,
+    onComplete: (events: ParsedEvent[], pdfType: 'lecture' | 'test' | 'exam') => void,
     onStatusChange: (status: 'pending' | 'processing' | 'complete' | 'failed') => void
   ) => void;
   stopPolling: () => void;
@@ -104,7 +96,7 @@ const useJobPollingStore = create<JobPollingState>((set, get) => ({
             const resultResponse = await jobService.getResult(jobId);
             const mappedEvents = resultResponse.data.events.map(mapParsedEvent);
             set({ status: jobStatus, isPolling: false, intervalId: null });
-            onComplete(mappedEvents);
+            onComplete(mappedEvents, jobStatus.pdfType);
           } catch (resultErr) {
             set({
               status: jobStatus,
@@ -192,8 +184,8 @@ export function useJobStatus(jobId: string | null): UseJobStatusReturn {
       return; // Already polling this job
     }
 
-    const handleComplete = (events: ParsedEvent[]) => {
-      setEvents(events);
+    const handleComplete = (events: ParsedEvent[], pdfType: 'lecture' | 'test' | 'exam') => {
+      setEvents(events, pdfType);
     };
 
     const handleStatusChange = (status: 'pending' | 'processing' | 'complete' | 'failed') => {

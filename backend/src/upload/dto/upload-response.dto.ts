@@ -11,9 +11,28 @@ export class UploadResponseDto {
   jobId!: string;
 
   @ApiProperty({
-    description: 'Type of PDF detected (weekly or test schedule)',
+    description:
+      'Type of PDF detected based on content analysis. ' +
+      'LECTURE: Contains "Lectures" text, recurring weekly events. ' +
+      'TEST: Contains "Semester Tests" text, one-time test events. ' +
+      'EXAM: Contains "Exams" text, one-time exam events.',
     enum: PdfType,
-    example: PdfType.WEEKLY,
+    enumName: 'PdfType',
+    example: PdfType.LECTURE,
+    examples: {
+      lecture: {
+        summary: 'Lecture Schedule',
+        value: 'lecture',
+      },
+      test: {
+        summary: 'Test Schedule',
+        value: 'test',
+      },
+      exam: {
+        summary: 'Exam Schedule',
+        value: 'exam',
+      },
+    },
   })
   @IsEnum(PdfType)
   pdfType!: PdfType;

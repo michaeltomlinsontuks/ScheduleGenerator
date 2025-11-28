@@ -1,0 +1,9 @@
+# Keep all fixture files in version control
+# These are test fixtures needed for the test suite
+
+# But ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python

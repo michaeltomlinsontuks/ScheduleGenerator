@@ -22,7 +22,7 @@ export interface ParsedEvent {
 export interface JobStatus {
   id: string;
   status: 'pending' | 'processing' | 'completed' | 'failed';
-  pdfType: 'weekly' | 'test';
+  pdfType: 'lecture' | 'test' | 'exam';
   result?: ParsedEvent[];
   error?: string | null;
   createdAt: string;

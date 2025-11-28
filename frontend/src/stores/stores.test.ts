@@ -11,34 +11,34 @@ import type { ParsedEvent } from '@/types';
 const mockEvents: ParsedEvent[] = [
   {
     id: '1',
-    moduleCode: 'COS 214',
-    moduleName: 'Data Structures',
-    eventType: 'lecture',
-    dayOfWeek: 'Monday',
+    module: 'COS 214',
+    activity: 'Lecture',
+    day: 'Monday',
     startTime: '08:30',
     endTime: '10:20',
-    location: 'IT 4-1',
+    venue: 'IT 4-1',
+    isRecurring: true,
   },
   {
     id: '2',
-    moduleCode: 'COS 214',
-    moduleName: 'Data Structures',
-    eventType: 'tutorial',
-    dayOfWeek: 'Tuesday',
+    module: 'COS 214',
+    activity: 'Tutorial',
+    day: 'Tuesday',
     startTime: '14:30',
     endTime: '15:20',
-    location: 'IT 2-3',
+    venue: 'IT 2-3',
     group: 'T01',
+    isRecurring: true,
   },
   {
     id: '3',
-    moduleCode: 'STK 220',
-    moduleName: 'Statistics',
-    eventType: 'lecture',
-    dayOfWeek: 'Wednesday',
+    module: 'STK 220',
+    activity: 'Lecture',
+    day: 'Wednesday',
     startTime: '10:30',
     endTime: '12:20',
-    location: 'Aula',
+    venue: 'Aula',
+    isRecurring: true,
   },
 ];
 
@@ -54,6 +54,7 @@ describe('eventStore', () => {
     expect(state.selectedIds.size).toBe(0);
     expect(state.jobId).toBeNull();
     expect(state.jobStatus).toBeNull();
+    expect(state.pdfType).toBeNull();
   });
 
   it('should set events and select all by default', () => {
@@ -118,7 +119,7 @@ describe('eventStore', () => {
   });
 
   it('should reset to initial state', () => {
-    useEventStore.getState().setEvents(mockEvents);
+    useEventStore.getState().setEvents(mockEvents, 'lecture');
     useEventStore.getState().setJobId('job-123');
     useEventStore.getState().setJobStatus('complete');
     
@@ -129,6 +130,65 @@ describe('eventStore', () => {
     expect(state.selectedIds.size).toBe(0);
     expect(state.jobId).toBeNull();
     expect(state.jobStatus).toBeNull();
+    expect(state.pdfType).toBeNull();
+  });
+
+  it('should store pdfType when setting events', () => {
+    useEventStore.getState().setEvents(mockEvents, 'lecture');
+    expect(useEventStore.getState().pdfType).toBe('lecture');
+    
+    useEventStore.getState().setEvents(mockEvents, 'test');
+    expect(useEventStore.getState().pdfType).toBe('test');
+    
+    useEventStore.getState().setEvents(mockEvents, 'exam');
+    expect(useEventStore.getState().pdfType).toBe('exam');
+  });
+
+  it('should clear semester dates when pdfType is test', () => {
+    // Set up semester dates
+    useConfigStore.getState().setSemesterStart(new Date('2024-02-01'));
+    useConfigStore.getState().setSemesterEnd(new Date('2024-06-30'));
+    
+    expect(useConfigStore.getState().semesterStart).not.toBeNull();
+    expect(useConfigStore.getState().semesterEnd).not.toBeNull();
+    
+    // Set events with test mode
+    useEventStore.getState().setEvents(mockEvents, 'test');
+    
+    // Semester dates should be cleared
+    expect(useConfigStore.getState().semesterStart).toBeNull();
+    expect(useConfigStore.getState().semesterEnd).toBeNull();
+  });
+
+  it('should clear semester dates when pdfType is exam', () => {
+    // Set up semester dates
+    useConfigStore.getState().setSemesterStart(new Date('2024-02-01'));
+    useConfigStore.getState().setSemesterEnd(new Date('2024-06-30'));
+    
+    expect(useConfigStore.getState().semesterStart).not.toBeNull();
+    expect(useConfigStore.getState().semesterEnd).not.toBeNull();
+    
+    // Set events with exam mode
+    useEventStore.getState().setEvents(mockEvents, 'exam');
+    
+    // Semester dates should be cleared
+    expect(useConfigStore.getState().semesterStart).toBeNull();
+    expect(useConfigStore.getState().semesterEnd).toBeNull();
+  });
+
+  it('should not clear semester dates when pdfType is lecture', () => {
+    // Set up semester dates
+    const startDate = new Date('2024-02-01');
+    const endDate = new Date('2024-06-30');
+    useConfigStore.getState().setSemesterStart(startDate);
+    useConfigStore.getState().setSemesterEnd(endDate);
+    
+    // Set events with lecture mode
+    useEventStore.getState().setEvents(mockEvents, 'lecture');
+    
+    // Semester dates should remain
+    expect(useConfigStore.getState().semesterStart).toEqual(startDate);
+    expect(useConfigStore.getState().semesterEnd).toEqual(endDate);
   });
 });
 

@@ -12,13 +12,13 @@ import type { ParsedEvent } from '@/types';
 
 // Mock events for testing preview components
 const MOCK_EVENTS: ParsedEvent[] = [
-  { id: '1', moduleCode: 'COS 214', eventType: 'lecture', dayOfWeek: 'Monday', startTime: '08:30', endTime: '10:20', location: 'IT 4-1' },
-  { id: '2', moduleCode: 'COS 214', eventType: 'practical', dayOfWeek: 'Tuesday', startTime: '14:30', endTime: '17:20', location: 'IT Lab 2', group: 'P01' },
-  { id: '3', moduleCode: 'STK 220', eventType: 'lecture', dayOfWeek: 'Monday', startTime: '11:30', endTime: '12:20', location: 'Aula' },
-  { id: '4', moduleCode: 'STK 220', eventType: 'tutorial', dayOfWeek: 'Wednesday', startTime: '09:30', endTime: '10:20', location: 'EMB 2-150', group: 'T02' },
-  { id: '5', moduleCode: 'WTW 220', eventType: 'lecture', dayOfWeek: 'Tuesday', startTime: '08:30', endTime: '09:20', location: 'Aula' },
-  { id: '6', moduleCode: 'WTW 220', eventType: 'lecture', dayOfWeek: 'Thursday', startTime: '08:30', endTime: '09:20', location: 'Aula' },
-  { id: '7', moduleCode: 'COS 214', eventType: 'tutorial', dayOfWeek: 'Friday', startTime: '10:30', endTime: '11:20', location: 'IT 4-3', group: 'T01' },
+  { id: '1', module: 'COS 214', activity: 'Lecture', day: 'Monday', startTime: '08:30', endTime: '10:20', venue: 'IT 4-1', isRecurring: true },
+  { id: '2', module: 'COS 214', activity: 'Practical', day: 'Tuesday', startTime: '14:30', endTime: '17:20', venue: 'IT Lab 2', group: 'P01', isRecurring: true },
+  { id: '3', module: 'STK 220', activity: 'Lecture', day: 'Monday', startTime: '11:30', endTime: '12:20', venue: 'Aula', isRecurring: true },
+  { id: '4', module: 'STK 220', activity: 'Tutorial', day: 'Wednesday', startTime: '09:30', endTime: '10:20', venue: 'EMB 2-150', group: 'T02', isRecurring: true },
+  { id: '5', module: 'WTW 220', activity: 'Lecture', day: 'Tuesday', startTime: '08:30', endTime: '09:20', venue: 'Aula', isRecurring: true },
+  { id: '6', module: 'WTW 220', activity: 'Lecture', day: 'Thursday', startTime: '08:30', endTime: '09:20', venue: 'Aula', isRecurring: true },
+  { id: '7', module: 'COS 214', activity: 'Tutorial', day: 'Friday', startTime: '10:30', endTime: '11:20', venue: 'IT 4-3', group: 'T01', isRecurring: true },
 ];
 
 export default function DemoPage() {
@@ -38,12 +38,12 @@ export default function DemoPage() {
   // Load mock events on mount
   useEffect(() => {
     if (events.length === 0) {
-      setEvents(MOCK_EVENTS);
+      setEvents(MOCK_EVENTS, 'lecture');
     }
   }, [events.length, setEvents]);
 
   // Get unique modules for filter
-  const uniqueModules = Array.from(new Set(events.map((e) => e.moduleCode))).sort();
+  const uniqueModules = Array.from(new Set(events.map((e) => e.module))).sort();
 
   const dismissAlert = (id: string) => {
     setDismissedAlerts(prev => new Set(prev).add(id));
@@ -333,7 +333,7 @@ export default function DemoPage() {
           <Button 
             variant="ghost" 
             size="sm"
-            onClick={() => setEvents(MOCK_EVENTS)}
+            onClick={() => setEvents(MOCK_EVENTS, 'lecture')}
           >
             Reset Mock Events
           </Button>

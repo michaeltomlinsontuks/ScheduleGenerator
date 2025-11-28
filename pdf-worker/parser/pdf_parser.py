@@ -79,16 +79,82 @@ def _parse_test_schedule(tables: List[List[str]]) -> List[Dict[str, Any]]:
     return events
 
 
+def _parse_exam_schedule(tables: List[List[str]]) -> List[Dict[str, Any]]:
+    """
+    Parses the raw table data from an exam schedule PDF.
+    
+    Exam schedules have a different structure from tests:
+    - Status (e.g., "FINAL")
+    - Module code
+    - Paper number
+    - Activity (e.g., "Exam\nWritten")
+    - Date (specific date, not day of week)
+    - Start Time (just start time, not range)
+    - Module Campus
+    - Exam Campus
+    - Venue (may have newline-separated details like "IT Building CBT Labs\n1,2,3")
+    - Exam Comments
+    
+    Returns:
+        List of event dictionaries with exam information.
+    """
+    events = []
+    headers = [h.replace('\n', ' ') for h in tables[0][0]]
+    
+    for table in tables:
+        df = pd.DataFrame(table[1:], columns=headers)
+        df.columns = [col.replace('\n', ' ') for col in df.columns]
+        
+        # Forward-fill module and status columns (they span multiple rows)
+        for col in ['Module', 'Status']:
+            if col in df.columns:
+                df[col] = df[col].replace('', None).ffill()
+        
+        # Clean whitespace from all columns
+        for col in df.columns:
+            df[col] = df[col].astype(str).str.strip()
+        
+        # Drop rows without date or start time
+        df.dropna(subset=['Date', 'Start Time'], inplace=True, how='all')
+        
+        # Process each row
+        for _, row in df.iterrows():
+            event = row.to_dict()
+            
+            # Combine venue details (newline-separated parts become single string)
+            if 'Venue' in event:
+                venue_parts = str(event['Venue']).split('\n')
+                event['Venue'] = ' '.join(part.strip() for part in venue_parts if part.strip())
+            
+            # Clean activity field (remove newlines)
+            if 'Activity' in event:
+                event['Activity'] = str(event['Activity']).replace('\n', ' ').strip()
+            
+            # Note: Exam PDFs don't have end time, we'll need to estimate duration
+            # Default to 3 hours for exams
+            if 'Start Time' in event:
+                event['Time'] = event['Start Time']  # Will be processed later
+            
+            events.append(event)
+    
+    return events
+
+
 def parse_pdf(file_path: str) -> Dict[str, Any]:
     """
     Parses a University of Pretoria schedule PDF to extract table data.
     
     Returns:
-        Dictionary with 'events' list and 'type' field ('weekly' or 'test')
+        Dictionary with 'events' list and 'type' field 
+        ('lecture', 'test', or 'exam')
     """
     pdf_type = get_pdf_type(file_path)
+    
     if pdf_type == 'unknown':
-        raise ValueError("Unable to determine PDF type.")
+        raise ValueError(
+            "Unable to determine PDF type. "
+            "Expected 'Lectures', 'Semester Tests', or 'Exams' text."
+        )
 
     with pdfplumber.open(file_path) as pdf:
         all_tables = []
@@ -97,12 +163,17 @@ def parse_pdf(file_path: str) -> Dict[str, Any]:
             for table in tables:
                 all_tables.append(table)
 
-    if pdf_type == 'weekly':
+    # Route to appropriate parser based on detected type
+    if pdf_type == 'lecture':
         events = _parse_weekly_schedule(all_tables)
     elif pdf_type == 'test':
         events = _parse_test_schedule(all_tables)
+    elif pdf_type == 'exam':
+        events = _parse_exam_schedule(all_tables)
     else:
-        events = []
+        # This should never be reached due to the check above,
+        # but included for completeness
+        raise ValueError(f"Unsupported PDF type: {pdf_type}")
 
     return {
         'events': events,

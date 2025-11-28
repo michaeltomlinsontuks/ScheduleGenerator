@@ -14,7 +14,7 @@ const UUID_V4_REGEX =
 const uuidArb = fc.uuid().filter((id) => UUID_V4_REGEX.test(id));
 
 // Arbitrary for generating valid PDF types
-const pdfTypeArb = fc.constantFrom(PdfType.WEEKLY, PdfType.TEST);
+const pdfTypeArb = fc.constantFrom(PdfType.LECTURE, PdfType.TEST, PdfType.EXAM);
 
 // Arbitrary for generating valid date strings (YYYY-MM-DD format)
 // Using integer-based generation to avoid invalid date issues

@@ -1,23 +1,35 @@
 'use client';
 
 import type { ParsedEvent } from '@/types';
+import { Alert } from '@/components/common';
 
 export interface EventCardProps {
   event: ParsedEvent;
   selected: boolean;
   onToggle: () => void;
   colorHex?: string;
+  pdfType?: 'lecture' | 'test' | 'exam';
 }
 
 /**
  * EventCard - Displays a single event with selection checkbox
- * Requirements: 6.4, 6.5
+ * Requirements: 6.4, 6.5, 3.1
  */
-export function EventCard({ event, selected, onToggle, colorHex }: EventCardProps) {
+export function EventCard({ event, selected, onToggle, colorHex, pdfType }: EventCardProps) {
   const timeRange = `${event.startTime} - ${event.endTime}`;
   
   // Format event type for display (capitalize first letter)
-  const eventTypeDisplay = event.eventType.charAt(0).toUpperCase() + event.eventType.slice(1);
+  const eventTypeDisplay = event.activity.charAt(0).toUpperCase() + event.activity.slice(1);
+
+  // Detect unfinalised exams - check venue and date fields for "Unfinalised" or "TBA" text
+  const venue = event.venue || '';
+  const date = event.date || '';
+  
+  const isUnfinalised = 
+    venue.toLowerCase().includes('unfinalised') ||
+    venue.toLowerCase().includes('tba') ||
+    date.toLowerCase().includes('unfinalised') ||
+    date.toLowerCase().includes('tba');
 
   return (
     <div 
@@ -32,14 +44,14 @@ export function EventCard({ event, selected, onToggle, colorHex }: EventCardProp
             className="checkbox checkbox-primary mt-1"
             checked={selected}
             onChange={onToggle}
-            aria-label={`Select ${event.moduleCode} ${eventTypeDisplay}`}
+            aria-label={`Select ${event.module} ${eventTypeDisplay}`}
           />
           
           <div className="flex-1 min-w-0">
             {/* Module code and event type */}
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-semibold text-base-content">
-                {event.moduleCode}
+                {event.module}
               </span>
               <span className="badge badge-outline badge-sm">
                 {eventTypeDisplay}
@@ -47,6 +59,12 @@ export function EventCard({ event, selected, onToggle, colorHex }: EventCardProp
               {event.group && (
                 <span className="badge badge-ghost badge-sm">
                   {event.group}
+                </span>
+              )}
+              {/* Warning badge for unfinalised exams */}
+              {isUnfinalised && pdfType === 'exam' && (
+                <span className="badge badge-warning badge-sm">
+                  ⚠️ Unfinalised
                 </span>
               )}
             </div>
@@ -57,9 +75,19 @@ export function EventCard({ event, selected, onToggle, colorHex }: EventCardProp
             </div>
             
             {/* Location */}
-            {event.location && (
+            {event.venue && (
               <div className="text-sm text-base-content/60 mt-0.5">
-                📍 {event.location}
+                📍 {event.venue}
+              </div>
+            )}
+            
+            {/* Alert for unfinalised exams */}
+            {isUnfinalised && (
+              <div className="mt-2">
+                <Alert 
+                  type="warning" 
+                  message="This exam schedule is not yet finalised. Check for updates closer to the exam period."
+                />
               </div>
             )}
           </div>

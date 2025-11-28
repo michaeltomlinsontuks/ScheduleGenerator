@@ -14,8 +14,9 @@ export enum JobStatus {
 }
 
 export enum PdfType {
-  WEEKLY = 'weekly',
+  LECTURE = 'lecture',
   TEST = 'test',
+  EXAM = 'exam',
 }
 
 export interface ParsedEvent {

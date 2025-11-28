@@ -4,17 +4,19 @@
 
 /**
  * A schedule event extracted from the PDF
+ * Matches the backend ParsedEvent structure
  */
 export interface ParsedEvent {
   id: string;
-  moduleCode: string;
-  moduleName?: string;
-  eventType: 'lecture' | 'tutorial' | 'practical' | 'test';
-  dayOfWeek: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
+  module: string;
+  activity: string;
+  group?: string;
+  day?: string;
+  date?: string;
   startTime: string;
   endTime: string;
-  location?: string;
-  group?: string;
+  venue: string;
+  isRecurring: boolean;
 }
 
 /**

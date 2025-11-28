@@ -22,7 +22,7 @@ const jobStatusArb = fc.constantFrom(
 );
 
 // Arbitrary for generating valid PDF types
-const pdfTypeArb = fc.constantFrom(PdfType.WEEKLY, PdfType.TEST);
+const pdfTypeArb = fc.constantFrom(PdfType.LECTURE, PdfType.TEST, PdfType.EXAM);
 
 // Arbitrary for generating valid date strings (YYYY-MM-DD format)
 const dateStringArb = fc

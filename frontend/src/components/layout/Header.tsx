@@ -95,12 +95,12 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
 
         <div className="navbar-end gap-2">
           {/* Auth UI - Show login button or user avatar based on auth state */}
-          {mounted && !isLoading && (
+          {mounted && (
             <>
               {isAuthenticated && user ? (
                 <UserAvatar user={user} onLogout={logout} />
               ) : (
-                <GoogleLoginButton className="btn-sm" />
+                <GoogleLoginButton />
               )}
             </>
           )}
