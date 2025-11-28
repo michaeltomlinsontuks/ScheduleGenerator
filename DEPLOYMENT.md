@@ -1,5 +1,35 @@
 # UP Schedule Generator V3 - Production Deployment Guide
 
+## Quick Start (TL;DR)
+
+For experienced users who want to deploy quickly:
+
+```bash
+# 1. Clone and configure
+git clone https://github.com/yourusername/up-schedule-generator.git
+cd up-schedule-generator
+cp .env.example .env
+nano .env  # Configure all required variables
+
+# 2. Build and deploy
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+# 3. Initialize MinIO and run migrations
+docker exec -it schedgen-minio sh -c "mc alias set local http://localhost:9000 \$MINIO_ACCESS_KEY \$MINIO_SECRET_KEY && mc mb local/\$MINIO_BUCKET --ignore-existing"
+docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm backend npm run migration:run
+
+# 4. Verify
+docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+curl https://yourdomain.com
+```
+
+**Prerequisites**: Docker, Docker Compose, configured domain with DNS, Google OAuth credentials.
+
+For detailed instructions, continue reading below.
+
+---
+
 ## Table of Contents
 1. [Architecture Overview](#architecture-overview)
 2. [Prerequisites](#prerequisites)
@@ -918,6 +948,18 @@ See `.env.example` for complete list of configuration options.
 
 ---
 
-**Document Version**: 1.0  
+---
+
+## Recent Updates & Fixes
+
+### 2025-11-28
+- **Fixed**: TypeScript build error in `EventList.tsx` - resolved `dayOfWeek` property issue
+- **Updated**: Footer component - centered text, removed GitHub and Get Started links
+- **Verified**: Production Docker build completes successfully
+- **Status**: Ready for production deployment
+
+---
+
+**Document Version**: 1.1  
 **Last Updated**: 2025-11-28  
 **Maintained By**: DevOps Team
