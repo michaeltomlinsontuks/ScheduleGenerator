@@ -63,7 +63,10 @@ graph TD
 
 ### Production
 - [Production Guide](./production/INDEX.md) - Production documentation index
-  - [Deployment](./production/deployment/README.md) - Deployment procedures
+  - [Deployment Decision Guide](./production/DEPLOYMENT_DECISION_GUIDE.md) - Choose deployment strategy ⭐
+  - [AWS EC2 Deployment](./production/AWS_EC2_DEPLOYMENT_GUIDE.md) - Complete AWS EC2 setup
+  - [AWS EC2 Quick Reference](./production/AWS_EC2_QUICK_REFERENCE.md) - Essential commands
+  - [Deployment Procedures](./production/deployment/README.md) - General deployment guide
   - [Operations](./production/backup/README.md) - Operational procedures
   - [Monitoring](./production/monitoring/README.md) - Monitoring and alerting
   - [Incident Response](./production/INCIDENT_RESPONSE_RUNBOOK.md) - Handle incidents

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 interface FooterProps {
   minimal?: boolean;
@@ -22,7 +23,18 @@ export function Footer({ minimal = false }: FooterProps) {
       <aside className="text-center">
         <p className="font-semibold">UP Schedule Generator</p>
         <p>Convert your UP PDF schedule to calendar events</p>
-        <p className="text-sm opacity-70">© {currentYear} All rights reserved</p>
+        
+        <nav className="flex gap-4 mt-3 text-sm">
+          <Link href="/privacy" className="link link-hover opacity-70 hover:opacity-100">
+            Privacy Policy
+          </Link>
+          <span className="opacity-50">•</span>
+          <Link href="/terms" className="link link-hover opacity-70 hover:opacity-100">
+            Terms of Service
+          </Link>
+        </nav>
+        
+        <p className="text-sm opacity-70 mt-2">© {currentYear} All rights reserved</p>
       </aside>
     </footer>
   );

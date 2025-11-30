@@ -2,9 +2,91 @@
 
 This directory contains comprehensive documentation for deploying and scaling the UP Schedule Generator in production environments.
 
+## Quick Start for New Deployments
+
+**First time deploying?** Follow this path:
+
+1. **[Deployment Decision Guide](./DEPLOYMENT_DECISION_GUIDE.md)** - Choose the right deployment strategy for your needs
+2. **[AWS EC2 Deployment Guide](./AWS_EC2_DEPLOYMENT_GUIDE.md)** - Complete AWS EC2 setup with Free Tier (recommended for getting started)
+3. **[AWS EC2 Quick Reference](./AWS_EC2_QUICK_REFERENCE.md)** - Essential commands and checklists
+
 ## Documents Overview
 
-### 1. [Production Readiness Plan](./PRODUCTION_READINESS_PLAN.md) ⭐ **START HERE**
+### Cloud Deployment Guides
+
+#### [Deployment Decision Guide](./DEPLOYMENT_DECISION_GUIDE.md) ⭐ **START HERE**
+**Purpose**: Help you choose the right deployment strategy
+
+**Key Topics**:
+- Comparison of deployment options (EC2, Elastic Beanstalk, ECS, VPS)
+- Cost breakdown and estimates
+- Performance expectations
+- Migration paths
+- Decision tree based on your needs
+
+**Read this first** to understand your options.
+
+#### [AWS EC2 Deployment Guide](./AWS_EC2_DEPLOYMENT_GUIDE.md)
+**Purpose**: Complete guide for deploying to AWS EC2 with custom domain
+
+**Key Topics**:
+- Domain configuration (Route 53 or registrar DNS)
+- EC2 instance setup (Free Tier eligible)
+- Docker registry setup (Docker Hub, ECR, or self-hosted)
+- Application deployment with Docker Compose
+- Monitoring and maintenance
+- Migration path to elastic infrastructure (Elastic Beanstalk, ECS)
+
+**Use this** for step-by-step AWS deployment.
+
+#### [AWS EC2 Quick Reference](./AWS_EC2_QUICK_REFERENCE.md)
+**Purpose**: Quick commands and checklists for AWS EC2
+
+**Key Topics**:
+- Essential commands
+- DNS configuration
+- Troubleshooting quick fixes
+- Environment variables template
+- Emergency procedures
+
+**Use this** as a quick reference during deployment and operations.
+
+### OAuth & Authentication Guides
+
+#### [Google OAuth Verification Guide](./GOOGLE_OAUTH_VERIFICATION_GUIDE.md)
+**Purpose**: Complete guide to getting your Google OAuth app verified for public use
+
+**Key Topics**:
+- Testing vs Production mode comparison
+- Pre-verification checklist
+- OAuth consent screen configuration
+- Required documentation (Privacy Policy, Terms of Service)
+- Verification process step-by-step
+- Security assessment requirements
+- Common rejection reasons and fixes
+- Timeline (2-6 weeks) and costs ($15-$75k)
+- Alternatives to verification
+
+**Use this** when you need to remove the "unverified app" warning and support 100+ users.
+
+#### [Google OAuth Quick Checklist](./GOOGLE_OAUTH_QUICK_CHECKLIST.md)
+**Purpose**: Fast-track checklist for OAuth verification
+
+**Key Topics**:
+- Quick decision tree
+- Pre-flight checks
+- Required pages templates
+- OAuth configuration checklist
+- Domain verification steps
+- Video demonstration requirements
+- Scope justifications
+- Common mistakes to avoid
+
+**Use this** as a quick reference while preparing for verification.
+
+### Production Planning
+
+#### [Production Readiness Plan](./PRODUCTION_READINESS_PLAN.md)
 **Purpose**: Complete 6-week plan to make the system production-ready
 
 **Key Topics**:
@@ -14,7 +96,7 @@ This directory contains comprehensive documentation for deploying and scaling th
 - Success criteria and validation
 - Post-launch monitoring plan
 
-**Read this first** for the complete roadmap to production.
+**Use this** for the complete roadmap to production.
 
 ### 2. [Production Checklist](./PRODUCTION_CHECKLIST.md)
 **Purpose**: Quick reference checklist for tracking progress

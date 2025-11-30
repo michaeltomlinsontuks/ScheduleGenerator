@@ -35,6 +35,20 @@ graph TD
 
 ## Deployment
 
+### Cloud Platforms
+- [AWS EC2 Deployment Guide](./AWS_EC2_DEPLOYMENT_GUIDE.md) - Complete AWS EC2 setup with domain configuration
+  - [AWS EC2 Quick Reference](./AWS_EC2_QUICK_REFERENCE.md) - Essential commands and checklists
+  - Domain configuration (Route 53 or registrar DNS)
+  - Docker registry setup (Docker Hub, ECR, or self-hosted)
+  - Migration path to elastic infrastructure
+
+### OAuth & Authentication
+- [Google OAuth Verification Guide](./GOOGLE_OAUTH_VERIFICATION_GUIDE.md) - Complete guide to OAuth verification
+  - [Google OAuth Quick Checklist](./GOOGLE_OAUTH_QUICK_CHECKLIST.md) - Fast-track verification checklist
+  - Testing vs Production mode
+  - Required documentation and policies
+  - Verification process and timeline
+
 ### Initial Deployment
 - [Deployment Runbook](./deployment/README.md) - Complete deployment guide
   - [Prerequisites](./deployment/prerequisites.md)
