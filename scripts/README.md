@@ -1,515 +1,424 @@
-# Deployment and Operations Scripts
+# Scripts Documentation
 
-This directory contains scripts for deploying, verifying, and maintaining the UP Schedule Generator in production.
+Operational scripts for deployment, backup, and maintenance.
+
+```mermaid
+graph TD
+    A[Scripts] --> B[Deployment]
+    A --> C[Backup]
+    A --> D[Verification]
+    A --> E[Utilities]
+    
+    B --> B1[deploy.sh]
+    B --> B2[rollback.sh]
+    
+    C --> C1[backup-all.sh]
+    C --> C2[Backup Config Files]
+    
+    D --> D1[verify-deployment.sh]
+    
+    E --> E1[init-minio.sh]
+```
+
+## Quick Reference
+
+### Deployment
+```bash
+# Standard deployment
+./scripts/deploy.sh
+
+# Deploy with automatic rollback on failure
+./scripts/deploy.sh --with-rollback
+
+# Rollback to previous version
+./scripts/rollback.sh
+```
+
+### Backup
+```bash
+# Manual backup
+./scripts/backup-all.sh
+
+# Get last backup filename
+./scripts/backup-all.sh --last
+
+# Restore from backup
+./scripts/backup-all.sh --restore <backup-file>
+```
+
+### Verification
+```bash
+# Full deployment verification
+./scripts/verify-deployment.sh
+
+# Quick health check
+./scripts/verify-deployment.sh --quick
+```
 
 ## Scripts Overview
 
-### Deployment Scripts
-
-#### `deploy.sh`
-**Purpose**: Zero-downtime rolling deployment with automatic verification
+### deploy.sh
+**Purpose**: Zero-downtime deployment with rolling updates
 
 **Features**:
 - Pulls latest code from git
-- Builds Docker containers
+- Builds Docker images
 - Runs database migrations
-- Performs rolling updates (one service at a time)
-- Verifies health between updates
-- Runs comprehensive post-deployment verification
+- Rolling service updates with health checks
+- Optional automatic rollback on failure
 
 **Usage**:
 ```bash
+# Standard deployment
 ./scripts/deploy.sh
 
-# Deploy from specific branch
+# With automatic rollback
+./scripts/deploy.sh --with-rollback
+
+# Specify branch
 GIT_BRANCH=develop ./scripts/deploy.sh
 ```
 
-**Requirements**: 12.1, 12.2, 12.4
-
-#### `deploy-with-rollback.sh`
-**Purpose**: Deployment with automatic rollback on failure detection
-
-**Features**:
-- Executes standard deployment
-- Monitors health checks continuously
-- Detects consecutive failures (3+ failures)
-- Detects high error rates (>10%)
-- Automatically triggers rollback on failure
-- Extended monitoring period (10 minutes)
-
-**Usage**:
-```bash
-./scripts/deploy-with-rollback.sh
-
-# Custom monitoring configuration
-MONITORING_DURATION=600 \
-ERROR_THRESHOLD=0.10 \
-./scripts/deploy-with-rollback.sh
+**Process Flow**:
+```mermaid
+sequenceDiagram
+    participant S as Script
+    participant G as Git
+    participant D as Docker
+    participant DB as Database
+    participant H as Health Check
+    
+    S->>G: Pull Latest Code
+    S->>D: Build Images
+    S->>DB: Run Migrations
+    S->>D: Update Backend
+    S->>H: Verify Health
+    S->>D: Update Frontend
+    S->>H: Verify Health
+    S->>D: Update PDF Worker
+    S->>H: Final Verification
 ```
 
-**Automatic Rollback Triggers**:
-- 3 consecutive health check failures
-- Error rate exceeds 10%
-- Deployment script failure
-- Verification failure
-
-**Requirements**: 12.2, 12.3, 12.4
-
-#### `rollback.sh`
-**Purpose**: Manual rollback to previous deployment state
+### rollback.sh
+**Purpose**: Rollback failed deployments
 
 **Features**:
-- Loads pre-deployment backup information
-- Stops all services gracefully
-- Restores PostgreSQL database from backup
-- Restores MinIO volumes from backup
-- Reverts Git repository to previous commit
-- Rebuilds Docker containers
-- Verifies rollback success
+- Automatic backup before rollback
+- Revert to previous Docker images
+- Database migration rollback
+- Service health verification
 
 **Usage**:
 ```bash
-# Interactive rollback (prompts for confirmation)
+# Interactive rollback
 ./scripts/rollback.sh
 
-# Non-interactive rollback (auto-confirm)
-ROLLBACK_CONFIRM=yes ./scripts/rollback.sh
+# Rollback to specific version
+./scripts/rollback.sh --version v1.2.3
+
+# Rollback database only
+./scripts/rollback.sh --database-only
 ```
 
-**Duration**: 10-25 minutes
+**Process Flow**:
+```mermaid
+flowchart TD
+    A[Start Rollback] --> B[Backup Current State]
+    B --> C[Stop Services]
+    C --> D{Database Changed?}
+    D -->|Yes| E[Revert Migrations]
+    D -->|No| F[Pull Previous Images]
+    E --> F
+    F --> G[Start Services]
+    G --> H[Verify Health]
+    H --> I{Success?}
+    I -->|Yes| J[Complete]
+    I -->|No| K[Alert & Manual Intervention]
+```
 
-**Requirements**: 12.3
-
----
-
-### Verification Scripts
-
-#### `verify-deployment.sh`
-**Purpose**: Comprehensive post-deployment verification with monitoring
+### backup-all.sh
+**Purpose**: Comprehensive backup of database and files
 
 **Features**:
-- Verifies all services are running
-- Tests health endpoints
-- Runs smoke tests
-- Checks monitoring stack
-- Monitors error rates for 10 minutes
-- Checks resource usage
-- Scans logs for errors
+- PostgreSQL database backup (compressed)
+- MinIO volume backup (all PDFs)
+- Automatic 7-day retention
+- Backup verification
+- Alert notifications on failure
+- Restore functionality
 
 **Usage**:
 ```bash
-./scripts/verify-deployment.sh
-
-# Custom configuration
-BACKEND_URL=http://api.example.com \
-MONITORING_DURATION=300 \
-ERROR_THRESHOLD=0.10 \
-./scripts/verify-deployment.sh
-```
-
-**Duration**: ~10-15 minutes
-
-**Requirements**: 12.4
-
-#### `smoke-test.sh`
-**Purpose**: Quick smoke tests for critical functionality
-
-**Features**:
-- Backend health check
-- Database health check
-- Frontend accessibility
-- Metrics endpoint
-- Job queue metrics
-- CORS configuration
-
-**Usage**:
-```bash
-./scripts/smoke-test.sh
-
-# Custom URLs
-BACKEND_URL=http://api.example.com \
-FRONTEND_URL=http://app.example.com \
-./scripts/smoke-test.sh
-```
-
-**Duration**: ~30 seconds
-
-**Requirements**: 12.4
-
----
-
-### Backup Scripts
-
-#### `backup-all.sh`
-**Purpose**: Complete system backup (database + files)
-
-**Features**:
-- Backs up PostgreSQL database
-- Backs up MinIO volumes
-- Compresses backups
-- Applies retention policy (7 days)
-- Verifies backup integrity
-
-**Usage**:
-```bash
+# Create backup
 ./scripts/backup-all.sh
 
-# Custom backup directory
-BACKUP_DIR=/mnt/backups ./scripts/backup-all.sh
+# Get last backup filename
+./scripts/backup-all.sh --last
+
+# List all backups
+./scripts/backup-all.sh --list
+
+# Restore from backup
+./scripts/backup-all.sh --restore backups/db_schedgen_20241130_020000.sql.gz
+
+# Verify backup integrity
+./scripts/backup-all.sh --verify backups/db_schedgen_20241130_020000.sql.gz
 ```
 
-**Requirements**: 9.1, 9.2, 9.4
+**Backup Structure**:
+```
+backups/
+├── db_schedgen_YYYYMMDD_HHMMSS.sql.gz      # Database
+└── minio_schedgen-pdfs_YYYYMMDD_HHMMSS.tar.gz  # Files
+```
 
-#### `backup-db.sh`
-**Purpose**: Database-only backup
+### verify-deployment.sh
+**Purpose**: Comprehensive deployment verification
 
 **Features**:
-- Backs up PostgreSQL database
-- Compresses with gzip
-- Verifies backup integrity
-- Applies retention policy
+- Service health checks
+- API endpoint testing
+- Database connectivity
+- SSL certificate validation
+- Performance baseline checks
 
 **Usage**:
 ```bash
-./scripts/backup-db.sh
+# Full verification
+./scripts/verify-deployment.sh
+
+# Quick health check only
+./scripts/verify-deployment.sh --quick
+
+# Specific service
+./scripts/verify-deployment.sh --service backend
 ```
 
-**Requirements**: 9.1, 9.2
+**Checks Performed**:
+- ✅ All containers running
+- ✅ Health endpoints responding
+- ✅ Database connections working
+- ✅ Redis connectivity
+- ✅ MinIO accessible
+- ✅ SSL certificates valid
+- ✅ API endpoints functional
 
-#### `get-last-backup.sh`
-**Purpose**: Retrieve information about the last pre-deployment backup
-
-**Features**:
-- Displays backup timestamp and location
-- Shows Git commit and branch information
-- Verifies backup files exist
-- Provides ready-to-use rollback commands
-
-**Usage**:
-```bash
-./scripts/get-last-backup.sh
-```
-
-**Output**:
-- Deployment timestamp
-- Backup directory path
-- Database and MinIO backup file paths
-- File sizes
-- Rollback commands
-
-**Requirements**: 12.5
-
-#### `setup-backup.sh`
-**Purpose**: Configure automated backups
-
-**Features**:
-- Sets up systemd timer for daily backups
-- Configures backup service
-- Tests backup functionality
-- Sets up monitoring
-
-**Usage**:
-```bash
-sudo ./scripts/setup-backup.sh
-```
-
-**Requirements**: 9.1, 9.4
-
----
-
-### Infrastructure Scripts
-
-#### `init-minio.sh`
+### init-minio.sh
 **Purpose**: Initialize MinIO object storage
 
 **Features**:
-- Creates required buckets
-- Sets up access policies
-- Configures lifecycle rules
+- Create storage buckets
+- Set access policies
+- Configure retention policies
 
 **Usage**:
 ```bash
+# Initialize MinIO
 ./scripts/init-minio.sh
+
+# Reinitialize (recreate buckets)
+./scripts/init-minio.sh --force
 ```
 
-#### `test-prod-local.sh`
-**Purpose**: Test production configuration locally
+## Backup Configuration Files
 
-**Features**:
-- Starts services with production configuration
-- Runs verification tests
-- Cleans up after testing
+### backup-cron
+**Purpose**: Cron-based backup scheduling
 
-**Usage**:
+**Installation**:
 ```bash
-./scripts/test-prod-local.sh
+sudo cp scripts/backup-cron /etc/cron.d/schedgen-backup
+sudo chmod 644 /etc/cron.d/schedgen-backup
 ```
 
----
+**Schedule**: Daily at 2:00 AM
+
+### backup.service & backup.timer
+**Purpose**: Systemd-based backup scheduling
+
+**Installation**:
+```bash
+sudo cp scripts/backup.service /etc/systemd/system/
+sudo cp scripts/backup.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable backup.timer
+sudo systemctl start backup.timer
+```
+
+**Check Status**:
+```bash
+sudo systemctl status backup.timer
+sudo journalctl -u backup.service -f
+```
+
+## Environment Variables
+
+Scripts use these environment variables:
+
+```bash
+# Deployment
+GIT_BRANCH=main                    # Git branch to deploy
+COMPOSE_FILE=docker-compose.yml    # Base compose file
+COMPOSE_PROD_FILE=docker-compose.prod.yml  # Production overrides
+
+# Backup
+BACKUP_RETENTION_DAYS=7            # Days to keep backups
+BACKUP_ALERT_WEBHOOK_URL=<url>    # Slack/Discord webhook
+BACKUP_ALERT_EMAIL=<email>        # Email for alerts
+
+# Database
+POSTGRES_PASSWORD=<password>       # Database password
+POSTGRES_USER=schedgen             # Database user
+POSTGRES_DB=schedgen               # Database name
+```
 
 ## Common Workflows
 
-### 1. Deploy to Production (Recommended)
-
+### Initial Deployment
 ```bash
-# Deploy with automatic rollback protection
-./scripts/deploy-with-rollback.sh
+# 1. Clone repository
+git clone <repo-url>
+cd ScheduleGenerator
 
-# Monitor (optional - script already monitors)
-docker compose logs -f backend frontend pdf-worker
+# 2. Configure environment
+cp .env.example .env
+nano .env  # Edit configuration
 
-# View backup information if needed
-./scripts/get-last-backup.sh
-```
+# 3. Initialize MinIO
+./scripts/init-minio.sh
 
-**Note**: This is the recommended deployment method for production. It includes automatic rollback on failure.
-
-### 1a. Deploy to Production (Standard)
-
-```bash
-# Deploy without automatic rollback (for staging/testing)
+# 4. Deploy
 ./scripts/deploy.sh
 
-# Monitor
-docker compose logs -f backend frontend pdf-worker
-
-# View backup information if needed
-./scripts/get-last-backup.sh
+# 5. Verify
+./scripts/verify-deployment.sh
 ```
 
-**Note**: Both deployment scripts automatically create a backup before deploying. Manual backup is no longer required.
-
-### 2. Quick Health Check
-
+### Update Deployment
 ```bash
-# Run smoke tests
-./scripts/smoke-test.sh
+# 1. Deploy with rollback protection
+./scripts/deploy.sh --with-rollback
 
-# Check service status
-docker compose ps
-
-# Check logs
-docker compose logs --tail=50 backend
-```
-
-### 3. Manual Verification
-
-```bash
-# Full verification with monitoring
+# 2. Verify
 ./scripts/verify-deployment.sh
 
-# Quick smoke tests only
-./scripts/smoke-test.sh
+# 3. If issues, rollback
+./scripts/rollback.sh
 ```
 
-### 4. Backup and Restore
-
+### Backup & Restore
 ```bash
-# Create manual backup
+# 1. Create backup
 ./scripts/backup-all.sh
 
-# List backups
+# 2. List backups
 ls -lh backups/
 
-# Get last deployment backup info
-./scripts/get-last-backup.sh
-
-# Restore using automatic rollback
-./scripts/rollback.sh
-
-# Manual restore - database (use commands from get-last-backup.sh)
-gunzip -c <DB_BACKUP_FILE> | docker compose exec -T postgres psql -U schedgen -d schedgen
-
-# Manual restore - MinIO (use commands from get-last-backup.sh)
-docker run --rm -v schedgen_minio_data:/data -v $(pwd)/<BACKUP_DIR>:/backup alpine \
-  sh -c 'rm -rf /data/* && tar xzf /backup/<MINIO_BACKUP_FILE> -C /data'
+# 3. Restore if needed
+./scripts/backup-all.sh --restore backups/db_schedgen_20241130_020000.sql.gz
 ```
-
-### 5. Setup Automated Backups
-
-```bash
-# One-time setup
-sudo ./scripts/setup-backup.sh
-
-# Verify backup service
-sudo systemctl status backup.timer
-sudo systemctl status backup.service
-
-# Test backup manually
-sudo systemctl start backup.service
-```
-
-## Script Dependencies
-
-### Required Tools
-
-All scripts require:
-- `bash` (version 4.0+)
-- `docker` and `docker compose`
-- `jq` (for JSON parsing)
-- `curl` (for HTTP requests)
-
-Backup scripts additionally require:
-- `pg_dump` (for database backups)
-- `gzip` (for compression)
-
-### Environment Variables
-
-Scripts use these environment variables (with defaults):
-
-**Deployment**:
-- `GIT_BRANCH` (default: `main`)
-- `COMPOSE_FILE` (default: `docker-compose.yml`)
-- `COMPOSE_PROD_FILE` (default: `docker-compose.prod.yml`)
-
-**Verification**:
-- `BACKEND_URL` (default: `http://localhost:3001`)
-- `FRONTEND_URL` (default: `http://localhost:3000`)
-- `MONITORING_DURATION` (default: `600` seconds)
-- `ERROR_THRESHOLD` (default: `0.05` = 5%)
-
-**Backup**:
-- `BACKUP_DIR` (default: `./backups`)
-- `RETENTION_DAYS` (default: `7`)
-
-## Exit Codes
-
-All scripts follow standard exit code conventions:
-- `0`: Success
-- `1`: General error
-- `2`: Misuse of command
-- `130`: Script terminated by Ctrl+C
-
-## Logging
-
-Scripts output colored logs:
-- 🟢 **Green [INFO]**: Successful operations
-- 🟡 **Yellow [WARN]**: Warnings (non-critical)
-- 🔴 **Red [ERROR]**: Errors (critical)
-- 🔵 **Blue [STEP]**: Major workflow steps
-
-## Error Handling
-
-All scripts use `set -e` to exit on errors. To continue on errors:
-```bash
-set +e
-./scripts/some-script.sh
-set -e
-```
-
-## Timeouts
-
-Scripts include timeout protection:
-- Health checks: 5 minutes max
-- Service updates: 10 minutes max
-- Database migrations: 5 minutes max
-- Container builds: 30 minutes max
 
 ## Troubleshooting
 
-### Script Fails with "Permission Denied"
-
+### Deployment Fails
 ```bash
-# Make script executable
-chmod +x scripts/<script-name>.sh
+# Check logs
+docker compose logs -f
+
+# Verify services
+docker compose ps
+
+# Check health
+./scripts/verify-deployment.sh
+
+# Rollback if needed
+./scripts/rollback.sh
 ```
 
-### Script Fails with "jq: command not found"
-
+### Backup Fails
 ```bash
-# Install jq
-# macOS
-brew install jq
+# Check backup logs
+docker logs schedgen-backup
 
-# Ubuntu/Debian
-sudo apt-get install jq
+# Verify disk space
+df -h
 
-# CentOS/RHEL
-sudo yum install jq
+# Check permissions
+ls -la backups/
+
+# Manual backup
+./scripts/backup-all.sh
 ```
 
-### Script Fails with "docker: command not found"
-
+### Verification Fails
 ```bash
-# Ensure Docker is installed and in PATH
-which docker
+# Check specific service
+docker compose logs backend
 
-# Add to PATH if needed
-export PATH=$PATH:/usr/local/bin
+# Test health endpoint
+curl http://localhost:3001/health
+
+# Check database
+docker exec -it schedgen-postgres psql -U schedgen -d schedgen -c "SELECT 1;"
 ```
-
-### Verification Fails During Monitoring
-
-Check the specific error message and refer to:
-- [Deployment Verification Guide](../docs/production/DEPLOYMENT_VERIFICATION.md)
-- [Troubleshooting Guide](../docs/production/TROUBLESHOOTING.md)
 
 ## Best Practices
 
-### 1. Always Backup Before Deployment
+1. **Always backup before deployment**
+   ```bash
+   ./scripts/backup-all.sh && ./scripts/deploy.sh
+   ```
 
-```bash
-./scripts/backup-all.sh && ./scripts/deploy.sh
-```
+2. **Use rollback protection for critical updates**
+   ```bash
+   ./scripts/deploy.sh --with-rollback
+   ```
 
-### 2. Test Scripts in Staging First
+3. **Verify after every deployment**
+   ```bash
+   ./scripts/verify-deployment.sh
+   ```
 
-```bash
-# Test with staging environment
-BACKEND_URL=https://staging-api.example.com ./scripts/verify-deployment.sh
-```
+4. **Test backups regularly**
+   ```bash
+   ./scripts/backup-all.sh --verify backups/latest.sql.gz
+   ```
 
-### 3. Save Script Output
-
-```bash
-./scripts/deploy.sh 2>&1 | tee deploy-$(date +%Y%m%d-%H%M%S).log
-```
-
-### 4. Use Timeouts for Long-Running Scripts
-
-```bash
-timeout 30m ./scripts/deploy.sh
-```
-
-### 5. Monitor During Deployment
-
-Keep Grafana open during deployment:
-```bash
-open http://localhost:3002
-./scripts/deploy.sh
-```
+5. **Monitor backup automation**
+   ```bash
+   # Cron
+   tail -f /var/log/schedgen-backup.log
+   
+   # Systemd
+   sudo journalctl -u backup.service -f
+   ```
 
 ## Related Documentation
 
-- [Deployment Verification Guide](../docs/production/DEPLOYMENT_VERIFICATION.md)
-- [Rolling Deployment Guide](../docs/production/ROLLING_DEPLOYMENT.md)
-- [Rollback Guide](../docs/production/ROLLBACK_GUIDE.md)
-- [Rollback Quick Reference](../docs/production/ROLLBACK_QUICK_REFERENCE.md)
-- [Backup Automation Guide](../docs/production/BACKUP_AUTOMATION.md)
-- [Production Runbooks](../docs/production/)
+- [Deployment Guide](../docs/production/deployment/README.md)
+- [Backup Guide](../docs/production/backup/README.md)
+- [Rollback Guide](../docs/production/rollback/README.md)
+- [Verification Guide](../docs/production/deployment/verification.md)
 
-## Contributing
+## Script Maintenance
 
-When adding new scripts:
+### Adding New Scripts
+1. Create script in `scripts/` directory
+2. Make executable: `chmod +x scripts/new-script.sh`
+3. Add documentation to this README
+4. Update related documentation
 
-1. **Follow naming conventions**: Use kebab-case (e.g., `my-script.sh`)
-2. **Add documentation**: Include header comment with purpose and usage
-3. **Use color codes**: Follow existing color scheme for output
-4. **Include error handling**: Use `set -e` and check return codes
-5. **Add to this README**: Document the new script
-6. **Make executable**: `chmod +x scripts/new-script.sh`
-7. **Test thoroughly**: Test in staging before production
+### Modifying Scripts
+1. Test changes in development
+2. Update documentation
+3. Commit with clear message
+4. Deploy to production
 
-## Support
-
-For issues with scripts:
-1. Check script output for specific error messages
-2. Review related documentation
-3. Check Docker logs: `docker compose logs`
-4. Verify environment variables are set correctly
-5. Ensure all dependencies are installed
-
-## License
-
-These scripts are part of the UP Schedule Generator project.
+### Script Standards
+- Use `#!/bin/bash` shebang
+- Set `set -e` for error handling
+- Add comments for complex logic
+- Use color codes for output
+- Include usage instructions
+- Validate prerequisites
+- Provide meaningful error messages
