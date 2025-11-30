@@ -29,7 +29,7 @@ Rollback restores the system to a previous stable state by:
 
 ### Automatic Rollback Triggers
 
-The system automatically triggers rollback when using `deploy-with-rollback.sh` if:
+The system automatically triggers rollback when using `deploy.sh --with-rollback` if:
 
 | Trigger | Threshold | Action |
 |---------|-----------|--------|
@@ -111,7 +111,7 @@ Complete this checklist before initiating rollback:
 
 - [ ] **Verify backup files exist**:
   ```bash
-  ./scripts/get-last-backup.sh
+  ./scripts/backup-all.sh --last
   ```
 
 - [ ] **Confirm backup timestamp**: Backup is from the deployment being rolled back
@@ -316,7 +316,7 @@ If you need to restore the database manually (e.g., rollback script failed):
 
 ```bash
 # Get backup information
-./scripts/get-last-backup.sh
+./scripts/backup-all.sh --last
 
 # Note the DB_BACKUP_FILE path
 # Example: ./backups/pre-deployment-20241130_143022/db_20241130_143022.sql.gz
@@ -1140,7 +1140,7 @@ Escalate to senior team members if:
 **When contacting support, provide**:
 - Rollback script output
 - Service logs (`docker compose logs`)
-- Backup information (`./scripts/get-last-backup.sh`)
+- Backup information (`./scripts/backup-all.sh --last`)
 - Error messages
 - Steps already attempted
 

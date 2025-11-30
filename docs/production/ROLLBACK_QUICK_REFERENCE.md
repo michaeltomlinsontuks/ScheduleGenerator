@@ -4,7 +4,7 @@
 
 ### Deploy with Automatic Rollback
 ```bash
-bash scripts/deploy-with-rollback.sh
+bash scripts/deploy.sh --with-rollback
 ```
 
 ### Manual Rollback
@@ -14,7 +14,7 @@ bash scripts/rollback.sh
 
 ### Check Last Backup
 ```bash
-bash scripts/get-last-backup.sh
+bash scripts/backup-all.sh --last
 ```
 
 ### Non-Interactive Rollback
@@ -202,7 +202,7 @@ Progress: 120s / 600s | Checks: 12 | Failures: 0 (0.00%) | Consecutive: 0 | Rema
 If rollback fails or issues persist:
 
 1. Check logs: `docker compose logs`
-2. Review backup: `bash scripts/get-last-backup.sh`
+2. Review backup: `bash scripts/backup-all.sh --last`
 3. Contact development team with:
    - Rollback output
    - Service logs

@@ -85,7 +85,7 @@ Complete this checklist before starting any deployment:
 - [ ] **Verify current system is healthy**
   ```bash
   # Quick health check
-  ./scripts/smoke-test.sh
+  ./scripts/verify-deployment.sh --quick
   
   # Check service status
   docker compose ps
@@ -126,7 +126,7 @@ Complete this checklist before starting any deployment:
 
 - [ ] **Check recent backup status (optional)**
   ```bash
-  ./scripts/get-last-backup.sh
+  ./scripts/backup-all.sh --last
   ```
 
 ### 5. Team Communication
@@ -260,7 +260,7 @@ The deployment script automatically runs verification, but you can run additiona
 
 ```bash
 # Quick smoke test
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 
 # Check all services are running
 docker compose ps
@@ -794,7 +794,7 @@ If the entire system is down:
 2. **Restore from backup**:
    ```bash
    # Get last backup location
-   ./scripts/get-last-backup.sh
+   ./scripts/backup-all.sh --last
    
    # Follow restore instructions from output
    ```
@@ -821,7 +821,7 @@ If database is corrupted:
 2. **Restore database from backup**:
    ```bash
    # Get backup location
-   ./scripts/get-last-backup.sh
+   ./scripts/backup-all.sh --last
    
    # Restore database (use command from output)
    gunzip -c <DB_BACKUP_FILE> | docker compose exec -T postgres psql -U schedgen -d schedgen

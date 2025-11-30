@@ -142,18 +142,28 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
 | Script | Description |
 |--------|-------------|
 | `scripts/deploy.sh` | Full deployment: pull, build, migrate, restart |
+| `scripts/rollback.sh` | Rollback failed deployment |
+| `scripts/backup-all.sh` | Backup database and files with 7-day retention |
+| `scripts/verify-deployment.sh` | Verify deployment health |
 | `scripts/init-minio.sh` | Initialize MinIO bucket |
-| `scripts/backup-db.sh` | Backup PostgreSQL with 7-day retention |
 
-### Database Backup
+### Backup & Recovery
 
 ```bash
-# Manual backup
-POSTGRES_PASSWORD=yourpassword ./scripts/backup-db.sh
+# Manual backup (database + files)
+./scripts/backup-all.sh
 
-# Automated via cron (daily at 2 AM)
-0 2 * * * cd /path/to/project && POSTGRES_PASSWORD=yourpassword ./scripts/backup-db.sh
+# Get last backup
+./scripts/backup-all.sh --last
+
+# Restore from backup
+./scripts/backup-all.sh --restore backups/db_schedgen_20241130_020000.sql.gz
+
+# Automated backups (Docker Compose)
+docker compose -f docker-compose.yml -f docker-compose.backup.yml up -d backup
 ```
+
+See [Backup Guide](docs/production/backup/README.md) for detailed instructions.
 
 ### Database Migrations
 

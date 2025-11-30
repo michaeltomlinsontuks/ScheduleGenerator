@@ -226,7 +226,7 @@ Requesting: [Who you need]
 **Resolution Verification**:
 ```bash
 # Run smoke tests
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 
 # Check error rate in Grafana
 # Should drop below 1% within 5 minutes
@@ -351,7 +351,7 @@ watch -n 5 'curl -s http://localhost:3000/api/jobs/metrics | jq .waiting'
 docker stats --no-stream
 
 # Verify services healthy
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 ---
@@ -532,7 +532,7 @@ docker ps | grep <service>
 curl http://localhost:3000/health
 
 # Run smoke tests
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 ---
@@ -928,7 +928,7 @@ docker exec -it postgres psql -U schedgen -d schedgen -c \
 curl http://localhost:3000/api/jobs/metrics
 
 # Smoke test
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 ### Key Dashboards

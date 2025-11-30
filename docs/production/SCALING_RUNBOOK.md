@@ -1006,7 +1006,7 @@ docker compose ps
 **1. Check services still healthy**:
 ```bash
 docker compose ps
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 **2. Monitor key metrics for 30 minutes**:
@@ -1522,7 +1522,7 @@ curl -w "%{time_total}s\n" -o /dev/null -s http://localhost:3001/health
 
 # Check health status
 docker compose ps
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 ### Scaling Thresholds Quick Reference

@@ -410,7 +410,7 @@ curl http://localhost:3001/metrics
 **Files to Review**:
 - `.env.example`
 - `docker-compose.prod.yml`
-- `scripts/backup-db.sh`
+- `scripts/backup-all.sh`
 
 #### Day 29: Documentation
 **Tasks**:

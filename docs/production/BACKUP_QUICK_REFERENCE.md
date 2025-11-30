@@ -21,8 +21,18 @@ docker compose -f docker-compose.backup.yml stop backup
 ### Automated Setup
 
 ```bash
-# Run interactive setup
-./scripts/setup-backup.sh
+# Setup automated backups (see Backup Automation guide)
+# Option 1: Docker Compose
+docker compose -f docker-compose.yml -f docker-compose.backup.yml up -d backup
+
+# Option 2: Systemd
+sudo cp scripts/backup.service /etc/systemd/system/
+sudo cp scripts/backup.timer /etc/systemd/system/
+sudo systemctl enable backup.timer
+sudo systemctl start backup.timer
+
+# Option 3: Cron
+sudo cp scripts/backup-cron /etc/cron.d/schedgen-backup
 ```
 
 ## Common Commands

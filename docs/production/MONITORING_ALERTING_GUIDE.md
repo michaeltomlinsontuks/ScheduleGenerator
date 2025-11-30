@@ -694,7 +694,7 @@ More than 5% of requests are failing with server errors. Users are experiencing 
 **Verification**:
 ```bash
 # Run smoke tests
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 
 # Check error rate in Grafana System Overview
 # Should drop below 1% within 5 minutes
@@ -1165,7 +1165,7 @@ docker logs backend --tail 50
 ./scripts/rollback.sh
 
 # Verify service is up
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 ```
 
 **Verification**:
@@ -1177,7 +1177,7 @@ docker ps | grep backend
 curl http://localhost:3000/health
 
 # Run full smoke tests
-./scripts/smoke-test.sh
+./scripts/verify-deployment.sh --quick
 
 # Check Grafana System Overview - Uptime should be green
 ```
@@ -1775,7 +1775,7 @@ docker exec -it postgres psql -U schedgen -d schedgen
 
 # Emergency
 ./scripts/rollback.sh                          # Rollback deployment
-./scripts/smoke-test.sh                        # Run smoke tests
+./scripts/verify-deployment.sh --quick                        # Run smoke tests
 ```
 
 ### Dashboard URLs
