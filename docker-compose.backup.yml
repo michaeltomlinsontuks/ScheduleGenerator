@@ -1,0 +1,66 @@
+# =============================================================================
+# Backup Service Configuration
+# =============================================================================
+# This file adds a backup service that runs automated backups
+# Usage: docker compose -f docker-compose.yml -f docker-compose.backup.yml up -d
+#
+# The backup service:
+# - Runs daily at 2:00 AM (configurable via BACKUP_SCHEDULE)
+# - Backs up PostgreSQL database
+# - Backs up MinIO volumes
+# - Sends alerts on failure
+# - Maintains 7-day retention
+# =============================================================================
+
+services:
+  # =============================================================================
+  # Backup Service
+  # =============================================================================
+  backup:
+    image: postgres:16-alpine
+    container_name: schedgen-backup
+    restart: unless-stopped
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MINIO_BUCKET=${MINIO_BUCKET:-schedgen-pdfs}
+      - BACKUP_DIR=/backups
+      - BACKUP_SCHEDULE=${BACKUP_SCHEDULE:-0 2 * * *}
+      - BACKUP_ALERT_WEBHOOK_URL=${BACKUP_ALERT_WEBHOOK_URL:-}
+      - BACKUP_ALERT_EMAIL=${BACKUP_ALERT_EMAIL:-}
+      - TZ=${TZ:-UTC}
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup-all.sh:/usr/local/bin/backup-all.sh:ro
+      - schedgen_minio_data:/minio-data:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: >
+      sh -c "
+        apk add --no-cache docker-cli curl dcron &&
+        chmod +x /usr/local/bin/backup-all.sh &&
+        echo '$${BACKUP_SCHEDULE} /usr/local/bin/backup-all.sh >> /var/log/backup.log 2>&1' > /etc/crontabs/root &&
+        echo 'Backup service started. Schedule: $${BACKUP_SCHEDULE}' &&
+        crond -f -l 2
+      "
+    depends_on:
+      - postgres
+      - minio
+    networks:
+      - schedgen
+    labels:
+      - "com.schedgen.service=backup"
+      - "com.schedgen.description=Automated backup service"
+
+networks:
+  schedgen:
+    external: true
+
+volumes:
+  schedgen_minio_data:
+    external: true

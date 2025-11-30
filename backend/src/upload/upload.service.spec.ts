@@ -5,9 +5,11 @@ import { getQueueToken } from '@nestjs/bullmq';
 import { Repository } from 'typeorm';
 import { UploadService } from './upload.service';
 import { Job, JobStatus, PdfType } from '../jobs/entities/job.entity';
+import { User } from '../auth/entities/user.entity';
 import { StorageService } from '../storage/storage.service';
 import { MulterFile } from '../common/pipes/file-validation.pipe';
 import { PDF_PROCESSING_QUEUE } from '../jobs/jobs.module';
+import { StorageQuotaExceededException } from './exceptions/storage-quota-exceeded.exception';
 import * as validator from '../common/validators/pdf-content.validator';
 
 // UUID v4 regex pattern
@@ -20,12 +22,20 @@ jest.mock('../common/validators/pdf-content.validator');
 describe('UploadService', () => {
   let service: UploadService;
   let jobRepository: jest.Mocked<Repository<Job>>;
+  let userRepository: jest.Mocked<Repository<User>>;
   let storageService: jest.Mocked<StorageService>;
 
   beforeEach(async () => {
     const mockJobRepository = {
       create: jest.fn(),
       save: jest.fn(),
+      findOne: jest.fn(),
+    };
+
+    const mockUserRepository = {
+      findOne: jest.fn(),
+      increment: jest.fn(),
+      decrement: jest.fn(),
     };
 
     const mockStorageService = {
@@ -44,6 +54,10 @@ describe('UploadService', () => {
           useValue: mockJobRepository,
         },
         {
+          provide: getRepositoryToken(User),
+          useValue: mockUserRepository,
+        },
+        {
           provide: StorageService,
           useValue: mockStorageService,
         },
@@ -56,6 +70,7 @@ describe('UploadService', () => {
 
     service = module.get<UploadService>(UploadService);
     jobRepository = module.get(getRepositoryToken(Job));
+    userRepository = module.get(getRepositoryToken(User));
     storageService = module.get(StorageService);
 
     // Reset mocks
@@ -230,6 +245,165 @@ describe('UploadService', () => {
         ),
         { numRuns: 100 },
       );
+    });
+  });
+
+  describe('Storage Quota Enforcement', () => {
+    it('should reject upload when user quota is exceeded', async () => {
+      // Create a large file that will exceed quota
+      const largeBuffer = Buffer.alloc(5000000); // 5MB file
+      const buffer = Buffer.concat([
+        Buffer.from('%PDF-1.4\n'),
+        largeBuffer,
+      ]);
+
+      const file: MulterFile = {
+        fieldname: 'file',
+        originalname: 'test.pdf',
+        encoding: '7bit',
+        mimetype: 'application/pdf',
+        size: buffer.length,
+        buffer,
+      };
+
+      const userId = 'user-123';
+      const mockUser: Partial<User> = {
+        id: userId,
+        email: 'test@example.com',
+        storageUsedBytes: 50000000, // 50MB used
+        storageQuotaBytes: 52428800, // 50MB quota (5MB file would exceed)
+      };
+
+      userRepository.findOne.mockResolvedValue(mockUser as User);
+
+      await expect(service.processUpload(file, userId)).rejects.toThrow(
+        StorageQuotaExceededException,
+      );
+
+      // Verify that storage and job creation were never called
+      expect(storageService.uploadFile).not.toHaveBeenCalled();
+      expect(jobRepository.save).not.toHaveBeenCalled();
+    });
+
+    it('should allow upload when user has sufficient quota', async () => {
+      // Mock the validator to return LECTURE
+      jest.spyOn(validator, 'validatePdfContent').mockResolvedValue(PdfType.LECTURE);
+
+      const buffer = Buffer.concat([
+        Buffer.from('%PDF-1.4\n'),
+        Buffer.from('Some PDF content with Lectures keyword', 'utf-8'),
+      ]);
+
+      const file: MulterFile = {
+        fieldname: 'file',
+        originalname: 'test.pdf',
+        encoding: '7bit',
+        mimetype: 'application/pdf',
+        size: buffer.length,
+        buffer,
+      };
+
+      const userId = 'user-123';
+      const mockUser: Partial<User> = {
+        id: userId,
+        email: 'test@example.com',
+        storageUsedBytes: 1000000, // 1MB used
+        storageQuotaBytes: 52428800, // 50MB quota
+      };
+
+      const mockJobId = 'job-123';
+      const mockJob: Partial<Job> = {
+        id: mockJobId,
+        status: JobStatus.PENDING,
+        pdfType: PdfType.LECTURE,
+        s3Key: 'test-key',
+        fileSizeBytes: buffer.length,
+        userId,
+      };
+
+      userRepository.findOne.mockResolvedValue(mockUser as User);
+      jobRepository.create.mockReturnValue(mockJob as Job);
+      jobRepository.save.mockResolvedValue(mockJob as Job);
+      storageService.uploadFile.mockResolvedValue(undefined);
+      userRepository.increment.mockResolvedValue(undefined as any);
+
+      const result = await service.processUpload(file, userId);
+
+      expect(result.jobId).toBe(mockJobId);
+      expect(userRepository.increment).toHaveBeenCalledWith(
+        { id: userId },
+        'storageUsedBytes',
+        buffer.length,
+      );
+    });
+
+    it('should allow upload for unauthenticated users (no quota check)', async () => {
+      // Mock the validator to return LECTURE
+      jest.spyOn(validator, 'validatePdfContent').mockResolvedValue(PdfType.LECTURE);
+
+      const buffer = Buffer.concat([
+        Buffer.from('%PDF-1.4\n'),
+        Buffer.from('Some PDF content with Lectures keyword', 'utf-8'),
+      ]);
+
+      const file: MulterFile = {
+        fieldname: 'file',
+        originalname: 'test.pdf',
+        encoding: '7bit',
+        mimetype: 'application/pdf',
+        size: buffer.length,
+        buffer,
+      };
+
+      const mockJobId = 'job-123';
+      const mockJob: Partial<Job> = {
+        id: mockJobId,
+        status: JobStatus.PENDING,
+        pdfType: PdfType.LECTURE,
+        s3Key: 'test-key',
+        fileSizeBytes: buffer.length,
+        userId: null,
+      };
+
+      jobRepository.create.mockReturnValue(mockJob as Job);
+      jobRepository.save.mockResolvedValue(mockJob as Job);
+      storageService.uploadFile.mockResolvedValue(undefined);
+
+      const result = await service.processUpload(file);
+
+      expect(result.jobId).toBe(mockJobId);
+      expect(userRepository.findOne).not.toHaveBeenCalled();
+      expect(userRepository.increment).not.toHaveBeenCalled();
+    });
+
+    it('should return correct storage usage for a user', async () => {
+      const userId = 'user-123';
+      const mockUser: Partial<User> = {
+        id: userId,
+        email: 'test@example.com',
+        storageUsedBytes: 26214400, // 25MB used
+        storageQuotaBytes: 52428800, // 50MB quota
+      };
+
+      userRepository.findOne.mockResolvedValue(mockUser as User);
+
+      const result = await service.getStorageUsage(userId);
+
+      expect(result).toEqual({
+        usedBytes: 26214400,
+        quotaBytes: 52428800,
+        usedPercentage: 50,
+        availableBytes: 26214400,
+      });
+    });
+
+    it('should return null for non-existent user', async () => {
+      const userId = 'non-existent';
+      userRepository.findOne.mockResolvedValue(null);
+
+      const result = await service.getStorageUsage(userId);
+
+      expect(result).toBeNull();
     });
   });
 });

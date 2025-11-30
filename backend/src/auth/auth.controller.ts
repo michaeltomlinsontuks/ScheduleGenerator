@@ -6,6 +6,9 @@ import {
   Res,
   UseGuards,
   HttpStatus,
+  Body,
+  Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
@@ -13,13 +16,21 @@ import {
   ApiOperation,
   ApiResponse,
   ApiOAuth2,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { AuthService, SessionUser } from './auth.service.js';
 import { GoogleAuthGuard } from './guards/google-auth.guard.js';
+import { IpBlockingGuard } from './guards/ip-blocking.guard.js';
 import {
   AuthStatusDto,
   LogoutResponseDto,
 } from './dto/auth-response.dto.js';
+import {
+  UnblockIpDto,
+  UnblockResponseDto,
+  IpStatusDto,
+} from './dto/ip-blocking.dto.js';
+import { IpBlockingService } from './ip-blocking.service.js';
 
 interface AuthRequest {
   user?: SessionUser;
@@ -39,10 +50,11 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly ipBlockingService: IpBlockingService,
   ) {}
 
   @Get('google')
-  @UseGuards(GoogleAuthGuard)
+  @UseGuards(IpBlockingGuard, GoogleAuthGuard)
   @ApiOperation({
     summary: 'Initiate Google OAuth',
     description: 'Redirects to Google OAuth consent screen with calendar scopes',
@@ -52,12 +64,16 @@ export class AuthController {
     status: 302,
     description: 'Redirects to Google OAuth consent screen',
   })
+  @ApiResponse({
+    status: 403,
+    description: 'IP address is blocked due to too many failed attempts',
+  })
   async googleAuth(): Promise<void> {
     // Guard handles the redirect to Google
   }
 
   @Get('google/callback')
-  @UseGuards(GoogleAuthGuard)
+  @UseGuards(IpBlockingGuard, GoogleAuthGuard)
   @ApiOperation({
     summary: 'Google OAuth callback',
     description: 'Handles the OAuth callback from Google and establishes session',
@@ -69,6 +85,10 @@ export class AuthController {
   @ApiResponse({
     status: 401,
     description: 'Authentication failed',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'IP address is blocked due to too many failed attempts',
   })
   async googleCallback(
     @Req() _req: AuthRequest,
@@ -130,5 +150,95 @@ export class AuthController {
         });
       });
     });
+  }
+
+  @Get('ip/status')
+  @ApiOperation({
+    summary: 'Check IP blocking status',
+    description: 'Returns the blocking status and failed attempt count for an IP address',
+  })
+  @ApiQuery({
+    name: 'ip',
+    description: 'IP address to check (optional, defaults to request IP)',
+    required: false,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'IP status information',
+    type: IpStatusDto,
+  })
+  async getIpStatus(
+    @Query('ip') ip: string | undefined,
+    @Req() req: AuthRequest,
+  ): Promise<IpStatusDto> {
+    // Use provided IP or extract from request
+    const targetIp = ip || this.getClientIp(req as any);
+
+    const blockInfo = await this.ipBlockingService.getBlockInfo(targetIp);
+
+    if (blockInfo) {
+      const timeRemaining = await this.ipBlockingService.getTimeUntilUnblock(targetIp);
+      return {
+        blocked: true,
+        blockInfo: {
+          ...blockInfo,
+          timeRemaining,
+        },
+      };
+    }
+
+    const failedAttempts = await this.ipBlockingService.getFailedAttempts(targetIp);
+    return {
+      blocked: false,
+      failedAttempts,
+    };
+  }
+
+  @Post('ip/unblock')
+  @ApiOperation({
+    summary: 'Unblock an IP address',
+    description: 'Manually unblock an IP address that was blocked due to failed authentication attempts',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'IP address successfully unblocked',
+    type: UnblockResponseDto,
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'IP address is not blocked',
+  })
+  async unblockIp(@Body() unblockDto: UnblockIpDto): Promise<UnblockResponseDto> {
+    const wasBlocked = await this.ipBlockingService.unblockIP(unblockDto.ip);
+
+    if (!wasBlocked) {
+      throw new NotFoundException({
+        statusCode: 404,
+        message: 'IP_NOT_BLOCKED',
+        error: `IP address ${unblockDto.ip} is not currently blocked`,
+      });
+    }
+
+    return {
+      message: 'IP address successfully unblocked',
+      ip: unblockDto.ip,
+    };
+  }
+
+  /**
+   * Extracts the client IP address from the request
+   * Handles proxied requests by checking X-Forwarded-For header
+   */
+  private getClientIp(request: any): string {
+    // Check X-Forwarded-For header (for proxied requests)
+    const forwardedFor = request.headers['x-forwarded-for'];
+    if (forwardedFor) {
+      // X-Forwarded-For can contain multiple IPs, take the first one
+      const ips = Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor;
+      return ips.split(',')[0].trim();
+    }
+
+    // Fall back to direct connection IP
+    return request.ip || request.socket?.remoteAddress || 'unknown';
   }
 }

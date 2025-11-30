@@ -1,17 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthController } from './health.controller';
-import {
-  HealthCheckService,
-  TypeOrmHealthIndicator,
-  HealthCheckResult,
-} from '@nestjs/terminus';
+import { HealthCheckService, HealthCheckResult } from '@nestjs/terminus';
 import { RedisHealthIndicator } from './indicators/redis.health';
 import { MinioHealthIndicator } from './indicators/minio.health';
+import { DatabaseHealthIndicator } from './indicators/database.health';
 
 describe('HealthController', () => {
   let controller: HealthController;
   let healthCheckService: jest.Mocked<HealthCheckService>;
-  let dbIndicator: jest.Mocked<TypeOrmHealthIndicator>;
+  let dbIndicator: jest.Mocked<DatabaseHealthIndicator>;
   let redisIndicator: jest.Mocked<RedisHealthIndicator>;
   let minioIndicator: jest.Mocked<MinioHealthIndicator>;
 
@@ -21,7 +18,7 @@ describe('HealthController', () => {
     };
 
     const mockDbIndicator = {
-      pingCheck: jest.fn(),
+      isHealthy: jest.fn(),
     };
 
     const mockRedisIndicator = {
@@ -36,7 +33,7 @@ describe('HealthController', () => {
       controllers: [HealthController],
       providers: [
         { provide: HealthCheckService, useValue: mockHealthCheckService },
-        { provide: TypeOrmHealthIndicator, useValue: mockDbIndicator },
+        { provide: DatabaseHealthIndicator, useValue: mockDbIndicator },
         { provide: RedisHealthIndicator, useValue: mockRedisIndicator },
         { provide: MinioHealthIndicator, useValue: mockMinioIndicator },
       ],
@@ -44,7 +41,7 @@ describe('HealthController', () => {
 
     controller = module.get<HealthController>(HealthController);
     healthCheckService = module.get(HealthCheckService);
-    dbIndicator = module.get(TypeOrmHealthIndicator);
+    dbIndicator = module.get(DatabaseHealthIndicator);
     redisIndicator = module.get(RedisHealthIndicator);
     minioIndicator = module.get(MinioHealthIndicator);
   });
@@ -98,15 +95,56 @@ describe('HealthController', () => {
         return expectedResult;
       });
 
-      dbIndicator.pingCheck.mockResolvedValue({ database: { status: 'up' } });
+      dbIndicator.isHealthy.mockResolvedValue({
+        database: {
+          status: 'up',
+          totalConnections: 10,
+          activeConnections: 2,
+          idleConnections: 8,
+        },
+      });
       redisIndicator.isHealthy.mockResolvedValue({ redis: { status: 'up' } });
       minioIndicator.isHealthy.mockResolvedValue({ minio: { status: 'up' } });
 
       await controller.check();
 
-      expect(dbIndicator.pingCheck).toHaveBeenCalledWith('database');
+      expect(dbIndicator.isHealthy).toHaveBeenCalledWith('database');
       expect(redisIndicator.isHealthy).toHaveBeenCalledWith('redis');
       expect(minioIndicator.isHealthy).toHaveBeenCalledWith('minio');
+    });
+  });
+
+  describe('checkDatabase', () => {
+    it('should return database health check with pool metrics', async () => {
+      const expectedResult: HealthCheckResult = {
+        status: 'ok',
+        info: {
+          database: {
+            status: 'up',
+            totalConnections: 15,
+            activeConnections: 5,
+            idleConnections: 10,
+          },
+        },
+        error: {},
+        details: {
+          database: {
+            status: 'up',
+            totalConnections: 15,
+            activeConnections: 5,
+            idleConnections: 10,
+          },
+        },
+      };
+
+      healthCheckService.check.mockResolvedValue(expectedResult);
+
+      const result = await controller.checkDatabase();
+
+      expect(result).toEqual(expectedResult);
+      expect(healthCheckService.check).toHaveBeenCalledWith([
+        expect.any(Function),
+      ]);
     });
   });
 });

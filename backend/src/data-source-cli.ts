@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { Job } from './jobs/entities/job.entity';
+import { User } from './auth/entities/user.entity';
 
 // Load environment variables
 config();
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource({
   username: process.env.POSTGRES_USER ?? 'postgres',
   password: process.env.POSTGRES_PASSWORD ?? 'postgres',
   database: process.env.POSTGRES_DB ?? 'up_schedule',
-  entities: [Job],
+  entities: [Job, User],
   migrations: ['src/migrations/*.ts'],
   migrationsTableName: 'migrations',
   synchronize: false,

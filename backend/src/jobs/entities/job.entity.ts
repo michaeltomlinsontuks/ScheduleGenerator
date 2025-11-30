@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from '../../auth/entities/user.entity.js';
 
 export enum JobStatus {
   PENDING = 'pending',
@@ -67,4 +70,17 @@ export class Job {
 
   @Column({ type: 'timestamp', nullable: true })
   completedAt!: Date | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  expiresAt!: Date | null;
+
+  @Column({ type: 'bigint', default: 0 })
+  fileSizeBytes!: number;
+
+  @Column({ type: 'uuid', nullable: true })
+  userId!: string | null;
+
+  @ManyToOne(() => User, (user) => user.jobs, { nullable: true })
+  @JoinColumn({ name: 'userId' })
+  user!: User | null;
 }

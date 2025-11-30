@@ -99,7 +99,13 @@
 ### Pre-Deployment
 - [ ] Review all environment variables
 - [ ] Configure production resource limits
-- [ ] Set up automated backups
+- [ ] **Set up automated backups** (see [Backup Automation](./BACKUP_AUTOMATION.md))
+  - [ ] Choose deployment method (Docker/systemd/cron)
+  - [ ] Configure backup schedule (default: daily at 2 AM)
+  - [ ] Set up alert notifications (webhook/email)
+  - [ ] Test backup script manually
+  - [ ] Verify backup files created
+  - [ ] Test restore procedure
 - [ ] Configure monitoring alerts
 - [ ] Review security settings
 - [ ] Create deployment checklist
@@ -126,7 +132,7 @@
 - [ ] Monitor metrics dashboard continuously
 - [ ] Check error logs every 2 hours
 - [ ] Verify resource usage normal
-- [ ] Confirm backups running
+- [ ] **Confirm backups running** (check `backups/` directory)
 - [ ] Test critical flows
 - [ ] Collect user feedback
 
@@ -134,7 +140,7 @@
 - [ ] Daily metrics review
 - [ ] Daily error rate check
 - [ ] Daily resource monitoring
-- [ ] Verify daily backups
+- [ ] **Verify daily backups** (check backup logs and file sizes)
 - [ ] Address user issues
 - [ ] Performance tuning
 

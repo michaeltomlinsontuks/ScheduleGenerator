@@ -5,6 +5,7 @@ import {
   ParseUUIDPipe,
   BadRequestException,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JobsService } from './jobs.service.js';
 import { JobStatusDto, JobResultDto } from './dto/index.js';
@@ -16,7 +17,42 @@ import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
 export class JobsController {
   constructor(private readonly jobsService: JobsService) {}
 
+  @Get('metrics')
+  @ApiOperation({
+    summary: 'Get queue metrics',
+    description:
+      'Retrieve current queue statistics including waiting, active, completed, failed, and delayed job counts. ' +
+      'Useful for monitoring system load and queue health.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Queue metrics retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        waiting: { type: 'number', description: 'Jobs waiting to be processed' },
+        active: { type: 'number', description: 'Jobs currently being processed' },
+        completed: { type: 'number', description: 'Successfully completed jobs' },
+        failed: { type: 'number', description: 'Failed jobs' },
+        delayed: { type: 'number', description: 'Jobs delayed for retry' },
+        total: { type: 'number', description: 'Total pending jobs (waiting + active + delayed)' },
+      },
+      example: {
+        waiting: 5,
+        active: 3,
+        completed: 150,
+        failed: 2,
+        delayed: 0,
+        total: 8,
+      },
+    },
+  })
+  async getMetrics() {
+    return this.jobsService.getQueueMetrics();
+  }
+
   @Get(':id')
+  @Throttle({ default: { ttl: 60000, limit: 100 } }) // 100 checks per minute
   @ApiOperation({
     summary: 'Get job status by ID',
     description:

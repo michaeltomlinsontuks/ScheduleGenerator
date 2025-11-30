@@ -6,9 +6,10 @@ FROM python:3.11-slim
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies required for pdfplumber
+# Install system dependencies required for pdfplumber and health checks
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpoppler-cpp-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements first for better caching
@@ -31,5 +32,14 @@ EXPOSE 5001
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5001/health')" || exit 1
 
-# Run with Gunicorn for production
-CMD ["gunicorn", "app:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:5001"]
+# Run with Gunicorn - use environment variables for configuration
+CMD gunicorn app:app \
+    -w ${MAX_WORKERS:-4} \
+    -k uvicorn.workers.UvicornWorker \
+    -b 0.0.0.0:5001 \
+    --timeout ${WORKER_TIMEOUT:-120} \
+    --max-requests ${MAX_REQUESTS:-1000} \
+    --max-requests-jitter ${MAX_REQUESTS_JITTER:-100} \
+    --access-logfile - \
+    --error-logfile - \
+    --log-level info

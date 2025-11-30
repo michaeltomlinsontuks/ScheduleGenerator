@@ -3,12 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadController } from './upload.controller.js';
 import { UploadService } from './upload.service.js';
 import { Job } from '../jobs/entities/job.entity.js';
+import { User } from '../auth/entities/user.entity.js';
 import { StorageModule } from '../storage/storage.module.js';
 import { JobsModule } from '../jobs/jobs.module.js';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Job]),
+    TypeOrmModule.forFeature([Job, User]),
     StorageModule,
     forwardRef(() => JobsModule),
   ],

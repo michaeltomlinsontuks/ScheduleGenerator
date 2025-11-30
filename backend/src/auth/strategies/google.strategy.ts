@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback, Profile } from 'passport-google-oauth20';
+import { AuthService } from '../auth.service.js';
 
 export interface GoogleUser {
   email: string;
@@ -14,7 +15,10 @@ export interface GoogleUser {
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    private readonly authService: AuthService,
+  ) {
     super({
       clientID: configService.get<string>('google.clientId') ?? '',
       clientSecret: configService.get<string>('google.clientSecret') ?? '',
@@ -36,7 +40,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   ): Promise<void> {
     const { name, emails, photos } = profile;
 
-    const user: GoogleUser = {
+    const googleUser: GoogleUser = {
       email: emails?.[0]?.value ?? '',
       firstName: name?.givenName ?? '',
       lastName: name?.familyName ?? '',
@@ -45,6 +49,9 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       refreshToken,
     };
 
-    done(null, user);
+    // Create or update user in database and get session user with ID
+    const sessionUser = await this.authService.validateGoogleUser(googleUser);
+
+    done(null, sessionUser);
   }
 }

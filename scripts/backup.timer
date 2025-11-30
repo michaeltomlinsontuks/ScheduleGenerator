@@ -1,0 +1,20 @@
+[Unit]
+Description=UP Schedule Generator Daily Backup Timer
+Documentation=https://github.com/yourusername/schedgen
+Requires=backup.service
+
+[Timer]
+# Run daily at 2:00 AM
+OnCalendar=daily
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+
+# If the system was off during the scheduled time, run on next boot
+# but wait 10 minutes after boot
+OnBootSec=10min
+
+# Randomize start time by up to 30 minutes to avoid load spikes
+RandomizedDelaySec=30min
+
+[Install]
+WantedBy=timers.target

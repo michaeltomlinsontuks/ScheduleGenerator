@@ -1,0 +1,17 @@
+# K6 test results
+results/
+*.json
+*.txt
+
+# Node modules (if any)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo

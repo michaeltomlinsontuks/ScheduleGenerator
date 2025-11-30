@@ -1,8 +1,36 @@
 import pdfplumber
 import pandas as pd
 import re
+import signal
+from contextlib import contextmanager
 from typing import List, Dict, Any
 from .utils import get_pdf_type
+
+
+class TimeoutException(Exception):
+    """Raised when PDF processing exceeds timeout"""
+    pass
+
+
+class PDFSizeException(Exception):
+    """Raised when PDF exceeds size limits"""
+    pass
+
+
+@contextmanager
+def timeout(seconds):
+    """Context manager for timeout protection"""
+    def signal_handler(signum, frame):
+        raise TimeoutException(f"Operation timed out after {seconds} seconds")
+    
+    # Set the signal handler and alarm
+    signal.signal(signal.SIGALRM, signal_handler)
+    signal.alarm(seconds)
+    try:
+        yield
+    finally:
+        # Disable the alarm
+        signal.alarm(0)
 
 
 def _parse_weekly_schedule(tables: List[List[str]]) -> List[Dict[str, Any]]:
@@ -144,38 +172,60 @@ def parse_pdf(file_path: str) -> Dict[str, Any]:
     """
     Parses a University of Pretoria schedule PDF to extract table data.
     
+    Includes timeout protection (60 seconds) and page limit validation (100 pages).
+    
     Returns:
         Dictionary with 'events' list and 'type' field 
         ('lecture', 'test', or 'exam')
-    """
-    pdf_type = get_pdf_type(file_path)
     
-    if pdf_type == 'unknown':
-        raise ValueError(
-            "Unable to determine PDF type. "
-            "Expected 'Lectures', 'Semester Tests', or 'Exams' text."
-        )
+    Raises:
+        TimeoutException: If parsing exceeds 60 seconds
+        PDFSizeException: If PDF exceeds 100 pages
+        ValueError: If PDF type cannot be determined or parsing fails
+    """
+    try:
+        with timeout(60):  # 60 second timeout
+            pdf_type = get_pdf_type(file_path)
+            
+            if pdf_type == 'unknown':
+                raise ValueError(
+                    "Unable to determine PDF type. "
+                    "Expected 'Lectures', 'Semester Tests', or 'Exams' text."
+                )
 
-    with pdfplumber.open(file_path) as pdf:
-        all_tables = []
-        for page in pdf.pages:
-            tables = page.extract_tables()
-            for table in tables:
-                all_tables.append(table)
+            with pdfplumber.open(file_path) as pdf:
+                # Enforce page limit
+                if len(pdf.pages) > 100:
+                    raise PDFSizeException(
+                        f"PDF exceeds maximum page limit. "
+                        f"Found {len(pdf.pages)} pages, maximum is 100 pages."
+                    )
+                
+                all_tables = []
+                for page in pdf.pages:
+                    tables = page.extract_tables()
+                    for table in tables:
+                        all_tables.append(table)
 
-    # Route to appropriate parser based on detected type
-    if pdf_type == 'lecture':
-        events = _parse_weekly_schedule(all_tables)
-    elif pdf_type == 'test':
-        events = _parse_test_schedule(all_tables)
-    elif pdf_type == 'exam':
-        events = _parse_exam_schedule(all_tables)
-    else:
-        # This should never be reached due to the check above,
-        # but included for completeness
-        raise ValueError(f"Unsupported PDF type: {pdf_type}")
+            # Route to appropriate parser based on detected type
+            if pdf_type == 'lecture':
+                events = _parse_weekly_schedule(all_tables)
+            elif pdf_type == 'test':
+                events = _parse_test_schedule(all_tables)
+            elif pdf_type == 'exam':
+                events = _parse_exam_schedule(all_tables)
+            else:
+                # This should never be reached due to the check above,
+                # but included for completeness
+                raise ValueError(f"Unsupported PDF type: {pdf_type}")
 
-    return {
-        'events': events,
-        'type': pdf_type
-    }
+            return {
+                'events': events,
+                'type': pdf_type
+            }
+    except TimeoutException as e:
+        raise ValueError(f"PDF parsing timeout: {str(e)}")
+    except PDFSizeException as e:
+        raise ValueError(f"PDF size limit exceeded: {str(e)}")
+    except Exception as e:
+        raise ValueError(f"PDF parsing failed: {str(e)}")

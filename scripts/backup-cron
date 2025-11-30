@@ -1,0 +1,24 @@
+# =============================================================================
+# Cron Configuration for Automated Backups
+# =============================================================================
+# This file configures daily automated backups at 2:00 AM
+# Requirements: 9.1, 9.4
+#
+# Installation:
+#   1. Copy this file to /etc/cron.d/schedgen-backup
+#   2. Ensure environment variables are set in /etc/environment or a .env file
+#   3. Restart cron: sudo systemctl restart cron
+#
+# Manual installation:
+#   crontab -e
+#   Then add the line below (without the SHELL and PATH lines)
+# =============================================================================
+
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Run backup daily at 2:00 AM
+0 2 * * * root cd /opt/schedgen && /opt/schedgen/scripts/backup-all.sh >> /var/log/schedgen-backup.log 2>&1
+
+# Alternative: Run backup every 6 hours (uncomment to use)
+# 0 */6 * * * root cd /opt/schedgen && /opt/schedgen/scripts/backup-all.sh >> /var/log/schedgen-backup.log 2>&1

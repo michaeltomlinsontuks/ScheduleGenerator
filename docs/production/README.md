@@ -65,6 +65,29 @@ This directory contains comprehensive documentation for deploying and scaling th
 
 **Use this** to verify your improvements work under load.
 
+### 6. [Backup Automation](./BACKUP_AUTOMATION.md)
+**Purpose**: Configure automated backups for production data protection
+
+**Key Topics**:
+- Daily automated backups (database + MinIO)
+- Multiple deployment options (Docker, systemd, cron)
+- Alert configuration (webhook + email)
+- Backup verification and restore procedures
+- 7-day retention policy
+
+**Use this** to set up reliable backup and recovery.
+
+### 7. [Backup Quick Reference](./BACKUP_QUICK_REFERENCE.md)
+**Purpose**: Quick commands for backup operations
+
+**Key Topics**:
+- Common backup commands
+- Restore procedures
+- Monitoring and troubleshooting
+- Configuration examples
+
+**Use this** for day-to-day backup management.
+
 ## 🚀 Quick Start
 
 **New to production readiness?** Start here:
@@ -280,7 +303,7 @@ graph TD
 ### Daily Tasks
 - Monitor service health
 - Check error logs
-- Verify backups completed
+- **Verify backups completed** (see [Backup Quick Reference](./BACKUP_QUICK_REFERENCE.md))
 - Review performance metrics
 
 ### Weekly Tasks

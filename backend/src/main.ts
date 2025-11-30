@@ -7,6 +7,7 @@ import session from 'express-session';
 import passport from 'passport';
 import { AppModule } from './app.module.js';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter.js';
+import { QueryTimeoutInterceptor } from './common/interceptors/query-timeout.interceptor.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -43,6 +44,9 @@ async function bootstrap() {
 
   // Global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  // Global query timeout interceptor (30 seconds)
+  app.useGlobalInterceptors(new QueryTimeoutInterceptor(30000));
 
   // Global validation pipe with detailed error messages
   app.useGlobalPipes(

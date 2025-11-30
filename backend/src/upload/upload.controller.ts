@@ -3,8 +3,10 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
+  Session,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Throttle } from '@nestjs/throttler';
 import {
   ApiTags,
   ApiOperation,
@@ -16,7 +18,15 @@ import { UploadService } from './upload.service.js';
 import { UploadResponseDto } from './dto/upload-response.dto.js';
 import { FileValidationPipe } from '../common/pipes/file-validation.pipe.js';
 import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
+import { StorageQuotaExceededDto } from './dto/storage-quota-exceeded.dto.js';
 import type { MulterFile } from '../common/pipes/file-validation.pipe.js';
+import type { SessionUser } from '../auth/auth.service.js';
+
+interface SessionData {
+  passport?: {
+    user?: SessionUser;
+  };
+}
 
 @ApiTags('Upload')
 @Controller('api/upload')
@@ -24,6 +34,7 @@ export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
   @Post()
+  @Throttle({ default: { ttl: 60000, limit: 5 } }) // 5 uploads per minute
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
     summary: 'Upload a UP schedule PDF',
@@ -75,6 +86,27 @@ export class UploadController {
           jobId: '770e8400-e29b-41d4-a716-446655440002',
           pdfType: 'exam',
           message: 'PDF uploaded successfully and queued for processing',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 413,
+    description: 'Payload Too Large - Storage quota exceeded',
+    type: StorageQuotaExceededDto,
+    examples: {
+      quotaExceeded: {
+        summary: 'Storage Quota Exceeded',
+        value: {
+          statusCode: 413,
+          message: 'STORAGE_QUOTA_EXCEEDED',
+          error: 'Storage quota exceeded',
+          details: {
+            currentUsage: 48000000,
+            quota: 52428800,
+            fileSize: 5000000,
+            wouldExceedBy: 571200,
+          },
         },
       },
     },
@@ -139,7 +171,9 @@ export class UploadController {
   })
   async uploadPdf(
     @UploadedFile(new FileValidationPipe()) file: MulterFile,
+    @Session() session: SessionData,
   ): Promise<UploadResponseDto> {
-    return this.uploadService.processUpload(file);
+    const userId = session.passport?.user?.id;
+    return this.uploadService.processUpload(file, userId);
   }
 }
