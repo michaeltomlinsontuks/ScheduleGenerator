@@ -32,6 +32,12 @@ graph TD
 
 # Rollback to previous version
 ./scripts/rollback.sh
+
+# Build and push to Docker Hub
+./scripts/build-and-push.sh 1.0.0
+
+# Deploy from Docker Hub
+./scripts/deploy-from-registry.sh
 ```
 
 ### Backup
@@ -134,6 +140,79 @@ flowchart TD
     H --> I{Success?}
     I -->|Yes| J[Complete]
     I -->|No| K[Alert & Manual Intervention]
+```
+
+### build-and-push.sh
+**Purpose**: Build and push Docker images to Docker Hub
+
+**Features**:
+- Builds all service images (frontend, backend, pdf-worker)
+- Tags with multiple tags (latest, version, git SHA)
+- Pushes to Docker Hub registry
+- Validates credentials before building
+
+**Usage**:
+```bash
+# Build and push with latest tag
+export DOCKER_HUB_USERNAME=yourusername
+./scripts/build-and-push.sh
+
+# Build and push with version tag
+./scripts/build-and-push.sh 1.0.0
+```
+
+**Prerequisites**:
+- `DOCKER_HUB_USERNAME` environment variable set
+- Logged into Docker Hub (`docker login`)
+
+**Process Flow**:
+```mermaid
+flowchart TD
+    A[Start] --> B[Validate Credentials]
+    B --> C[Build Frontend]
+    C --> D[Build Backend]
+    D --> E[Build PDF Worker]
+    E --> F[Tag Images]
+    F --> G[Push to Docker Hub]
+    G --> H[Display Summary]
+```
+
+### deploy-from-registry.sh
+**Purpose**: Deploy application using pre-built images from Docker Hub
+
+**Features**:
+- Pulls latest images from Docker Hub
+- Creates backup before deployment
+- Zero-downtime deployment
+- Health verification after deployment
+
+**Usage**:
+```bash
+# Deploy latest images
+export DOCKER_HUB_USERNAME=yourusername
+./scripts/deploy-from-registry.sh
+
+# Deploy specific version
+./scripts/deploy-from-registry.sh 1.0.0
+```
+
+**Prerequisites**:
+- `DOCKER_HUB_USERNAME` environment variable set
+- Images already pushed to Docker Hub
+- Logged into Docker Hub (for private repos)
+
+**Process Flow**:
+```mermaid
+flowchart TD
+    A[Start] --> B[Validate Credentials]
+    B --> C[Pull Images]
+    C --> D[Backup Current State]
+    D --> E[Stop Old Containers]
+    E --> F[Start New Containers]
+    F --> G[Health Checks]
+    G --> H{Success?}
+    H -->|Yes| I[Complete]
+    H -->|No| J[Alert & Rollback]
 ```
 
 ### backup-all.sh

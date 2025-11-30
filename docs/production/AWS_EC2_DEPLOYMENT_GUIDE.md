@@ -289,33 +289,37 @@ You need a place to store your Docker images. Options:
 **Pros:** Free for public repos, easy setup
 **Cons:** Public images (or $5/month for private)
 
+**See the complete [Docker Hub Registry Setup Guide](DOCKER_HUB_REGISTRY_GUIDE.md) for detailed instructions.**
+
+**Quick Setup:**
+
 1. **Create Docker Hub account:** https://hub.docker.com
 
-2. **Login on EC2:**
-   ```bash
-   docker login
-   ```
+2. **Create repositories:**
+   - `schedgen-frontend`
+   - `schedgen-backend`
+   - `schedgen-pdf-worker`
 
-3. **Tag and push images** (from your local machine):
+3. **Build and push images** (from your local machine):
    ```bash
-   # Build and tag images
-   docker build -t yourusername/schedgen-frontend:latest ./frontend
-   docker build -t yourusername/schedgen-backend:latest ./backend
-   docker build -t yourusername/schedgen-pdf-worker:latest ./pdf-worker
+   # Set your Docker Hub username
+   export DOCKER_HUB_USERNAME=yourusername
    
-   # Push to Docker Hub
-   docker push yourusername/schedgen-frontend:latest
-   docker push yourusername/schedgen-backend:latest
-   docker push yourusername/schedgen-pdf-worker:latest
+   # Build and push all images
+   ./scripts/build-and-push.sh
    ```
 
-4. **Update docker-compose.yml on EC2** to use your images:
-   ```yaml
-   services:
-     frontend:
-       image: yourusername/schedgen-frontend:latest
-       # Remove 'build' section
+4. **On EC2, deploy using registry images:**
+   ```bash
+   # Set environment variables
+   export DOCKER_HUB_USERNAME=yourusername
+   export IMAGE_TAG=latest
+   
+   # Deploy
+   ./scripts/deploy-from-registry.sh
    ```
+
+For detailed instructions including CI/CD setup, tagging strategies, and troubleshooting, see the [Docker Hub Registry Setup Guide](DOCKER_HUB_REGISTRY_GUIDE.md).
 
 ### Option B: AWS ECR (Elastic Container Registry)
 

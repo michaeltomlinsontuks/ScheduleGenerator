@@ -42,6 +42,14 @@ graph TD
   - Docker registry setup (Docker Hub, ECR, or self-hosted)
   - Migration path to elastic infrastructure
 
+### Container Registry
+- [Docker Hub Registry Guide](./DOCKER_HUB_REGISTRY_GUIDE.md) - Complete Docker Hub setup and workflows
+  - [Docker Hub Quick Reference](./DOCKER_HUB_QUICK_REFERENCE.md) - Essential Docker Hub commands
+  - Account setup and repository creation
+  - Build and push automation
+  - CI/CD integration with GitHub Actions
+  - Image management and tagging strategies
+
 ### OAuth & Authentication
 - [Google OAuth Verification Guide](./GOOGLE_OAUTH_VERIFICATION_GUIDE.md) - Complete guide to OAuth verification
   - [Google OAuth Quick Checklist](./GOOGLE_OAUTH_QUICK_CHECKLIST.md) - Fast-track verification checklist

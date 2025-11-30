@@ -84,6 +84,8 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
 
 ## Production Deployment
 
+### Option 1: Build Locally
+
 1. Configure production environment variables in `.env`:
    ```bash
    NODE_ENV=production
@@ -115,13 +117,47 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
    docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
    ```
 
+### Option 2: Deploy from Docker Hub Registry
+
+1. Configure environment variables (same as above, plus):
+   ```bash
+   DOCKER_HUB_USERNAME=yourusername
+   IMAGE_TAG=latest
+   ```
+
+2. Deploy from registry:
+   ```bash
+   ./scripts/deploy-from-registry.sh
+   ```
+
+   Or manually:
+   ```bash
+   docker compose -f docker-compose.yml \
+                  -f docker-compose.prod.yml \
+                  -f docker-compose.registry.yml \
+                  up -d
+   ```
+
+See [Docker Hub Registry Guide](docs/production/DOCKER_HUB_REGISTRY_GUIDE.md) for complete setup instructions.
+
 ### Production Features
 
 - TLS certificates via Let's Encrypt
 - Security headers middleware
 - Rate limiting on API endpoints
 - Health checks on all services
+- Horizontal scaling for PDF workers
+- Prometheus metrics & Grafana dashboards
+- Automated backups
 - No exposed ports except 80/443
+
+### Production Guides
+
+- [AWS EC2 Deployment Guide](docs/production/AWS_EC2_DEPLOYMENT_GUIDE.md) - Deploy to AWS EC2
+- [Docker Hub Registry Guide](docs/production/DOCKER_HUB_REGISTRY_GUIDE.md) - Container registry setup
+- [Production Readiness Plan](docs/production/PRODUCTION_READINESS_PLAN.md) - 6-week implementation plan
+- [Deployment Runbook](docs/production/DEPLOYMENT_RUNBOOK.md) - Step-by-step procedures
+- [Monitoring Guide](docs/production/monitoring/README.md) - Observability setup
 
 ## Google OAuth Setup
 
@@ -142,10 +178,29 @@ A web application that converts University of Pretoria (UP) class schedule PDFs 
 | Script | Description |
 |--------|-------------|
 | `scripts/deploy.sh` | Full deployment: pull, build, migrate, restart |
+| `scripts/deploy-from-registry.sh` | Deploy from Docker Hub registry images |
+| `scripts/build-and-push.sh` | Build and push images to Docker Hub |
 | `scripts/rollback.sh` | Rollback failed deployment |
 | `scripts/backup-all.sh` | Backup database and files with 7-day retention |
 | `scripts/verify-deployment.sh` | Verify deployment health |
 | `scripts/init-minio.sh` | Initialize MinIO bucket |
+
+### Docker Registry Deployment
+
+For production deployments using Docker Hub:
+
+```bash
+# Set your Docker Hub username
+export DOCKER_HUB_USERNAME=yourusername
+
+# Build and push images
+./scripts/build-and-push.sh 1.0.0
+
+# Deploy from registry
+./scripts/deploy-from-registry.sh 1.0.0
+```
+
+See [Docker Hub Registry Guide](docs/production/DOCKER_HUB_REGISTRY_GUIDE.md) for detailed instructions.
 
 ### Backup & Recovery
 
@@ -199,12 +254,12 @@ See [.env.example](.env.example) for all available configuration options.
 ├── backend/           # NestJS API server
 ├── pdf-worker/        # Python PDF parsing service
 ├── traefik/           # Reverse proxy configuration
+├── monitoring/        # Prometheus & Grafana configuration
 ├── scripts/           # Deployment and utility scripts
 ├── docs/              # Comprehensive documentation
-├── e2e/               # End-to-end tests
-├── SourceFiles/       # Sample UP PDF schedules
-├── V1/                # Legacy CLI version (deprecated)
-└── V2/                # CLI version with Google Calendar API
+├── e2e/               # End-to-end tests (Playwright)
+├── load-tests/        # Performance testing (k6)
+└── SourceFiles/       # Sample UP PDF schedules
 ```
 
 ## Documentation
@@ -213,22 +268,53 @@ Comprehensive documentation is available in the `docs/` directory:
 
 ### Quick Links
 - **[Documentation Index](docs/INDEX.md)** - Complete documentation overview
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Common commands and workflows
 - **[Getting Started Guide](docs/guides/getting-started.md)** - Setup and first use
 - **[Architecture Overview](docs/architecture/overview.md)** - System design
-- **[API Documentation](backend/API_DOCUMENTATION.md)** - REST API reference
 
 ### Documentation Structure
-- **Architecture**: System design, data flow, deployment
-- **Components**: Frontend, backend, PDF worker, infrastructure
-- **Guides**: User guides, troubleshooting, FAQ
-- **Development**: Setup, testing, contributing, standards
-- **Operations**: Deployment, monitoring, backup, security
+
+```
+docs/
+├── architecture/      # System design and data flow
+├── components/        # Service-specific documentation
+├── guides/           # User guides and tutorials
+├── development/      # Development setup and standards
+└── production/       # Production deployment and operations
+    ├── deployment/   # Deployment procedures
+    ├── backup/       # Backup and recovery
+    ├── monitoring/   # Monitoring and alerting
+    ├── rollback/     # Rollback procedures
+    └── troubleshooting/  # Common issues and solutions
+```
+
+### Key Documentation
+
+**Getting Started:**
+- [Getting Started Guide](docs/guides/getting-started.md)
+- [Quick Reference](docs/QUICK_REFERENCE.md)
+
+**Architecture:**
+- [System Overview](docs/architecture/overview.md)
+- [Data Flow](docs/architecture/data-flow.md)
+
+**Components:**
+- [Frontend Documentation](docs/components/frontend.md)
+- [Backend Documentation](docs/components/backend.md)
+- [PDF Worker Documentation](docs/components/pdf-worker.md)
+
+**Production:**
+- [Production Documentation Index](docs/production/INDEX.md)
+- [AWS EC2 Deployment Guide](docs/production/AWS_EC2_DEPLOYMENT_GUIDE.md)
+- [Docker Hub Registry Guide](docs/production/DOCKER_HUB_REGISTRY_GUIDE.md)
+- [Deployment Runbook](docs/production/DEPLOYMENT_RUNBOOK.md)
+- [Backup Guide](docs/production/backup/README.md)
+- [Monitoring Guide](docs/production/monitoring/README.md)
+
+**Development:**
+- [Development Guide](docs/development/README.md)
 
 See [docs/INDEX.md](docs/INDEX.md) for the complete documentation index.
-
-## Legacy CLI Versions
-
-The `V1/` and `V2/` directories contain standalone Python CLI tools for PDF-to-calendar conversion. See [V2/README.md](V2/README.md) for CLI usage.
 
 ## Contributing
 
