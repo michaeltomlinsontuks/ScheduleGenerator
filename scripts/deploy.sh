@@ -4,10 +4,42 @@
 # =============================================================================
 # Pulls latest code, rebuilds containers, runs migrations, and performs
 # rolling updates with health check verification between each service update.
+#
+# Usage:
+#   ./deploy.sh                    # Standard deployment
+#   ./deploy.sh --with-rollback    # Deploy with automatic rollback on failure
+#
 # Requirements: 12.2
 # =============================================================================
 
 set -e
+
+# Parse command line arguments
+WITH_ROLLBACK=false
+for arg in "$@"; do
+    case $arg in
+        --with-rollback)
+            WITH_ROLLBACK=true
+            shift
+            ;;
+        --help)
+            echo "Usage: $0 [OPTIONS]"
+            echo ""
+            echo "Options:"
+            echo "  --with-rollback    Automatically rollback on deployment failure"
+            echo "  --help             Show this help message"
+            echo ""
+            echo "Environment Variables:"
+            echo "  GIT_BRANCH         Git branch to deploy (default: main)"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $arg"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
 
 # Configuration
 COMPOSE_FILE="docker-compose.yml"
@@ -25,6 +57,10 @@ NC='\033[0m' # No Color
 
 echo "=== Zero-Downtime Deployment Script ==="
 echo "Branch: ${GIT_BRANCH}"
+if [ "$WITH_ROLLBACK" = true ]; then
+    echo -e "${YELLOW}Rollback Protection: ENABLED${NC}"
+    echo "Deployment will automatically rollback on failure"
+fi
 echo "Started at: $(date)"
 echo ""
 
@@ -44,6 +80,40 @@ log_warn() {
 log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
+
+# Rollback on failure (if enabled)
+rollback_on_failure() {
+    local exit_code=$?
+    
+    if [ $exit_code -ne 0 ] && [ "$WITH_ROLLBACK" = true ]; then
+        echo ""
+        log_error "Deployment failed with exit code: ${exit_code}"
+        log_warn "Automatic rollback is enabled, initiating rollback..."
+        echo ""
+        
+        # Check if rollback script exists
+        if [ -f "scripts/rollback.sh" ]; then
+            log_info "Executing rollback script..."
+            bash scripts/rollback.sh || {
+                log_error "Rollback script failed!"
+                log_error "Manual intervention required"
+                exit 1
+            }
+            log_info "Rollback completed successfully"
+            exit 1
+        else
+            log_error "Rollback script not found at scripts/rollback.sh"
+            log_error "Manual rollback required"
+            log_error "Backup location: ${BACKUP_DIR}"
+            exit 1
+        fi
+    fi
+}
+
+# Set trap for automatic rollback on failure
+if [ "$WITH_ROLLBACK" = true ]; then
+    trap rollback_on_failure EXIT
+fi
 
 # Check if a service is healthy
 check_service_health() {
@@ -428,3 +498,5 @@ echo "  2. Check metrics: Visit Grafana dashboard"
 echo "  3. Verify functionality: Test critical user flows"
 echo ""
 log_warn "If rollback is needed, backup is available at: ${BACKUP_DIR}"
+
+exit 0
