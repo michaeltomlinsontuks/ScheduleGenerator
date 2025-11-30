@@ -6,16 +6,21 @@ import { Button, Card, Alert } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
 import { useAuth } from '@/hooks/useAuth';
+import { useWorkflowGuard } from '@/hooks/useWorkflowGuard';
 import { calendarService } from '@/services/calendarService';
 import { formatDateRange } from '@/utils/dates';
 import { getColorById } from '@/utils/colors';
 import { mapEventsToConfig } from '@/utils/eventMapper';
+import { clearWorkflowState, clearAllState } from '@/utils/stateManagement';
 
 /**
  * Generate Page - Display summary and output options
- * Requirements: 5.1, 5.2, 5.3, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.3
+ * Requirements: 1.1, 1.2, 5.1, 5.2, 5.3, 6.1, 6.2, 6.3, 6.4, 7.1, 7.2, 7.3, 7.5
  */
 export default function GeneratePage() {
+  // Guard this page - redirect if requirements not met
+  useWorkflowGuard('generate');
+  
   const router = useRouter();
   const [isGeneratingIcs, setIsGeneratingIcs] = useState(false);
   const [isSyncingCalendar, setIsSyncingCalendar] = useState(false);
@@ -93,7 +98,15 @@ export default function GeneratePage() {
       URL.revokeObjectURL(url);
 
       setDownloadStatus('success');
-      setSuccessMessage(`Successfully generated calendar with ${selectedEvents.length} events!`);
+      setSuccessMessage(`Successfully generated calendar with ${selectedEvents.length} events! Your workflow state has been cleared.`);
+      
+      // Clear workflow state after successful download
+      try {
+        clearWorkflowState();
+      } catch (clearError) {
+        console.error('Failed to clear workflow state after download:', clearError);
+        // Don't fail the download if state clearing fails
+      }
     } catch (error) {
       console.error('Failed to generate ICS:', error);
       setDownloadStatus('error');
@@ -141,7 +154,15 @@ export default function GeneratePage() {
       });
 
       setSyncStatus('success');
-      setSuccessMessage(`Successfully added ${response.data.count} events to Google Calendar!`);
+      setSuccessMessage(`Successfully added ${response.data.count} events to Google Calendar! Your workflow state has been cleared.`);
+      
+      // Clear workflow state after successful sync
+      try {
+        clearWorkflowState();
+      } catch (clearError) {
+        console.error('Failed to clear workflow state after sync:', clearError);
+        // Don't fail the sync if state clearing fails
+      }
     } catch (error) {
       console.error('Failed to sync to Google Calendar:', error);
       setSyncStatus('error');
@@ -160,9 +181,17 @@ export default function GeneratePage() {
 
   // Handle upload another PDF
   const handleUploadAnother = () => {
-    resetEvents();
-    resetConfig();
-    router.push('/upload');
+    try {
+      // Clear all state (workflow + config, but preserve theme)
+      clearAllState();
+      router.push('/upload');
+    } catch (error) {
+      console.error('Failed to clear state when uploading another PDF:', error);
+      // Fallback to manual reset if clearAllState fails
+      resetEvents();
+      resetConfig();
+      router.push('/upload');
+    }
   };
 
   // Handle back navigation
@@ -177,26 +206,6 @@ export default function GeneratePage() {
     setErrorMessage(null);
     setSuccessMessage(null);
   };
-
-  // If no events, show empty state
-  if (events.length === 0 || selectedIds.size === 0) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mt-8 text-center">
-          <h1 className="text-2xl font-bold text-base-content mb-4">
-            No Events Selected
-          </h1>
-          <p className="text-base-content/70 mb-6">
-            Please go back and select events to generate your calendar.
-          </p>
-          <Button variant="primary" onClick={() => router.push('/preview')}>
-            Go to Preview
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">

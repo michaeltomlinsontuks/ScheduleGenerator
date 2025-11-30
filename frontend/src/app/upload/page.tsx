@@ -7,20 +7,38 @@ import { Button } from '@/components/common';
 import { useUpload, useJobStatus } from '@/hooks';
 import { useEventStore } from '@/stores/eventStore';
 
-type UploadPhase = 'idle' | 'uploading' | 'processing';
+type UploadPhase = 'idle' | 'uploading' | 'processing' | 'resuming';
 
 export default function UploadPage() {
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
   const hasNavigated = useRef(false);
+  const hasCheckedResume = useRef(false);
   
   // Use real API hooks
   const { upload, progress: uploadProgress, isUploading, error: uploadError, reset: resetUpload } = useUpload();
   const jobId = useEventStore((state) => state.jobId);
+  const events = useEventStore((state) => state.events);
+  const setJobId = useEventStore((state) => state.setJobId);
+  const setJobStatus = useEventStore((state) => state.setJobStatus);
+  
+  // Poll for job status when in processing or resuming phase
   const { status: jobStatus, error: jobError } = useJobStatus(
-    uploadPhase === 'processing' ? jobId : null
+    (uploadPhase === 'processing' || uploadPhase === 'resuming') ? jobId : null
   );
+
+  // Check for existing job on mount and resume if needed
+  useEffect(() => {
+    if (hasCheckedResume.current) return;
+    hasCheckedResume.current = true;
+
+    // If we have a jobId but no events, resume polling
+    if (jobId && events.length === 0) {
+      console.log('Resuming job polling for jobId:', jobId);
+      setUploadPhase('resuming');
+    }
+  }, [jobId, events.length]);
 
   // Derive the display status from the current state
   const { uploadStatus, errorMessage } = useMemo(() => {
@@ -43,6 +61,11 @@ export default function UploadPage() {
       return { uploadStatus: 'complete' as const, errorMessage: null };
     }
     
+    // Map resuming to processing for display
+    if (uploadPhase === 'resuming') {
+      return { uploadStatus: 'processing' as const, errorMessage: null };
+    }
+    
     // Return current phase
     return { uploadStatus: uploadPhase, errorMessage: null };
   }, [uploadError, jobError, jobStatus, uploadPhase]);
@@ -62,6 +85,7 @@ export default function UploadPage() {
     setSelectedFile(file);
     setUploadPhase('idle');
     hasNavigated.current = false;
+    hasCheckedResume.current = true; // Prevent resume check after manual file selection
     resetUpload();
   }, [resetUpload]);
 
@@ -69,6 +93,7 @@ export default function UploadPage() {
     setSelectedFile(null);
     setUploadPhase('idle');
     hasNavigated.current = false;
+    hasCheckedResume.current = true; // Prevent resume check after manual file removal
     resetUpload();
   }, [resetUpload]);
 
@@ -89,16 +114,23 @@ export default function UploadPage() {
   }, [selectedFile, upload]);
 
   const handleRetry = useCallback(() => {
+    // Clear job state on failure
+    setJobId(null);
+    setJobStatus(null);
     setUploadPhase('idle');
     hasNavigated.current = false;
+    hasCheckedResume.current = true; // Prevent resume check after retry
     resetUpload();
-  }, [resetUpload]);
+  }, [resetUpload, setJobId, setJobStatus]);
 
   const isProcessing = uploadStatus === 'uploading' || uploadStatus === 'processing';
   
   // Calculate display progress: during upload show upload progress, during processing show 100
   const displayProgress = uploadStatus === 'uploading' ? uploadProgress : 
                           uploadStatus === 'processing' ? 100 : uploadProgress;
+
+  // Custom message for resuming state
+  const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' : errorMessage || undefined;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -131,7 +163,7 @@ export default function UploadPage() {
           <UploadProgress
             progress={displayProgress}
             status={uploadStatus}
-            message={errorMessage || undefined}
+            message={displayMessage}
           />
         )}
 

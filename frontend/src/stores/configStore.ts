@@ -4,6 +4,8 @@
  */
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { getStorageAdapter } from '@/utils/storage';
+import { showErrorToast, showWarningToast } from '@/utils/toast';
 
 interface ConfigState {
   semesterStart: Date | null;
@@ -32,14 +34,34 @@ const initialState: ConfigState = {
   selectedCalendarId: null,
 };
 
-// Custom storage to handle Date serialization
-const dateStorage = createJSONStorage<ConfigState>(() => localStorage, {
-  reviver: (_key, value) => {
-    // Revive date strings back to Date objects
-    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
-      return new Date(value);
+// Custom storage to handle Date serialization with error handling
+const dateStorage = createJSONStorage<ConfigState>(() => getStorageAdapter('localStorage'), {
+  // Serialize: Convert Date to ISO string
+  replacer: (_key, value) => {
+    try {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return value;
+    } catch (error) {
+      console.error('Error serializing config store:', error);
+      showErrorToast('Failed to save configuration. Please try again.');
+      return value;
     }
-    return value;
+  },
+  // Deserialize: Convert ISO string back to Date
+  reviver: (_key, value) => {
+    try {
+      // Revive date strings back to Date objects
+      if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
+        return new Date(value);
+      }
+      return value;
+    } catch (error) {
+      console.error('Error deserializing config store:', error);
+      showWarningToast('Some configuration data could not be restored.');
+      return value;
+    }
   },
 });
 
@@ -48,20 +70,63 @@ export const useConfigStore = create<ConfigStore>()(
     (set) => ({
       ...initialState,
 
-      setSemesterStart: (date) => set({ semesterStart: date }),
+      setSemesterStart: (date) => {
+        try {
+          set({ semesterStart: date });
+        } catch (error) {
+          console.error('Failed to set semester start:', error);
+          showErrorToast('Failed to save semester start date.');
+          throw error;
+        }
+      },
 
-      setSemesterEnd: (date) => set({ semesterEnd: date }),
+      setSemesterEnd: (date) => {
+        try {
+          set({ semesterEnd: date });
+        } catch (error) {
+          console.error('Failed to set semester end:', error);
+          showErrorToast('Failed to save semester end date.');
+          throw error;
+        }
+      },
 
-      setModuleColor: (module, colorId) =>
-        set((state) => ({
-          moduleColors: { ...state.moduleColors, [module]: colorId },
-        })),
+      setModuleColor: (module, colorId) => {
+        try {
+          set((state) => ({
+            moduleColors: { ...state.moduleColors, [module]: colorId },
+          }));
+        } catch (error) {
+          console.error('Failed to set module color:', error);
+          showErrorToast('Failed to save module color.');
+        }
+      },
 
-      setTheme: (theme) => set({ theme }),
+      setTheme: (theme) => {
+        try {
+          set({ theme });
+        } catch (error) {
+          console.error('Failed to set theme:', error);
+          showErrorToast('Failed to save theme preference.');
+        }
+      },
 
-      setSelectedCalendarId: (calendarId) => set({ selectedCalendarId: calendarId }),
+      setSelectedCalendarId: (calendarId) => {
+        try {
+          set({ selectedCalendarId: calendarId });
+        } catch (error) {
+          console.error('Failed to set calendar ID:', error);
+          showErrorToast('Failed to save calendar selection.');
+        }
+      },
 
-      reset: () => set(initialState),
+      reset: () => {
+        try {
+          set(initialState);
+        } catch (error) {
+          console.error('Failed to reset config store:', error);
+          showErrorToast('Failed to reset configuration.');
+        }
+      },
     }),
     {
       name: 'schedule-config',
@@ -73,6 +138,18 @@ export const useConfigStore = create<ConfigStore>()(
         semesterEnd: state.semesterEnd,
         selectedCalendarId: state.selectedCalendarId,
       }),
+      // Handle storage errors gracefully
+      onRehydrateStorage: () => (_state, error) => {
+        if (error) {
+          console.error('Failed to rehydrate config store:', error);
+          showWarningToast(
+            'Could not restore your preferences. Using default settings.',
+            7000
+          );
+          // Reset to initial state on error
+          useConfigStore.getState().reset();
+        }
+      },
     }
   )
 );

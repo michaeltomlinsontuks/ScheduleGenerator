@@ -6,6 +6,7 @@ import { BulkActions, EventFilter } from '@/components/preview';
 import { Button } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
+import { useWorkflowGuard } from '@/hooks/useWorkflowGuard';
 import type { ParsedEvent } from '@/types';
 
 type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
@@ -13,9 +14,12 @@ const DAYS_ORDER: DayOfWeek[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', '
 
 /**
  * Preview Page - Display parsed events with selection and filtering
- * Requirements: 6.1, 6.2, 6.9, 1.1, 2.1, 3.1
+ * Requirements: 6.1, 6.2, 6.9, 1.1, 2.1, 3.1, 7.1, 7.5
  */
 export default function PreviewPage() {
+  // Workflow guard - redirects to upload if no events
+  useWorkflowGuard('preview');
+
   const router = useRouter();
   const [filterModule, setFilterModule] = useState<string>('all');
   const [activeDay, setActiveDay] = useState<DayOfWeek>('Monday');
@@ -147,25 +151,6 @@ export default function PreviewPage() {
     }
     return eventsToFilter;
   }, [pdfType, groupByDay, groupByDate, activeDay, activeDate, filterModule]);
-
-  // If no events, show empty state
-  if (events.length === 0) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mt-8 text-center">
-          <h1 className="text-2xl font-bold text-base-content mb-4">
-            No Events Found
-          </h1>
-          <p className="text-base-content/70 mb-6">
-            Please upload a PDF schedule first to preview events.
-          </p>
-          <Button variant="primary" onClick={handleBack}>
-            Go to Upload
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   // Get page title based on mode
   const getPageTitle = () => {

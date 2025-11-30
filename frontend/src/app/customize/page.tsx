@@ -8,13 +8,18 @@ import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
 import { useAuth } from '@/hooks/useAuth';
 import { useCalendars } from '@/hooks/useCalendars';
+import { useWorkflowGuard } from '@/hooks/useWorkflowGuard';
 
 /**
  * Customize Page - Assign colors to modules and set semester dates
- * Requirements: 7.1, 7.7, 7.8, 7.9, 1.1, 2.1, 3.1
+ * Requirements: 7.1, 7.7, 7.8, 7.9, 1.1, 2.1, 3.1, 7.2, 7.5
  */
 export default function CustomizePage() {
   const router = useRouter();
+  
+  // Workflow guard - Requirements: 7.2, 7.5
+  // Redirects to preview page if no events or selections exist
+  useWorkflowGuard('customize');
 
   // Auth hook - Requirements: 4.1
   const { isAuthenticated, isLoading: isAuthLoading, login } = useAuth();
@@ -23,7 +28,6 @@ export default function CustomizePage() {
   const { calendars, isLoading: isCalendarsLoading, fetchCalendars, createCalendar } = useCalendars();
 
   // Event store
-  const events = useEventStore((state) => state.events);
   const selectedIds = useEventStore((state) => state.selectedIds);
   const getSelectedEvents = useEventStore((state) => state.getSelectedEvents);
   const pdfType = useEventStore((state) => state.pdfType);
@@ -105,25 +109,6 @@ export default function CustomizePage() {
   const handleGenerate = () => {
     router.push('/generate');
   };
-
-  // If no events, show empty state
-  if (events.length === 0 || selectedIds.size === 0) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mt-8 text-center">
-          <h1 className="text-2xl font-bold text-base-content mb-4">
-            No Events Selected
-          </h1>
-          <p className="text-base-content/70 mb-6">
-            Please go back and select events to customize.
-          </p>
-          <Button variant="primary" onClick={handleBack}>
-            Go to Preview
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   // Get page title based on mode - Requirements: 1.1, 2.1, 3.1
   const pageTitle = useMemo(() => {

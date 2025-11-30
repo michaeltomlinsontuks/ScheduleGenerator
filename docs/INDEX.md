@@ -17,6 +17,8 @@ Complete documentation for the UP Schedule Generator V3 system.
 
 ### For DevOps
 - **[Deployment Guide](../DEPLOYMENT.md)** - Production deployment
+- **[Production Overview](./production/README.md)** - Production scaling and readiness
+- **[Scalability Assessment](./production/SCALABILITY_ASSESSMENT.md)** - High-load readiness analysis
 - **[Infrastructure](./components/infrastructure.md)** - Infrastructure components
 - **[Monitoring](./operations/monitoring.md)** - Monitoring and observability
 
@@ -34,6 +36,11 @@ docs/
 │   ├── backend.md             # Backend (NestJS)
 │   ├── pdf-worker.md          # PDF Worker (Python)
 │   └── infrastructure.md      # Infrastructure components
+├── production/                # Production documentation
+│   ├── README.md              # Production overview
+│   ├── SCALABILITY_ASSESSMENT.md  # Readiness analysis
+│   ├── IMPLEMENTATION_GUIDE.md    # Scaling implementation
+│   └── LOAD_TESTING.md        # Performance testing
 ├── guides/                    # User guides
 │   ├── getting-started.md     # Setup guide
 │   ├── uploading-pdfs.md      # Upload guide
@@ -236,6 +243,52 @@ Coding standards and best practices.
 - Error handling
 - Logging
 
+## Production Documentation
+
+### [Production Overview](./production/README.md)
+Complete guide to production deployment and scaling.
+
+**Covers**:
+- Quick start by scale tier
+- Critical priorities
+- Performance targets
+- Resource requirements
+- Monitoring checklist
+- Common issues
+
+### [Scalability Assessment](./production/SCALABILITY_ASSESSMENT.md)
+Comprehensive analysis of production readiness for high user loads.
+
+**Covers**:
+- Current capabilities and limitations
+- Critical gaps for high-scale deployment
+- Resource requirements by scale tier
+- Cost estimates
+- Immediate action plan
+- Testing recommendations
+
+### [Implementation Guide](./production/IMPLEMENTATION_GUIDE.md)
+Step-by-step instructions for implementing scalability improvements.
+
+**Covers**:
+- PDF worker horizontal scaling
+- Job queue configuration
+- Database connection pooling
+- Redis optimization
+- Rate limiting implementation
+- Monitoring setup
+
+### [Load Testing Guide](./production/LOAD_TESTING.md)
+Validate system performance under various load conditions.
+
+**Covers**:
+- K6 load testing setup
+- Test scenarios (baseline, stress, spike, soak)
+- Performance benchmarks
+- Monitoring during tests
+- Results analysis
+- Troubleshooting
+
 ## Operations Guides
 
 ### [Deployment](./operations/deployment.md)
@@ -356,11 +409,11 @@ When adding or updating documentation:
 
 ### Planned Documentation
 - [ ] Advanced customization guide
-- [ ] Performance tuning guide
-- [ ] Scaling guide
 - [ ] Migration guide (V2 to V3)
 - [ ] API client libraries
 - [ ] Video tutorials
+- [x] Performance tuning guide (see Production docs)
+- [x] Scaling guide (see Production docs)
 
 ### Documentation Improvements
 - [ ] Add more diagrams
