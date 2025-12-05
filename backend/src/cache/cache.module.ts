@@ -15,6 +15,7 @@ import type { RedisClientOptions } from 'redis';
             host: configService.get<string>('redis.host'),
             port: configService.get<number>('redis.port'),
           },
+          password: configService.get<string>('redis.password'),
         }),
         ttl: 300000, // Default TTL: 5 minutes (in milliseconds)
         max: 1000, // Maximum number of items in cache
@@ -23,4 +24,4 @@ import type { RedisClientOptions } from 'redis';
   ],
   exports: [NestCacheModule],
 })
-export class CacheModule {}
+export class CacheModule { }

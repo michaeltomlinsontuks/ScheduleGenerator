@@ -12,7 +12,7 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
   NODE_ENV = "production"
   # Update these with actual Fly.io internal DNS or secrets
   POSTGRES_HOST = "schedgen-db.internal"
-  REDIS_HOST = "schedgen-redis.internal"
+  # Redis is set via secrets (REDIS_URL) - see fly secrets
   # CORS: Allow frontend to make requests
   FRONTEND_URL = "https://schedgen-frontend.fly.dev"
   # Google OAuth callback URL for production

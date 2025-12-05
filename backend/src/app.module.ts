@@ -67,6 +67,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
         connection: {
           host: configService.get<string>('redis.host'),
           port: configService.get<number>('redis.port'),
+          password: configService.get<string>('redis.password'),
         },
       }),
     }),
@@ -98,4 +99,4 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }
