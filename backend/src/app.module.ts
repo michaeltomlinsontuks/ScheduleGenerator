@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BullModule } from '@nestjs/bullmq';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AppConfigModule } from './config/config.module.js';
+import { CacheModule } from './cache/cache.module.js';
 import { Job } from './jobs/entities/job.entity.js';
 import { StorageModule } from './storage/storage.module.js';
 import { UploadModule } from './upload/upload.module.js';
@@ -16,7 +16,6 @@ import { ParserModule } from './parser/parser.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { CalendarModule } from './calendar/calendar.module.js';
 import { HealthModule } from './health/health.module.js';
-import { CacheModule } from './cache/cache.module.js';
 import { MetricsModule } from './metrics/metrics.module.js';
 import { CustomThrottlerGuard } from './common/guards/custom-throttler.guard.js';
 import { MetricsInterceptor } from './common/interceptors/metrics.interceptor.js';
@@ -27,7 +26,7 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
     AppConfigModule,
     CacheModule,
     MetricsModule,
-    // Schedule module for cron jobs
+    // Schedule module for cron jobs (cleanup, etc.)
     ScheduleModule.forRoot(),
     // Rate limiting configuration
     ThrottlerModule.forRoot([
@@ -59,16 +58,6 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
         // Connection retry logic
         retryAttempts: 3,
         retryDelay: 3000, // 3 seconds between retry attempts
-      }),
-    }),
-    BullModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        connection: {
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
-          password: configService.get<string>('redis.password'),
-        },
       }),
     }),
     StorageModule,

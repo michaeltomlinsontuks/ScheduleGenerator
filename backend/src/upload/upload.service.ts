@@ -1,44 +1,38 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
 import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { Job, JobStatus, PdfType } from '../jobs/entities/job.entity.js';
+import { Job, JobStatus, PdfType, ParsedEvent } from '../jobs/entities/job.entity.js';
 import { User } from '../auth/entities/user.entity.js';
-import { StorageService } from '../storage/storage.service.js';
+import { ParserService } from '../parser/parser.service.js';
 import { validatePdfContent } from '../common/validators/pdf-content.validator.js';
 import { UploadResponseDto } from './dto/upload-response.dto.js';
 import { MulterFile } from '../common/pipes/file-validation.pipe.js';
-import { PDF_PROCESSING_QUEUE } from '../jobs/jobs.module.js';
-import { PdfJobData } from '../jobs/jobs.processor.js';
 import { StorageQuotaExceededException } from './exceptions/storage-quota-exceeded.exception.js';
 
 @Injectable()
 export class UploadService {
+  private readonly logger = new Logger(UploadService.name);
+
   constructor(
     @InjectRepository(Job)
     private readonly jobRepository: Repository<Job>,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly storageService: StorageService,
-    @InjectQueue(PDF_PROCESSING_QUEUE)
-    private readonly pdfProcessingQueue: Queue<PdfJobData>,
-  ) {}
+    private readonly parserService: ParserService,
+  ) { }
 
   /**
-   * Process an uploaded PDF file:
+   * Process an uploaded PDF file synchronously:
    * 1. Check user storage quota (if user is authenticated)
    * 2. Validate PDF content to determine type (lecture/test/exam)
-   * 3. Upload to MinIO storage
-   * 4. Create job record in database
-   * 5. Update user storage usage
-   * 6. Queue job for processing
-   * 7. Return job ID for status tracking
+   * 3. Call parser service to extract events
+   * 4. Create job record in database with results
+   * 5. Return job ID, events, and PDF type immediately
    *
    * @param file - The uploaded PDF file
    * @param userId - Optional user ID for quota tracking
-   * @returns UploadResponseDto with job ID and PDF type
+   * @returns UploadResponseDto with job ID, events, and PDF type
    * @throws BadRequestException if PDF validation fails
    * @throws StorageQuotaExceededException if user quota is exceeded
    */
@@ -67,26 +61,23 @@ export class UploadService {
         }
       }
     }
-    // Validate PDF content and determine type (async operation)
+
+    // Validate PDF content and determine type
     let pdfType: PdfType;
     try {
       pdfType = await validatePdfContent(file.buffer);
     } catch (error) {
-      // Convert validation errors to BadRequestException (400 status)
       const message =
         error instanceof Error ? error.message : 'PDF validation failed';
       throw new BadRequestException(message);
     }
 
-    // Generate unique S3 key for storage
+    // Generate unique S3 key for storage (used for cleanup tracking)
     const s3Key = `${uuidv4()}-${file.originalname}`;
 
-    // Upload file to MinIO
-    await this.storageService.uploadFile(s3Key, file.buffer, file.mimetype);
-
-    // Create job record with detected PDF type and user association
+    // Create job record with pending status
     const job = this.jobRepository.create({
-      status: JobStatus.PENDING,
+      status: JobStatus.PROCESSING,
       pdfType,
       s3Key,
       result: null,
@@ -94,8 +85,52 @@ export class UploadService {
       fileSizeBytes: fileSize,
       userId: userId ?? null,
     });
-
     const savedJob = await this.jobRepository.save(job);
+
+    this.logger.log({
+      message: 'Processing PDF synchronously',
+      jobId: savedJob.id,
+      pdfType,
+      fileSize,
+    });
+
+    // Parse PDF synchronously
+    let parsedEvents: ParsedEvent[];
+    try {
+      parsedEvents = await this.parserService.parsePdf(file.buffer, pdfType);
+
+      // Update job with completed status and results
+      savedJob.status = JobStatus.COMPLETED;
+      savedJob.result = parsedEvents;
+      savedJob.completedAt = new Date();
+
+      // Set expiration to 24 hours after completion
+      const expiresAt = new Date(savedJob.completedAt);
+      expiresAt.setHours(expiresAt.getHours() + 24);
+      savedJob.expiresAt = expiresAt;
+
+      await this.jobRepository.save(savedJob);
+
+      this.logger.log({
+        message: 'PDF processed successfully',
+        jobId: savedJob.id,
+        eventCount: parsedEvents.length,
+      });
+    } catch (error) {
+      // Update job with failed status
+      savedJob.status = JobStatus.FAILED;
+      savedJob.error = error instanceof Error ? error.message : 'Unknown error';
+      savedJob.completedAt = new Date();
+      await this.jobRepository.save(savedJob);
+
+      this.logger.error({
+        message: 'PDF processing failed',
+        jobId: savedJob.id,
+        error: savedJob.error,
+      });
+
+      throw new BadRequestException(`Failed to parse PDF: ${savedJob.error}`);
+    }
 
     // Update user storage usage if authenticated
     if (userId) {
@@ -106,17 +141,12 @@ export class UploadService {
       );
     }
 
-    // Queue job for processing with BullMQ, passing detected pdfType
-    await this.pdfProcessingQueue.add('process-pdf', {
-      jobId: savedJob.id,
-      s3Key,
-      pdfType, // Ensure pdfType is correctly passed to job queue
-    });
-
     return {
       jobId: savedJob.id,
       pdfType: savedJob.pdfType,
-      message: 'PDF uploaded successfully and queued for processing',
+      status: 'completed',
+      events: parsedEvents,
+      message: 'PDF processed successfully',
     };
   }
 

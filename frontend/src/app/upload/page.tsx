@@ -15,14 +15,14 @@ export default function UploadPage() {
   const [uploadPhase, setUploadPhase] = useState<UploadPhase>('idle');
   const hasNavigated = useRef(false);
   const hasCheckedResume = useRef(false);
-  
+
   // Use real API hooks
   const { upload, progress: uploadProgress, isUploading, error: uploadError, reset: resetUpload } = useUpload();
   const jobId = useEventStore((state) => state.jobId);
   const events = useEventStore((state) => state.events);
   const setJobId = useEventStore((state) => state.setJobId);
   const setJobStatus = useEventStore((state) => state.setJobStatus);
-  
+
   // Poll for job status when in processing or resuming phase
   const { status: jobStatus, error: jobError } = useJobStatus(
     (uploadPhase === 'processing' || uploadPhase === 'resuming') ? jobId : null
@@ -49,37 +49,20 @@ export default function UploadPage() {
     if (jobError) {
       return { uploadStatus: 'error' as const, errorMessage: jobError };
     }
-    if (jobStatus?.status === 'failed') {
-      return { 
-        uploadStatus: 'error' as const, 
-        errorMessage: jobStatus.error || 'Failed to process PDF. Please try again.' 
-      };
-    }
-    
-    // Check for completion
-    if (jobStatus?.status === 'completed') {
+
+    // Check for completion - if we have events, we're done
+    if (events.length > 0 && hasNavigated.current) {
       return { uploadStatus: 'complete' as const, errorMessage: null };
     }
-    
+
     // Map resuming to processing for display
     if (uploadPhase === 'resuming') {
       return { uploadStatus: 'processing' as const, errorMessage: null };
     }
-    
+
     // Return current phase
     return { uploadStatus: uploadPhase, errorMessage: null };
-  }, [uploadError, jobError, jobStatus, uploadPhase]);
-
-  // Handle navigation on completion
-  useEffect(() => {
-    if (jobStatus?.status === 'completed' && !hasNavigated.current) {
-      hasNavigated.current = true;
-      const timer = setTimeout(() => {
-        router.push('/preview');
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [jobStatus, router]);
+  }, [uploadError, jobError, events.length, uploadPhase]);
 
   const handleFileSelect = useCallback((file: File) => {
     setSelectedFile(file);
@@ -104,14 +87,25 @@ export default function UploadPage() {
 
     try {
       // Upload the file using the real API
-      await upload(selectedFile);
-      // After successful upload, start polling for job status
-      setUploadPhase('processing');
+      // With synchronous processing, events come back immediately
+      const events = await upload(selectedFile);
+
+      // Upload succeeded and events are now in store
+      // Navigate directly to preview
+      if (events && events.length > 0) {
+        hasNavigated.current = true;
+        setTimeout(() => {
+          router.push('/preview');
+        }, 500);
+      } else {
+        throw new Error('No events parsed from PDF');
+      }
     } catch {
       // Error is already handled by the derived state
-      // but we catch here to prevent unhandled promise rejection
+      // Reset phase to allow retry
+      setUploadPhase('idle');
     }
-  }, [selectedFile, upload]);
+  }, [selectedFile, upload, router]);
 
   const handleRetry = useCallback(() => {
     // Clear job state on failure
@@ -124,10 +118,10 @@ export default function UploadPage() {
   }, [resetUpload, setJobId, setJobStatus]);
 
   const isProcessing = uploadStatus === 'uploading' || uploadStatus === 'processing';
-  
+
   // Calculate display progress: during upload show upload progress, during processing show 100
-  const displayProgress = uploadStatus === 'uploading' ? uploadProgress : 
-                          uploadStatus === 'processing' ? 100 : uploadProgress;
+  const displayProgress = uploadStatus === 'uploading' ? uploadProgress :
+    uploadStatus === 'processing' ? 100 : uploadProgress;
 
   // Custom message for resuming state
   const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' : errorMessage || undefined;

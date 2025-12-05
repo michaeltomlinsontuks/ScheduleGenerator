@@ -1,10 +1,14 @@
 import { api } from './api';
+import type { ParsedEvent } from '@/types';
 
 /**
- * Response from PDF upload endpoint
+ * Response from PDF upload endpoint - now includes events directly
  */
 export interface UploadResponse {
   jobId: string;
+  pdfType: 'lecture' | 'test' | 'exam';
+  status: 'completed' | 'failed';
+  events: ParsedEvent[];
   message: string;
 }
 
@@ -14,6 +18,7 @@ export interface UploadResponse {
 export const uploadService = {
   /**
    * Upload a PDF file for processing
+   * Returns parsed events immediately (synchronous processing)
    * @param file - The PDF file to upload
    * @param onProgress - Optional callback for upload progress (0-100)
    */

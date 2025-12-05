@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
 import { ParserService } from './parser.service.js';
-import { PARSER_SERVICE } from '../jobs/jobs.processor.js';
 
 @Module({
   imports: [
@@ -10,13 +9,7 @@ import { PARSER_SERVICE } from '../jobs/jobs.processor.js';
       maxRedirects: 5,
     }),
   ],
-  providers: [
-    ParserService,
-    {
-      provide: PARSER_SERVICE,
-      useExisting: ParserService,
-    },
-  ],
-  exports: [ParserService, PARSER_SERVICE],
+  providers: [ParserService],
+  exports: [ParserService],
 })
-export class ParserModule {}
+export class ParserModule { }

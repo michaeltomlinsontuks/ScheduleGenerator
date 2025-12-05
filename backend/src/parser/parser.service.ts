@@ -3,7 +3,6 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { PdfType, ParsedEvent } from '../jobs/entities/job.entity.js';
-import { IParserService } from '../jobs/jobs.processor.js';
 import FormData from 'form-data';
 
 export interface ParserResponse {
@@ -11,7 +10,7 @@ export interface ParserResponse {
 }
 
 @Injectable()
-export class ParserService implements IParserService {
+export class ParserService {
   private readonly logger = new Logger(ParserService.name);
   private readonly parserUrl: string;
 
@@ -49,7 +48,7 @@ export class ParserService implements IParserService {
       this.logger.log(
         `Parser returned ${response.data.events.length} events`,
       );
-      
+
       // Transform Python worker response to match backend ParsedEvent interface
       const transformedEvents: ParsedEvent[] = response.data.events.map((event: any, index: number) => ({
         id: event.id || this.generateEventId(event, index),
@@ -63,7 +62,7 @@ export class ParserService implements IParserService {
         venue: event.Venue || event.venue || event.location || '',
         isRecurring: event.isRecurring !== undefined ? event.isRecurring : true,
       }));
-      
+
       return transformedEvents;
     } catch (error) {
       this.logger.error(`Parser service error: ${error}`);
@@ -72,17 +71,17 @@ export class ParserService implements IParserService {
       );
     }
   }
-  
+
   /**
    * Generate a unique ID for an event based on its properties
    */
   private generateEventId(_event: any, _index: number): string {
     const crypto = require('crypto');
-    
+
     // Generate a random UUID v4 for each event
     return crypto.randomUUID ? crypto.randomUUID() : this.generateUUIDv4();
   }
-  
+
   /**
    * Generate a UUID v4 (fallback for older Node versions)
    */

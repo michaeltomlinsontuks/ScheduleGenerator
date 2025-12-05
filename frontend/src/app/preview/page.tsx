@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { BulkActions, EventFilter } from '@/components/preview';
+import { BulkActions, EventFilter, EventCard } from '@/components/preview';
 import { Button } from '@/components/common';
 import { useEventStore } from '@/stores/eventStore';
 import { useConfigStore } from '@/stores/configStore';
@@ -53,7 +53,7 @@ export default function PreviewPage() {
     };
 
     for (const event of events) {
-      if (event.day) {
+      if (event.day && Object.prototype.hasOwnProperty.call(grouped, event.day)) {
         grouped[event.day as DayOfWeek].push(event);
       }
     }
@@ -71,10 +71,9 @@ export default function PreviewPage() {
     const grouped: Record<string, ParsedEvent[]> = {};
 
     for (const event of events) {
-      // For test/exam events, we need to extract the date
-      // Assuming events have a 'date' field or we can derive it from other fields
-      const eventDate = (event as any).date || 'Unknown Date';
-      
+      // For test/exam events, use the date field
+      const eventDate = event.date || 'Unknown Date';
+
       if (!grouped[eventDate]) {
         grouped[eventDate] = [];
       }
@@ -103,7 +102,7 @@ export default function PreviewPage() {
   }, [groupByDate]);
 
   // Set initial active date when dates are available
-  useMemo(() => {
+  useEffect(() => {
     if (pdfType !== 'lecture' && sortedDates.length > 0 && !activeDate) {
       setActiveDate(sortedDates[0]);
     }
@@ -137,7 +136,7 @@ export default function PreviewPage() {
   // Filter events based on mode
   const filteredEvents = useMemo(() => {
     let eventsToFilter: ParsedEvent[];
-    
+
     if (pdfType === 'lecture') {
       // Use day-based grouping for lectures
       eventsToFilter = groupByDay[activeDay];
@@ -145,7 +144,7 @@ export default function PreviewPage() {
       // Use date-based grouping for tests/exams
       eventsToFilter = groupByDate[activeDate] || [];
     }
-    
+
     if (filterModule && filterModule !== 'all') {
       return eventsToFilter.filter((e) => e.module === filterModule);
     }
@@ -178,7 +177,7 @@ export default function PreviewPage() {
             Review and select events to include
           </p>
         </div>
-        
+
         {/* Compact Summary Stats */}
         <div className="flex gap-4 text-sm">
           <div className="text-center">
@@ -204,7 +203,7 @@ export default function PreviewPage() {
           onSelectAll={selectAll}
           onDeselectAll={deselectAll}
         />
-        
+
         <EventFilter
           modules={uniqueModules}
           selectedModule={filterModule}
@@ -250,19 +249,16 @@ export default function PreviewPage() {
         <div className="card-body">
           {filteredEvents.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredEvents.map((event) => {
-                const EventCard = require('@/components/preview/EventCard').EventCard;
-                return (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    selected={selectedIds.has(event.id)}
-                    onToggle={() => toggleEvent(event.id)}
-                    colorHex={getColorHex(event.module)}
-                    pdfType={pdfType || undefined}
-                  />
-                );
-              })}
+              {filteredEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  selected={selectedIds.has(event.id)}
+                  onToggle={() => toggleEvent(event.id)}
+                  colorHex={getColorHex(event.module)}
+                  pdfType={pdfType || undefined}
+                />
+              ))}
             </div>
           ) : (
             <div className="text-center py-12 text-base-content/60">

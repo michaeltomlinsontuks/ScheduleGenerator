@@ -1,20 +1,18 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UploadController } from './upload.controller.js';
 import { UploadService } from './upload.service.js';
 import { Job } from '../jobs/entities/job.entity.js';
 import { User } from '../auth/entities/user.entity.js';
-import { StorageModule } from '../storage/storage.module.js';
-import { JobsModule } from '../jobs/jobs.module.js';
+import { ParserModule } from '../parser/parser.module.js';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Job, User]),
-    StorageModule,
-    forwardRef(() => JobsModule),
+    ParserModule,
   ],
   controllers: [UploadController],
   providers: [UploadService],
   exports: [UploadService],
 })
-export class UploadModule {}
+export class UploadModule { }

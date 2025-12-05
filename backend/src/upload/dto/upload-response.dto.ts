@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsUUID, IsEnum, IsString } from 'class-validator';
-import { PdfType } from '../../jobs/entities/job.entity.js';
+import { IsUUID, IsEnum, IsString, IsArray, ValidateNested, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { PdfType, ParsedEvent } from '../../jobs/entities/job.entity.js';
 
 export class UploadResponseDto {
   @ApiProperty({
@@ -11,35 +12,36 @@ export class UploadResponseDto {
   jobId!: string;
 
   @ApiProperty({
-    description:
-      'Type of PDF detected based on content analysis. ' +
-      'LECTURE: Contains "Lectures" text, recurring weekly events. ' +
-      'TEST: Contains "Semester Tests" text, one-time test events. ' +
-      'EXAM: Contains "Exams" text, one-time exam events.',
+    description: 'Type of PDF detected based on content analysis',
     enum: PdfType,
     enumName: 'PdfType',
     example: PdfType.LECTURE,
-    examples: {
-      lecture: {
-        summary: 'Lecture Schedule',
-        value: 'lecture',
-      },
-      test: {
-        summary: 'Test Schedule',
-        value: 'test',
-      },
-      exam: {
-        summary: 'Exam Schedule',
-        value: 'exam',
-      },
-    },
   })
   @IsEnum(PdfType)
   pdfType!: PdfType;
 
   @ApiProperty({
+    description: 'Processing status',
+    enum: ['completed', 'failed'],
+    example: 'completed',
+  })
+  @IsString()
+  status!: 'completed' | 'failed';
+
+  @ApiProperty({
+    description: 'Parsed calendar events from the PDF',
+    type: 'array',
+    isArray: true,
+  })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Object)
+  @IsOptional()
+  events?: ParsedEvent[];
+
+  @ApiProperty({
     description: 'Status message',
-    example: 'PDF uploaded successfully and queued for processing',
+    example: 'PDF processed successfully',
   })
   @IsString()
   message!: string;
