@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
 import { Job, JobStatus, PdfType, ParsedEvent } from '../jobs/entities/job.entity.js';
 import { User } from '../auth/entities/user.entity.js';
@@ -20,6 +21,7 @@ export class UploadService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly parserService: ParserService,
+    private readonly configService: ConfigService,
   ) { }
 
   /**
@@ -99,9 +101,29 @@ export class UploadService {
     try {
       parsedEvents = await this.parserService.parsePdf(file.buffer, pdfType);
 
+      // Filter events based on current semester for lecture modes
+      // Tests and exams are usually not semester-specific, but we filter them too
+      const semesterInfo = this.getCurrentSemesterInfo();
+      let filteredEvents = parsedEvents;
+
+      if (semesterInfo) {
+        filteredEvents = parsedEvents.filter(event => {
+          if (!event.semester) return true; // Keep events with no semester info
+          // Keep Year modules ('Y') or matching semester (e.g. 'S1' matches 'S1')
+          return event.semester === 'Y' || event.semester === semesterInfo.name;
+        });
+
+        this.logger.log({
+          message: 'Filtered events by semester',
+          semester: semesterInfo.name,
+          originalCount: parsedEvents.length,
+          filteredCount: filteredEvents.length,
+        });
+      }
+
       // Update job with completed status and results
       savedJob.status = JobStatus.COMPLETED;
-      savedJob.result = parsedEvents;
+      savedJob.result = filteredEvents;
       savedJob.completedAt = new Date();
 
       // Set expiration to 24 hours after completion
@@ -114,8 +136,10 @@ export class UploadService {
       this.logger.log({
         message: 'PDF processed successfully',
         jobId: savedJob.id,
-        eventCount: parsedEvents.length,
+        eventCount: filteredEvents.length,
       });
+
+      parsedEvents = filteredEvents; // Use filtered events for response
     } catch (error) {
       // Update job with failed status
       savedJob.status = JobStatus.FAILED;
@@ -196,5 +220,54 @@ export class UploadService {
       ),
       availableBytes: user.storageQuotaBytes - user.storageUsedBytes,
     };
+  }
+
+  /**
+   * Determine current semester based on today's date and env vars
+   * Returns the semester name and date range, or null if not configured
+   */
+  private getCurrentSemesterInfo(): { name: string; start: string; end: string } | null {
+    const now = new Date();
+    const s1Start = this.configService.get<string>('FIRST_SEMESTER_START');
+    const s1End = this.configService.get<string>('FIRST_SEMESTER_END');
+    const s2Start = this.configService.get<string>('SECOND_SEMESTER_START');
+    const s2End = this.configService.get<string>('SECOND_SEMESTER_END');
+
+    if (!s1Start || !s1End || !s2Start || !s2End) {
+      return null;
+    }
+
+    const dS1Start = new Date(s1Start);
+    const dS1End = new Date(s1End);
+    const dS2Start = new Date(s2Start);
+    const dS2End = new Date(s2End);
+
+    // 1. If we are currently IN a semester, return it
+    if (now >= dS1Start && now <= dS1End) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+    if (now >= dS2Start && now <= dS2End) {
+      return { name: 'S2', start: s2Start, end: s2End };
+    }
+
+    // 2. If we are in a break, return the NEXT semester
+
+    // Before S1 starts -> S1 is next
+    if (now < dS1Start) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+
+    // Between S1 end and S2 start -> S2 is next
+    if (now > dS1End && now < dS2Start) {
+      return { name: 'S2', start: s2Start, end: s2End };
+    }
+
+    // After S2 ends -> next year's S1 (using current year's dates)
+    // Note: Ideally, env vars should be updated for the new year
+    if (now > dS2End) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+
+    return null;
   }
 }

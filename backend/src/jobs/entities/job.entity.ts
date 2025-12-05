@@ -32,6 +32,7 @@ export interface ParsedEvent {
   startTime: string;
   endTime: string;
   venue: string;
+  semester?: string;
   isRecurring: boolean;
 }
 

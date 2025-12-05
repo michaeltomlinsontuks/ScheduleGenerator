@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  
+
   // Determine stepper state based on current path
   const getStepperProps = () => {
     if (pathname === '/upload') return { showStepper: true, currentStep: 1 as const };
@@ -51,6 +51,7 @@ export default function RootLayout({
       <head>
         <title>UP Schedule Generator</title>
         <meta name="description" content="Convert your UP PDF schedule to calendar events" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-base-100 flex flex-col`}

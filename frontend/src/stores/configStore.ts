@@ -32,9 +32,59 @@ const getInitialDate = (envVar: string | undefined): Date | null => {
   return isNaN(date.getTime()) ? null : date;
 };
 
+// Helper to get current semester dates based on environment variables
+const getCurrentSemesterDefaults = () => {
+  const now = new Date();
+
+  // Parse Env Vars
+  const s1Start = process.env.NEXT_PUBLIC_FIRST_SEMESTER_START ? new Date(process.env.NEXT_PUBLIC_FIRST_SEMESTER_START) : null;
+  const s1End = process.env.NEXT_PUBLIC_FIRST_SEMESTER_END ? new Date(process.env.NEXT_PUBLIC_FIRST_SEMESTER_END) : null;
+  const s2Start = process.env.NEXT_PUBLIC_SECOND_SEMESTER_START ? new Date(process.env.NEXT_PUBLIC_SECOND_SEMESTER_START) : null;
+  const s2End = process.env.NEXT_PUBLIC_SECOND_SEMESTER_END ? new Date(process.env.NEXT_PUBLIC_SECOND_SEMESTER_END) : null;
+
+  // Check if dates are valid
+  const isS1Valid = s1Start && s1End && !isNaN(s1Start.getTime()) && !isNaN(s1End.getTime());
+  const isS2Valid = s2Start && s2End && !isNaN(s2Start.getTime()) && !isNaN(s2End.getTime());
+
+  // Determine current semester
+  // 1. If currently IN a semester, return it
+  if (isS1Valid && now >= s1Start && now <= s1End) {
+    return { start: s1Start, end: s1End };
+  }
+
+  if (isS2Valid && now >= s2Start && now <= s2End) {
+    return { start: s2Start, end: s2End };
+  }
+
+  // 2. If in a break, return the NEXT semester
+
+  // Before S1 -> S1 is next
+  if (isS1Valid && now < s1Start) {
+    return { start: s1Start, end: s1End };
+  }
+
+  // Between S1 and S2 -> S2 is next
+  if (isS2Valid && isS1Valid && now > s1End && now < s2Start) {
+    return { start: s2Start, end: s2End };
+  }
+
+  // After S2 -> Next year's S1 is next
+  if (isS1Valid && isS2Valid && now > s2End) {
+    return { start: s1Start, end: s1End };
+  }
+
+  // Check legacy env vars as last resort
+  const legacyStart = getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_START_DATE);
+  const legacyEnd = getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_END_DATE);
+
+  return { start: legacyStart, end: legacyEnd };
+};
+
+const defaultDates = getCurrentSemesterDefaults();
+
 const initialState: ConfigState = {
-  semesterStart: getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_START_DATE),
-  semesterEnd: getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_END_DATE),
+  semesterStart: defaultDates.start,
+  semesterEnd: defaultDates.end,
   moduleColors: {},
   theme: 'light',
   selectedCalendarId: null,

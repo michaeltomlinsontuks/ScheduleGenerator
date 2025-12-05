@@ -8,6 +8,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   ApiTags,
   ApiOperation,
@@ -37,7 +38,8 @@ export class CalendarController {
     private readonly calendarService: GoogleCalendarService,
     private readonly icsService: IcsService,
     private readonly authService: AuthService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) { }
 
   @Get('calendars')
   @ApiBearerAuth()
@@ -118,26 +120,48 @@ export class CalendarController {
     @Req() req: RequestWithUser,
     @Body() dto: AddEventsDto,
   ): Promise<{ message: string; count: number }> {
-    // Validate semester dates are provided for lecture mode
+    // Determine semester dates if not provided
+    let semesterStart = dto.semesterStart;
+    let semesterEnd = dto.semesterEnd;
+    let semester = '';
+
     const hasRecurringEvents = dto.events.some(event => event.isRecurring);
-    if (hasRecurringEvents && (!dto.semesterStart || !dto.semesterEnd)) {
-      throw new HttpException(
-        {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Semester start and end dates are required for recurring events (lecture mode)',
-          error: 'MISSING_SEMESTER_DATES',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+
+    if (hasRecurringEvents && (!semesterStart || !semesterEnd)) {
+      const semesterInfo = this.getCurrentSemesterInfo();
+      if (semesterInfo) {
+        semesterStart = semesterStart || semesterInfo.start;
+        semesterEnd = semesterEnd || semesterInfo.end;
+        semester = semesterInfo.name;
+      } else {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: 'Semester start and end dates are required for recurring events and could not be determined automatically.',
+            error: 'MISSING_SEMESTER_DATES',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
+    // Filter events based on semester if detected
+    let eventsToProcess = dto.events;
+    if (semester) {
+      eventsToProcess = dto.events.filter(event => {
+        if (!event.semester) return true; // Keep events with no semester info
+        // Keep Year modules ('Y') or matching semester
+        return event.semester === 'Y' || event.semester === semester;
+      });
     }
 
     const accessToken = this.getAccessToken(req);
     await this.calendarService.addEvents(
       accessToken,
       dto.calendarId,
-      dto.events,
-      dto.semesterStart,
-      dto.semesterEnd,
+      eventsToProcess,
+      semesterStart,
+      semesterEnd,
     );
     return {
       message: 'Events added successfully',
@@ -185,23 +209,45 @@ export class CalendarController {
     @Body() dto: GenerateIcsDto,
     @Res() res: Response,
   ): Promise<void> {
-    // Validate semester dates are provided for lecture mode
+    // Determine semester dates if not provided
+    let semesterStart = dto.semesterStart;
+    let semesterEnd = dto.semesterEnd;
+    let semester = '';
+
     const hasRecurringEvents = dto.events.some(event => event.isRecurring);
-    if (hasRecurringEvents && (!dto.semesterStart || !dto.semesterEnd)) {
-      throw new HttpException(
-        {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: 'Semester start and end dates are required for recurring events (lecture mode)',
-          error: 'MISSING_SEMESTER_DATES',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+
+    if (hasRecurringEvents && (!semesterStart || !semesterEnd)) {
+      const semesterInfo = this.getCurrentSemesterInfo();
+      if (semesterInfo) {
+        semesterStart = semesterStart || semesterInfo.start;
+        semesterEnd = semesterEnd || semesterInfo.end;
+        semester = semesterInfo.name;
+      } else {
+        throw new HttpException(
+          {
+            statusCode: HttpStatus.BAD_REQUEST,
+            message: 'Semester start and end dates are required for recurring events and could not be determined automatically.',
+            error: 'MISSING_SEMESTER_DATES',
+          },
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+
+    // Filter events based on semester if detected
+    let eventsToProcess = dto.events;
+    if (semester) {
+      eventsToProcess = dto.events.filter(event => {
+        if (!event.semester) return true; // Keep events with no semester info
+        // Keep Year modules ('Y') or matching semester (e.g. 'S1' matches 'S1')
+        return event.semester === 'Y' || event.semester === semester;
+      });
     }
 
     const icsContent = this.icsService.generateIcs(
-      dto.events,
-      dto.semesterStart,
-      dto.semesterEnd,
+      eventsToProcess,
+      semesterStart,
+      semesterEnd,
     );
 
     res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
@@ -210,6 +256,56 @@ export class CalendarController {
       'attachment; filename="schedule.ics"',
     );
     res.send(icsContent);
+  }
+
+  /**
+   * Determine current semester based on today's date and env vars
+   */
+  private getCurrentSemesterInfo(): { name: string; start: string; end: string } | null {
+    const now = new Date();
+    const s1Start = this.configService.get<string>('FIRST_SEMESTER_START');
+    const s1End = this.configService.get<string>('FIRST_SEMESTER_END');
+    const s2Start = this.configService.get<string>('SECOND_SEMESTER_START');
+    const s2End = this.configService.get<string>('SECOND_SEMESTER_END');
+
+    if (!s1Start || !s1End || !s2Start || !s2End) {
+      return null;
+    }
+
+    const dS1Start = new Date(s1Start);
+    const dS1End = new Date(s1End);
+    const dS2Start = new Date(s2Start);
+    const dS2End = new Date(s2End);
+
+    // 1. If we are currently IN a semester, return it
+    if (now >= dS1Start && now <= dS1End) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+    if (now >= dS2Start && now <= dS2End) {
+      return { name: 'S2', start: s2Start, end: s2End };
+    }
+
+    // 2. If we are in a break, return the NEXT semester
+
+    // Before S1 starts -> S1 is next
+    if (now < dS1Start) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+
+    // Between S1 end and S2 start -> S2 is next
+    if (now > dS1End && now < dS2Start) {
+      return { name: 'S2', start: s2Start, end: s2End };
+    }
+
+    // We return 'S1' so filtering works. 
+    // Note: The dates will be the configured dates (current year). 
+    // Ideally, env vars should be updated for the new year, or we logic to add 1 year. 
+    // For safety/simplicity, we return the configured dates.
+    if (now > dS2End) {
+      return { name: 'S1', start: s1Start, end: s1End };
+    }
+
+    return null;
   }
 
   /**

@@ -53,6 +53,7 @@ export class ParserService {
       const transformedEvents: ParsedEvent[] = response.data.events.map((event: any, index: number) => ({
         id: event.id || this.generateEventId(event, index),
         module: event.Module || event.module || '',
+        semester: event.Offered || event.offered,
         activity: event.Activity || event.activity || '',
         group: event.Group || event.group,
         day: event.Day || event.day,

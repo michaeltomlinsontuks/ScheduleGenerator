@@ -100,4 +100,12 @@ export class EventConfigDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @ApiPropertyOptional({
+    description: 'Semester (e.g., S1, S2, Y). Used for filtering events.',
+    example: 'S1',
+  })
+  @IsOptional()
+  @IsString()
+  semester?: string;
 }

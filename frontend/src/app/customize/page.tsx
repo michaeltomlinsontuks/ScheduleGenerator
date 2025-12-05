@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ModuleColorPicker, DateRangePicker, CalendarSelector } from '@/components/customize';
 import { Button, Card, Alert } from '@/components/common';
@@ -130,6 +130,16 @@ export default function CustomizePage() {
     }
     return 'Assign colors to your modules';
   }, [pdfType]);
+
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-2 max-w-6xl">

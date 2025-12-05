@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { GOOGLE_CALENDAR_COLORS, getColorById } from '@/utils/colors';
 
 export interface ModuleColorPickerProps {
@@ -14,10 +14,42 @@ export function ModuleColorPicker({
   colors,
   onChange,
 }: ModuleColorPickerProps) {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const getModuleColor = (module: string) => {
     const colorId = colors[module] || '7'; // Default to Peacock (blue)
     return getColorById(colorId) || GOOGLE_CALENDAR_COLORS[6];
   };
+
+  if (!isMounted) {
+    return (
+      <div className="space-y-2">
+        <div>
+          <h3 className="text-base font-semibold">Module Colors</h3>
+          <p className="text-xs text-base-content/70 mt-0.5">
+            Assign colors to each module for easy identification in your calendar.
+          </p>
+        </div>
+        <div className="space-y-1">
+          {modules.map((module) => (
+            <div
+              key={module}
+              className="flex items-center justify-between px-2 py-1.5 bg-base-200 rounded-lg"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full border border-base-300 flex-shrink-0 bg-gray-400" />
+                <span className="font-medium text-sm font-mono">{module}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-2">
@@ -27,7 +59,7 @@ export function ModuleColorPicker({
           Assign colors to each module for easy identification in your calendar.
         </p>
       </div>
-      
+
       <div className="space-y-1">
         {modules.map((module) => {
           const selectedColor = getModuleColor(module);
@@ -117,9 +149,8 @@ function ColorDropdown({ module, selectedColor, currentColorId, onChange }: Colo
           <li key={color.id}>
             <button
               type="button"
-              className={`flex items-center gap-2 ${
-                currentColorId === color.id ? 'active' : ''
-              }`}
+              className={`flex items-center gap-2 ${currentColorId === color.id ? 'active' : ''
+                }`}
               onClick={() => handleColorSelect(color.id)}
             >
               <span
