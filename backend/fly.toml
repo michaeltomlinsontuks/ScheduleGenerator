@@ -13,6 +13,10 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
   # Update these with actual Fly.io internal DNS or secrets
   POSTGRES_HOST = "schedgen-db.internal"
   REDIS_HOST = "schedgen-redis.internal"
+  # CORS: Allow frontend to make requests
+  FRONTEND_URL = "https://schedgen-frontend.fly.dev"
+  # Google OAuth callback URL for production
+  GOOGLE_CALLBACK_URL = "https://schedgen-backend.fly.dev/api/auth/google/callback"
 
 [http_service]
   internal_port = 3001

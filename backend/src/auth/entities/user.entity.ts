@@ -22,7 +22,7 @@ export class User {
   @Column()
   lastName!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   picture!: string | null;
 
   @Column({ type: 'bigint', default: 0 })
