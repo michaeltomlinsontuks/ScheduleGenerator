@@ -13,6 +13,12 @@ primary_region = "jnb"
   # URL to your backend Fly app
   NEXT_PUBLIC_API_URL = "https://schedgen-backend.fly.dev"
 
+  # Semester dates (2026)
+  NEXT_PUBLIC_FIRST_SEMESTER_START = "2026-02-09"
+  NEXT_PUBLIC_FIRST_SEMESTER_END = "2026-05-22"
+  NEXT_PUBLIC_SECOND_SEMESTER_START = "2026-07-13"
+  NEXT_PUBLIC_SECOND_SEMESTER_END = "2026-10-16"
+
 [http_service]
   internal_port = 3000
   force_https = true

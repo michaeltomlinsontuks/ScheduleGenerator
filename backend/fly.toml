@@ -15,6 +15,12 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
 
   # CORS: Allow frontend to make requests
   FRONTEND_URL = "https://schedgen-frontend.fly.dev"
+
+  # Semester dates (2026)
+  FIRST_SEMESTER_START = "2026-02-09"
+  FIRST_SEMESTER_END = "2026-05-22"
+  SECOND_SEMESTER_START = "2026-07-13"
+  SECOND_SEMESTER_END = "2026-10-16"
   # Google OAuth callback URL for production
   GOOGLE_CALLBACK_URL = "https://schedgen-backend.fly.dev/api/auth/google/callback"
 

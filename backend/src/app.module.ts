@@ -9,7 +9,6 @@ import { AppService } from './app.service.js';
 import { AppConfigModule } from './config/config.module.js';
 import { CacheModule } from './cache/cache.module.js';
 import { Job } from './jobs/entities/job.entity.js';
-import { StorageModule } from './storage/storage.module.js';
 import { UploadModule } from './upload/upload.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
 import { ParserModule } from './parser/parser.module.js';
@@ -60,7 +59,6 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
         retryDelay: 3000, // 3 seconds between retry attempts
       }),
     }),
-    StorageModule,
     UploadModule,
     JobsModule,
     ParserModule,

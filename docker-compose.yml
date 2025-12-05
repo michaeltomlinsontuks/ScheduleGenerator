@@ -89,18 +89,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - MINIO_ENDPOINT=minio
-      - MINIO_PORT=9000
-      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
-      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
-      - MINIO_BUCKET=${MINIO_BUCKET}
-      - MINIO_USE_SSL=false
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - GOOGLE_CALLBACK_URL=${GOOGLE_CALLBACK_URL}
-      - PDF_WORKER_URL=http://pdf-worker:5001
       - PARSER_URL=http://pdf-worker:5001
       - FRONTEND_URL=${FRONTEND_URL}
     healthcheck:
@@ -126,10 +115,13 @@ services:
       - "3001:3001"
     depends_on:
       - postgres
-      - redis
-      - minio
     networks:
       - schedgen
+
+  # =============================================================================
+  # PDF Worker - Python FastAPI Service
+  # =============================================================================
+
 
   # =============================================================================
   # PDF Worker - Python FastAPI Service
@@ -182,41 +174,7 @@ services:
   # =============================================================================
   # Redis - Job Queue
   # =============================================================================
-  redis:
-    image: redis:7-alpine
-    container_name: schedgen-redis
-    restart: unless-stopped
-    command: redis-server --appendonly yes
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - schedgen
 
-  # =============================================================================
-  # MinIO - Object Storage
-  # =============================================================================
-  minio:
-    image: minio/minio
-    container_name: schedgen-minio
-    restart: unless-stopped
-    command: server /data --console-address ":9001"
-    environment:
-      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
-      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_data:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.minio.rule=Host(`minio.${DOMAIN}`)"
-      - "traefik.http.routers.minio.entrypoints=websecure"
-      - "traefik.http.services.minio.loadbalancer.server.port=9001"
-    networks:
-      - schedgen
 
   # =============================================================================
   # Prometheus - Metrics Collection
@@ -285,10 +243,7 @@ networks:
 volumes:
   postgres_data:
     name: schedgen_postgres_data
-  redis_data:
-    name: schedgen_redis_data
-  minio_data:
-    name: schedgen_minio_data
+
   traefik_certs:
     name: schedgen_traefik_certs
   prometheus_data:

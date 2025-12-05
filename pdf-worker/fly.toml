@@ -1,25 +1,25 @@
-# Fly.io Configuration for PDF Worker
-# Deployment: fly deploy --config pdf-worker/fly.toml
+# fly.toml app configuration file generated for schedgen-pdf-worker on 2025-12-06T00:02:07+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-app = "schedgen-pdf-worker"
-primary_region = "jnb"
+app = 'schedgen-pdf-worker'
+primary_region = 'jnb'
 
 [build]
-  image = "michaeltomlinsontuks/schedgen-pdf-worker:latest"
+  image = 'michaeltomlinsontuks/schedgen-pdf-worker:latest'
 
 [env]
-  PORT = "5001"
-  PYTHONUNBUFFERED = "1"
+  PORT = '5001'
+  PYTHONUNBUFFERED = '1'
 
 [http_service]
   internal_port = 5001
-  force_https = false
-  auto_stop_machines = true
-  auto_start_machines = true
+  auto_stop_machines = 'stop'
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "512mb"
+  size = 'shared-cpu-1x'
+  memory = '512mb'
   cpus = 1
