@@ -14,9 +14,10 @@ export default () => ({
   },
   minio: {
     // Fallback to AWS S3 / Tigris environment variables if MINIO_* specific ones aren't set
+    // Remove protocol prefix from URL if present (Tigris provides full URL like https://fly.storage.tigris.dev)
     endpoint:
       process.env.MINIO_ENDPOINT ??
-      process.env.AWS_ENDPOINT_URL_S3 ??
+      (process.env.AWS_ENDPOINT_URL_S3?.replace(/^https?:\/\//, '')) ??
       'localhost',
     port: parseInt(process.env.MINIO_PORT ?? '443', 10), // Default to 443 for S3/Tigris
     accessKey:
