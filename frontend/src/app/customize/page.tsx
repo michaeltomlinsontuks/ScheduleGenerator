@@ -16,7 +16,7 @@ import { useWorkflowGuard } from '@/hooks/useWorkflowGuard';
  */
 export default function CustomizePage() {
   const router = useRouter();
-  
+
   // Workflow guard - Requirements: 7.2, 7.5
   // Redirects to preview page if no events or selections exist
   useWorkflowGuard('customize');
@@ -63,7 +63,7 @@ export default function CustomizePage() {
   // Requirements: 1.1, 2.1, 3.1 - Only require semester dates for lecture mode
   const isValid = useMemo(() => {
     const hasSelectedEvents = selectedIds.size > 0;
-    
+
     // For lecture mode, require semester dates
     if (pdfType === 'lecture') {
       return (
@@ -73,7 +73,7 @@ export default function CustomizePage() {
         hasSelectedEvents
       );
     }
-    
+
     // For test/exam modes, semester dates are not required
     return hasSelectedEvents;
   }, [pdfType, semesterStart, semesterEnd, dateError, selectedIds.size]);
@@ -175,8 +175,8 @@ export default function CustomizePage() {
                 pdfType === 'test'
                   ? 'Test schedules use fixed dates from the PDF. No semester date range is needed.'
                   : pdfType === 'exam'
-                  ? 'Exam schedules use fixed dates from the PDF. No semester date range is needed.'
-                  : 'Events use fixed dates from the PDF. No semester date range is needed.'
+                    ? 'Exam schedules use fixed dates from the PDF. No semester date range is needed.'
+                    : 'Events use fixed dates from the PDF. No semester date range is needed.'
               }
             />
           )}
@@ -187,7 +187,7 @@ export default function CustomizePage() {
             <div className="p-3">
               <h3 className="text-base font-semibold mb-1">Google Calendar Integration</h3>
               <p className="text-xs text-base-content/70 mb-2">
-                {isAuthenticated 
+                {isAuthenticated
                   ? 'Select a calendar to sync your events to Google Calendar, or create a new one.'
                   : 'Sign in with Google to sync your events to Google Calendar.'}
               </p>
@@ -203,16 +203,7 @@ export default function CustomizePage() {
                 <div className="flex justify-center mt-4">
                   <button
                     onClick={login}
-                    className="
-                      inline-flex items-center justify-center
-                      bg-white hover:bg-gray-50 active:bg-gray-100
-                      text-gray-700 font-medium
-                      border border-gray-300
-                      rounded-md shadow-sm
-                      px-6 py-3
-                      transition-all duration-150
-                      focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                    "
+                    className="google-signin-btn px-6 py-3"
                     aria-label="Sign in with Google"
                   >
                     <svg

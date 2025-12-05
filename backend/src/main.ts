@@ -35,10 +35,28 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // CORS configuration
+  // CORS configuration - support multiple origins
   const frontendUrl = configService.get<string>('frontend.url');
+  const allowedOrigins = [
+    frontendUrl,
+    'https://schedgen-frontend.fly.dev',
+    'https://tuks-pdf-calendar.co.za',
+    'https://www.tuks-pdf-calendar.co.za',
+  ].filter(Boolean); // Remove any undefined values
+
   app.enableCors({
-    origin: frontendUrl,
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests with no origin (mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      // In development, allow localhost
+      if (process.env.NODE_ENV !== 'production' && origin?.includes('localhost')) {
+        return callback(null, true);
+      }
+      callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
   });

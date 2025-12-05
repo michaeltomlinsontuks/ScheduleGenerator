@@ -15,7 +15,7 @@ import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
 @ApiTags('jobs')
 @Controller('api/jobs')
 export class JobsController {
-  constructor(private readonly jobsService: JobsService) {}
+  constructor(private readonly jobsService: JobsService) { }
 
   @Get('metrics')
   @ApiOperation({
@@ -291,7 +291,8 @@ export class JobsController {
   async getJobResult(
     @Param('id', ParseUUIDPipe) id: string,
   ): Promise<JobResultDto> {
-    const job = await this.jobsService.getJobById(id);
+    // Use fresh read from database to avoid stale cache in multi-machine deployments
+    const job = await this.jobsService.getJobByIdFresh(id);
 
     if (job.status !== JobStatus.COMPLETED) {
       throw new BadRequestException({

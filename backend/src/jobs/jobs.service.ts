@@ -36,7 +36,7 @@ export class JobsService {
     @InjectMetric('queue_jobs_waiting')
     private readonly queueJobsWaiting: Gauge<string>,
     private readonly storageService: StorageService,
-  ) {}
+  ) { }
 
   /**
    * Get cache key for a job
@@ -158,6 +158,33 @@ export class JobsService {
   }
 
   /**
+   * Get a job by its ID directly from database (bypasses cache)
+   * Use this for critical reads where you need the absolute latest state,
+   * such as when fetching results, to avoid stale cache issues in multi-machine deployments.
+   * @param id - The job UUID
+   * @returns The job if found
+   * @throws NotFoundException if job doesn't exist
+   */
+  async getJobByIdFresh(id: string): Promise<Job> {
+    const job = await this.jobRepository.findOne({ where: { id } });
+
+    if (!job) {
+      throw new NotFoundException({
+        statusCode: 404,
+        message: 'JOB_NOT_FOUND',
+        error: `Job with ID ${id} not found`,
+      });
+    }
+
+    // Update cache with fresh data
+    const ttl = this.getTTL(job.status);
+    const cacheKey = this.getCacheKey(id);
+    await this.cacheManager.set(cacheKey, job, ttl);
+
+    return job;
+  }
+
+  /**
    * Update job status and optionally set result or error
    * Invalidates cache on update
    * @param id - The job UUID
@@ -198,12 +225,12 @@ export class JobsService {
 
     if (status === JobStatus.COMPLETED || status === JobStatus.FAILED) {
       job.completedAt = new Date();
-      
+
       // Set expiration to 24 hours after completion
       const expiresAt = new Date(job.completedAt);
       expiresAt.setHours(expiresAt.getHours() + 24);
       job.expiresAt = expiresAt;
-      
+
       // Track processing duration
       const durationSeconds = (job.completedAt.getTime() - job.createdAt.getTime()) / 1000;
       this.pdfProcessingDuration.observe(
@@ -289,7 +316,7 @@ export class JobsService {
   async cleanupExpiredJobs(): Promise<void> {
     try {
       const now = new Date();
-      
+
       // Find all expired jobs
       const expiredJobs = await this.jobRepository.find({
         where: {
@@ -316,15 +343,15 @@ export class JobsService {
         try {
           // Delete the file from storage
           await this.storageService.deleteFile(job.s3Key);
-          
+
           // Invalidate cache
           await this.invalidateCache(job.id);
-          
+
           // Delete the job record
           await this.jobRepository.remove(job);
-          
+
           successCount++;
-          
+
           this.logger.debug({
             message: 'Deleted expired job',
             jobId: job.id,

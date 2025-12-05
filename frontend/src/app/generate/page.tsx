@@ -20,7 +20,7 @@ import { clearWorkflowState, clearAllState } from '@/utils/stateManagement';
 export default function GeneratePage() {
   // Guard this page - redirect if requirements not met
   useWorkflowGuard('generate');
-  
+
   const router = useRouter();
   const [isGeneratingIcs, setIsGeneratingIcs] = useState(false);
   const [isSyncingCalendar, setIsSyncingCalendar] = useState(false);
@@ -48,7 +48,7 @@ export default function GeneratePage() {
 
   // Calculate summary values
   const selectedEvents = useMemo(() => getSelectedEvents(), [getSelectedEvents, selectedIds]);
-  
+
   const uniqueModules = useMemo(() => {
     const modules = new Set(selectedEvents.map((e) => e.module));
     return Array.from(modules).sort();
@@ -77,7 +77,7 @@ export default function GeneratePage() {
     try {
       // Map events to EventConfig format
       const eventConfigs = mapEventsToConfig(selectedEvents, moduleColors);
-      
+
       // Call backend API to generate ICS
       const response = await calendarService.generateIcs({
         events: eventConfigs,
@@ -99,7 +99,7 @@ export default function GeneratePage() {
 
       setDownloadStatus('success');
       setSuccessMessage(`Successfully generated calendar with ${selectedEvents.length} events! Your workflow state has been cleared.`);
-      
+
       // Clear workflow state after successful download
       try {
         clearWorkflowState();
@@ -143,7 +143,7 @@ export default function GeneratePage() {
     try {
       // Map events to EventConfig format
       const eventConfigs = mapEventsToConfig(selectedEvents, moduleColors);
-      
+
       // Call backend API to add events to Google Calendar
       const response = await calendarService.addEvents({
         events: eventConfigs,
@@ -155,7 +155,7 @@ export default function GeneratePage() {
 
       setSyncStatus('success');
       setSuccessMessage(`Successfully added ${response.data.count} events to Google Calendar! Your workflow state has been cleared.`);
-      
+
       // Clear workflow state after successful sync
       try {
         clearWorkflowState();
@@ -166,7 +166,7 @@ export default function GeneratePage() {
     } catch (error) {
       console.error('Failed to sync to Google Calendar:', error);
       setSyncStatus('error');
-      
+
       // Handle 401 error with re-auth prompt
       const errorMsg = error instanceof Error ? error.message : 'Failed to sync to Google Calendar.';
       if (errorMsg.includes('401') || errorMsg.toLowerCase().includes('unauthorized')) {
@@ -229,7 +229,7 @@ export default function GeneratePage() {
           />
         </div>
       )}
-      
+
       {(downloadStatus === 'error' || syncStatus === 'error') && errorMessage && (
         <div className="mb-6">
           <Alert
@@ -245,7 +245,7 @@ export default function GeneratePage() {
         <h2 className="text-lg font-semibold text-base-content mb-4">
           Configuration Summary
         </h2>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Selected Events */}
           <div className="stat bg-base-200 rounded-lg p-4">
@@ -322,7 +322,7 @@ export default function GeneratePage() {
               Add to Google Calendar
             </h3>
             <p className="text-sm text-base-content/70 mb-4">
-              {isAuthenticated 
+              {isAuthenticated
                 ? 'Sync directly to your Google Calendar account'
                 : 'Sign in with Google to sync your calendar'}
             </p>
@@ -340,16 +340,7 @@ export default function GeneratePage() {
               <div className="flex justify-center">
                 <button
                   onClick={login}
-                  className="
-                    inline-flex items-center justify-center
-                    bg-white hover:bg-gray-50 active:bg-gray-100
-                    text-gray-700 font-medium
-                    border border-gray-300
-                    rounded-md shadow-sm
-                    px-6 py-3
-                    transition-all duration-150
-                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
-                  "
+                  className="google-signin-btn px-6 py-3"
                   aria-label="Sign in with Google"
                 >
                   <svg
@@ -393,7 +384,7 @@ export default function GeneratePage() {
         <Button variant="ghost" onClick={handleBack}>
           ← Back
         </Button>
-        
+
         <Button variant="secondary" onClick={handleUploadAnother}>
           Upload Another PDF
         </Button>

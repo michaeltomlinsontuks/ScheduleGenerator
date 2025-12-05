@@ -18,18 +18,7 @@ export function GoogleLoginButton({ className = '' }: GoogleLoginButtonProps) {
     <button
       onClick={login}
       disabled={isLoading}
-      className={`
-        inline-flex items-center justify-center
-        bg-white dark:bg-white hover:bg-gray-50 active:bg-gray-100
-        text-gray-800 font-medium
-        border border-gray-300 hover:border-gray-400 focus:border-blue-500
-        rounded shadow-sm hover:shadow-md
-        px-3 py-2
-        transition-all duration-150
-        disabled:opacity-50 disabled:cursor-not-allowed
-        focus:outline-none
-        ${className}
-      `}
+      className={`google-signin-btn ${className}`}
       aria-label="Sign in with Google"
     >
       {isLoading ? (
