@@ -2,10 +2,10 @@
 # Deployment: fly deploy --config pdf-worker/fly.toml
 
 app = "schedgen-pdf-worker"
-primary_region = "hjh"
+primary_region = "jnb"
 
 [build]
-  image = "yourusername/schedgen-pdf-worker:latest"
+  image = "michaeltomlinsontuks/schedgen-pdf-worker:latest"
 
 [env]
   PORT = "5001"

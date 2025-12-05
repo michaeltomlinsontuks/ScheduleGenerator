@@ -2,10 +2,10 @@
 # Deployment: fly deploy --config backend/fly.toml
 
 app = "schedgen-backend"
-primary_region = "hjh" # Johannesburg (closest to TUKS/UP)
+primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
 
 [build]
-  image = "yourusername/schedgen-backend:latest"
+  image = "michaeltomlinsontuks/schedgen-backend:latest"
 
 [env]
   PORT = "3001"

@@ -2,10 +2,10 @@
 # Deployment: fly deploy --config frontend/fly.toml
 
 app = "schedgen-frontend"
-primary_region = "hjh"
+primary_region = "jnb"
 
 [build]
-  image = "yourusername/schedgen-frontend:latest"
+  image = "michaeltomlinsontuks/schedgen-frontend:latest"
 
 [env]
   PORT = "3000"

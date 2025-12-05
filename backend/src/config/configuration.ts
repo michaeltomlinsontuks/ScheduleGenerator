@@ -12,12 +12,26 @@ export default () => ({
     port: parseInt(process.env.REDIS_PORT ?? '6379', 10),
   },
   minio: {
-    endpoint: process.env.MINIO_ENDPOINT ?? 'localhost',
-    port: parseInt(process.env.MINIO_PORT ?? '9000', 10),
-    accessKey: process.env.MINIO_ACCESS_KEY ?? 'minioadmin',
-    secretKey: process.env.MINIO_SECRET_KEY ?? 'minioadmin',
-    bucket: process.env.MINIO_BUCKET ?? 'pdf-uploads',
-    useSSL: process.env.MINIO_USE_SSL === 'true',
+    // Fallback to AWS S3 / Tigris environment variables if MINIO_* specific ones aren't set
+    endpoint:
+      process.env.MINIO_ENDPOINT ??
+      process.env.AWS_ENDPOINT_URL_S3 ??
+      'localhost',
+    port: parseInt(process.env.MINIO_PORT ?? '443', 10), // Default to 443 for S3/Tigris
+    accessKey:
+      process.env.MINIO_ACCESS_KEY ??
+      process.env.AWS_ACCESS_KEY_ID ??
+      'minioadmin',
+    secretKey:
+      process.env.MINIO_SECRET_KEY ??
+      process.env.AWS_SECRET_ACCESS_KEY ??
+      'minioadmin',
+    bucket:
+      process.env.MINIO_BUCKET ?? process.env.BUCKET_NAME ?? 'pdf-uploads',
+    useSSL:
+      process.env.MINIO_USE_SSL === 'true' ||
+      !!process.env.AWS_ENDPOINT_URL_S3, // Auto-enable SSL for Tigris/S3
+    region: process.env.MINIO_REGION ?? process.env.AWS_REGION ?? 'auto',
   },
   google: {
     clientId: process.env.GOOGLE_CLIENT_ID ?? '',

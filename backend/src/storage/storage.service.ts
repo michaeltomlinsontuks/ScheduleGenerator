@@ -14,6 +14,8 @@ export class StorageService implements OnModuleInit {
       useSSL: this.configService.get<boolean>('minio.useSSL') ?? false,
       accessKey: this.configService.get<string>('minio.accessKey') ?? '',
       secretKey: this.configService.get<string>('minio.secretKey') ?? '',
+      // Add region and addressing style for AWS/Tigris compatibility
+      region: this.configService.get<string>('minio.region'),
     });
     this.bucket = this.configService.get<string>('minio.bucket') ?? 'pdf-uploads';
   }
