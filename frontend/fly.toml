@@ -1,0 +1,27 @@
+# Fly.io Configuration for Frontend
+# Deployment: fly deploy --config frontend/fly.toml
+
+app = "schedgen-frontend"
+primary_region = "hjh"
+
+[build]
+  image = "yourusername/schedgen-frontend:latest"
+
+[env]
+  PORT = "3000"
+  NODE_ENV = "production"
+  # URL to your backend Fly app
+  NEXT_PUBLIC_API_URL = "https://schedgen-backend.fly.dev"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

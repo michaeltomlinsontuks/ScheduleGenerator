@@ -45,6 +45,7 @@ services:
   # =============================================================================
   backend:
     deploy:
+      replicas: 2  # Scale based on load, can increase to 4-6
       resources:
         limits:
           cpus: '1.0'
@@ -52,6 +53,15 @@ services:
         reservations:
           cpus: '0.5'
           memory: 512M
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: rollback
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
     environment:
       - NODE_ENV=production
       - PORT=3001
@@ -83,6 +93,14 @@ services:
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.backend.middlewares=secure-headers@file,rate-limit@file"
       - "traefik.http.services.backend.loadbalancer.server.port=3001"
+      # Sticky sessions for client affinity (uses Redis for session storage)
+      - "traefik.http.services.backend.loadbalancer.sticky.cookie=true"
+      - "traefik.http.services.backend.loadbalancer.sticky.cookie.name=schedgen_backend"
+      - "traefik.http.services.backend.loadbalancer.sticky.cookie.httpOnly=true"
+      - "traefik.http.services.backend.loadbalancer.sticky.cookie.secure=true"
+      # Health check for load balancer
+      - "traefik.http.services.backend.loadbalancer.healthcheck.path=/health"
+      - "traefik.http.services.backend.loadbalancer.healthcheck.interval=10s"
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
       interval: 30s
