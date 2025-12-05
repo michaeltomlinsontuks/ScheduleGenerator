@@ -26,9 +26,15 @@ interface ConfigActions {
 
 type ConfigStore = ConfigState & ConfigActions;
 
+const getInitialDate = (envVar: string | undefined): Date | null => {
+  if (!envVar) return null;
+  const date = new Date(envVar);
+  return isNaN(date.getTime()) ? null : date;
+};
+
 const initialState: ConfigState = {
-  semesterStart: null,
-  semesterEnd: null,
+  semesterStart: getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_START_DATE),
+  semesterEnd: getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_END_DATE),
   moduleColors: {},
   theme: 'light',
   selectedCalendarId: null,
@@ -139,7 +145,7 @@ export const useConfigStore = create<ConfigStore>()(
         selectedCalendarId: state.selectedCalendarId,
       }),
       // Handle storage errors gracefully
-      onRehydrateStorage: () => (_state, error) => {
+      onRehydrateStorage: () => (state, error) => {
         if (error) {
           console.error('Failed to rehydrate config store:', error);
           showWarningToast(
@@ -148,6 +154,19 @@ export const useConfigStore = create<ConfigStore>()(
           );
           // Reset to initial state on error
           useConfigStore.getState().reset();
+        } else if (state) {
+          // Apply environment variable defaults if persisted values are null
+          // This handles the case where a user has visited before (so storage exists with nulls)
+          // but we now want to provide a default starting point.
+          const envStart = getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_START_DATE);
+          const envEnd = getInitialDate(process.env.NEXT_PUBLIC_SEMESTER_END_DATE);
+
+          if (state.semesterStart === null && envStart) {
+            state.setSemesterStart(envStart);
+          }
+          if (state.semesterEnd === null && envEnd) {
+            state.setSemesterEnd(envEnd);
+          }
         }
       },
     }
