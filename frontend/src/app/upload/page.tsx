@@ -117,14 +117,59 @@ export default function UploadPage() {
     resetUpload();
   }, [resetUpload, setJobId, setJobStatus]);
 
+  // Emulate progress during processing phase (since it's synchronous but takes time)
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (uploadStatus === 'processing') {
+      // Start at 0 or current progress
+      let currentProgress = 0;
+
+      interval = setInterval(() => {
+        currentProgress += (1 + Math.random() * 2); // Increment by 1-3%
+        if (currentProgress > 90) {
+          currentProgress = 90; // Cap at 90% until complete
+          clearInterval(interval);
+        }
+        // We need a way to update the display progress without affecting the actual upload progress state
+        // Since we can't easily modify the hook's internal state from here, we'll likely need a local state override
+        // or just accept that we need to store this local progress.
+      }, 500);
+    }
+    return () => clearInterval(interval);
+  }, [uploadStatus]);
+
+  // We need a local state for the simulated processing progress
+  const [processingProgress, setProcessingProgress] = useState(0);
+
+  useEffect(() => {
+    if (uploadPhase === 'processing') {
+      setProcessingProgress(0);
+      const interval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) return 90;
+          return prev + (1 + Math.random() * 5); // Faster increment
+        });
+      }, 500);
+      return () => clearInterval(interval);
+    } else {
+      setProcessingProgress(0);
+    }
+  }, [uploadPhase]);
+
   const isProcessing = uploadStatus === 'uploading' || uploadStatus === 'processing';
 
-  // Calculate display progress: during upload show upload progress, during processing show 100
+  // Calculate display progress:
+  // - Uploading: Use real upload progress
+  // - Processing: Use simulated processing progress
+  // - Complete: 100%
   const displayProgress = uploadStatus === 'uploading' ? uploadProgress :
-    uploadStatus === 'processing' ? 100 : uploadProgress;
+    uploadStatus === 'processing' ? processingProgress :
+      uploadStatus === 'complete' ? 100 : 0;
 
-  // Custom message for resuming state
-  const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' : errorMessage || undefined;
+  // Custom message for resuming state or processing
+  const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' :
+    uploadPhase === 'processing' ? 'Processing PDF... This might take a moment.' :
+      errorMessage || undefined;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">

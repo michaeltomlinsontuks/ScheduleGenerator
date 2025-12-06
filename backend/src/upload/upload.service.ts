@@ -113,6 +113,18 @@ export class UploadService {
           return event.semester === 'Y' || event.semester === semesterInfo.name;
         });
 
+        // FIX: If filtering removed ALL events, but we had events initially, it likely means
+        // the user uploaded a file for a different semester (e.g. S2 file during S1).
+        // In this case, we should return the events as-is rather than an empty list.
+        if (filteredEvents.length === 0 && parsedEvents.length > 0) {
+          this.logger.warn({
+            message: 'Semester filtering resulted in 0 events. Reverting to original events.',
+            detectedSemester: semesterInfo.name,
+            originalCount: parsedEvents.length,
+          });
+          filteredEvents = parsedEvents;
+        }
+
         this.logger.log({
           message: 'Filtered events by semester',
           semester: semesterInfo.name,

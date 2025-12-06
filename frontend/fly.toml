@@ -5,7 +5,16 @@ app = "schedgen-frontend"
 primary_region = "jnb"
 
 [build]
-  image = "michaeltomlinsontuks/schedgen-frontend:latest"
+  dockerfile = "Dockerfile"
+
+  [build.args]
+    NEXT_PUBLIC_API_URL = "https://schedgen-backend.fly.dev"
+    NEXT_PUBLIC_SEMESTER_START_DATE = "2026-02-09"
+    NEXT_PUBLIC_SEMESTER_END_DATE = "2026-10-16"
+    NEXT_PUBLIC_FIRST_SEMESTER_START = "2026-02-09"
+    NEXT_PUBLIC_FIRST_SEMESTER_END = "2026-05-22"
+    NEXT_PUBLIC_SECOND_SEMESTER_START = "2026-07-13"
+    NEXT_PUBLIC_SECOND_SEMESTER_END = "2026-10-16"
 
 [env]
   PORT = "3000"
