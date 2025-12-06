@@ -8,7 +8,7 @@ primary_region = "jnb"
   dockerfile = "Dockerfile"
 
   [build.args]
-    NEXT_PUBLIC_API_URL = "https://schedgen-backend.fly.dev"
+    NEXT_PUBLIC_API_URL = "https://api.tuks-pdf-calendar.co.za"
     NEXT_PUBLIC_SEMESTER_START_DATE = "2026-02-09"
     NEXT_PUBLIC_SEMESTER_END_DATE = "2026-10-16"
     NEXT_PUBLIC_FIRST_SEMESTER_START = "2026-02-09"

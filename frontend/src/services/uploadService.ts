@@ -10,6 +10,11 @@ export interface UploadResponse {
   status: 'completed' | 'failed';
   events: ParsedEvent[];
   message: string;
+  semesterDates?: {
+    semester: 'S1' | 'S2' | null;
+    startDate: string | null;
+    endDate: string | null;
+  };
 }
 
 /**

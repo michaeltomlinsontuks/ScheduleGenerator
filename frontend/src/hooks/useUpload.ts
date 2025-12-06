@@ -7,6 +7,7 @@
 import { useState, useCallback } from 'react';
 import { uploadService } from '@/services/uploadService';
 import { useEventStore } from '@/stores/eventStore';
+import { useConfigStore } from '@/stores/configStore';
 import type { ParsedEvent } from '@/types';
 
 interface UseUploadReturn {
@@ -28,6 +29,8 @@ export function useUpload(): UseUploadReturn {
   const setEvents = useEventStore((state) => state.setEvents);
   const setJobId = useEventStore((state) => state.setJobId);
   const setJobStatus = useEventStore((state) => state.setJobStatus);
+  const setSemesterStart = useConfigStore((state) => state.setSemesterStart);
+  const setSemesterEnd = useConfigStore((state) => state.setSemesterEnd);
 
   /**
    * Upload a PDF file and get events directly
@@ -42,7 +45,7 @@ export function useUpload(): UseUploadReturn {
 
       try {
         const response = await uploadService.uploadPdf(file, setProgress);
-        const { jobId, events, pdfType, status } = response.data;
+        const { jobId, events, pdfType, status, semesterDates } = response.data;
 
         // Store job ID for reference
         setJobId(jobId);
@@ -51,6 +54,13 @@ export function useUpload(): UseUploadReturn {
           // Set events and mark as complete
           setEvents(events, pdfType);
           setJobStatus('complete');
+
+          // If backend detected semester dates, update the config store
+          if (semesterDates?.startDate && semesterDates?.endDate) {
+            setSemesterStart(new Date(semesterDates.startDate));
+            setSemesterEnd(new Date(semesterDates.endDate));
+          }
+
           return events;
         } else {
           throw new Error('Processing failed');
@@ -64,7 +74,7 @@ export function useUpload(): UseUploadReturn {
         setIsUploading(false);
       }
     },
-    [setEvents, setJobId, setJobStatus]
+    [setEvents, setJobId, setJobStatus, setSemesterStart, setSemesterEnd]
   );
 
   /**

@@ -91,12 +91,13 @@ export default function UploadPage() {
       const events = await upload(selectedFile);
 
       // Upload succeeded and events are now in store
-      // Navigate directly to preview
+      // Show complete status briefly before navigating
       if (events && events.length > 0) {
+        setUploadPhase('idle'); // Reset phase so displayProgress uses 'complete' path
         hasNavigated.current = true;
         setTimeout(() => {
           router.push('/preview');
-        }, 500);
+        }, 800); // Slightly longer delay to show completion
       } else {
         throw new Error('No events parsed from PDF');
       }
@@ -168,7 +169,7 @@ export default function UploadPage() {
 
   // Custom message for resuming state or processing
   const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' :
-    uploadPhase === 'processing' ? 'Processing PDF... This might take a moment.' :
+    uploadPhase === 'processing' || uploadPhase === 'uploading' ? 'Processing PDF... This may take up to 30 seconds.' :
       errorMessage || undefined;
 
   return (

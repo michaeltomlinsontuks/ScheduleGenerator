@@ -111,12 +111,18 @@ describe('UploadService (Sync)', () => {
 
         expect(result.events).toHaveLength(2);
         expect(result.events[0].semester).toBe('S1');
+        // Should return S1 semester dates
+        expect(result.semesterDates).toEqual({
+            semester: 'S1',
+            startDate: '2025-02-01',
+            endDate: '2025-06-30',
+        });
     });
 
-    it('should return S2 events even when current date is in S1, if ONLY S2 events are found (The Fix)', async () => {
+    it('should return S2 events and S2 dates when current date is in S1, if ONLY S2 events are found (The Fix)', async () => {
         // Current date is Feb (S1). Upload contains ONLY S2 events.
         // OLD Behavior: Filter would remove S2 events because they don't match 'S1', returning empty.
-        // NEW Behavior: Should detect empty result and return original events.
+        // NEW Behavior: Should detect empty result, return original events, AND return S2 dates.
         const s2Events = [createMockEvent('S2')];
         parserService.parsePdf.mockResolvedValue(s2Events);
 
@@ -124,6 +130,12 @@ describe('UploadService (Sync)', () => {
 
         expect(result.events).toHaveLength(1);
         expect(result.events[0].semester).toBe('S2');
+        // Should return S2 semester dates since the events are S2
+        expect(result.semesterDates).toEqual({
+            semester: 'S2',
+            startDate: '2025-07-20',
+            endDate: '2025-11-15',
+        });
     });
 
     it('should still filter out S2 events when mixed with S1 events during S1', async () => {
@@ -135,5 +147,11 @@ describe('UploadService (Sync)', () => {
 
         expect(result.events).toHaveLength(1);
         expect(result.events[0].semester).toBe('S1');
+        // Should return S1 semester dates
+        expect(result.semesterDates).toEqual({
+            semester: 'S1',
+            startDate: '2025-02-01',
+            endDate: '2025-06-30',
+        });
     });
 });

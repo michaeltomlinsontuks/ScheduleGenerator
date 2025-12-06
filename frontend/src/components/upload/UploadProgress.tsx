@@ -8,8 +8,8 @@ export interface UploadProgressProps {
   message?: string;
 }
 
-const statusConfig: Record<UploadProgressProps['status'], { 
-  label: string; 
+const statusConfig: Record<UploadProgressProps['status'], {
+  label: string;
   progressClass: string;
   icon: React.ReactNode;
 }> = {
@@ -21,7 +21,7 @@ const statusConfig: Record<UploadProgressProps['status'], {
     ),
   },
   processing: {
-    label: 'Processing PDF...',
+    label: 'Processing PDF... This may take up to 30 seconds.',
     progressClass: 'progress-primary',
     icon: (
       <span className="loading loading-spinner loading-sm text-primary" />
@@ -72,7 +72,7 @@ const statusConfig: Record<UploadProgressProps['status'], {
 export function UploadProgress({ progress, status, message }: UploadProgressProps) {
   const config = statusConfig[status];
   const displayMessage = message || config.label;
-  
+
   // Clamp progress between 0 and 100
   const clampedProgress = Math.min(100, Math.max(0, progress));
 
@@ -89,7 +89,7 @@ export function UploadProgress({ progress, status, message }: UploadProgressProp
           {clampedProgress}%
         </span>
       </div>
-      
+
       <progress
         className={`progress w-full ${config.progressClass}`}
         value={clampedProgress}

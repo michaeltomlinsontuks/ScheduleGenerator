@@ -98,6 +98,12 @@ export class UploadService {
 
     // Parse PDF synchronously
     let parsedEvents: ParsedEvent[];
+    let detectedSemesterDates: { semester: 'S1' | 'S2' | null; startDate: string | null; endDate: string | null } = {
+      semester: null,
+      startDate: null,
+      endDate: null,
+    };
+
     try {
       parsedEvents = await this.parserService.parsePdf(file.buffer, pdfType);
 
@@ -113,9 +119,9 @@ export class UploadService {
           return event.semester === 'Y' || event.semester === semesterInfo.name;
         });
 
-        // FIX: If filtering removed ALL events, but we had events initially, it likely means
+        // If filtering removed ALL events, but we had events initially, it likely means
         // the user uploaded a file for a different semester (e.g. S2 file during S1).
-        // In this case, we should return the events as-is rather than an empty list.
+        // In this case, we should return the events as-is and detect their semester.
         if (filteredEvents.length === 0 && parsedEvents.length > 0) {
           this.logger.warn({
             message: 'Semester filtering resulted in 0 events. Reverting to original events.',
@@ -123,11 +129,33 @@ export class UploadService {
             originalCount: parsedEvents.length,
           });
           filteredEvents = parsedEvents;
+
+          // Detect the actual semester from the events
+          const eventSemesters = new Set(parsedEvents.map(e => e.semester).filter(s => s && s !== 'Y'));
+          if (eventSemesters.size === 1) {
+            const actualSemester = eventSemesters.values().next().value as 'S1' | 'S2';
+            const actualSemesterInfo = this.getSemesterDates(actualSemester);
+            if (actualSemesterInfo) {
+              detectedSemesterDates = {
+                semester: actualSemester,
+                startDate: actualSemesterInfo.start,
+                endDate: actualSemesterInfo.end,
+              };
+            }
+          }
+        } else {
+          // Events matched current semester, use those dates
+          detectedSemesterDates = {
+            semester: semesterInfo.name as 'S1' | 'S2',
+            startDate: semesterInfo.start,
+            endDate: semesterInfo.end,
+          };
         }
 
         this.logger.log({
           message: 'Filtered events by semester',
           semester: semesterInfo.name,
+          detectedSemester: detectedSemesterDates.semester,
           originalCount: parsedEvents.length,
           filteredCount: filteredEvents.length,
         });
@@ -183,6 +211,7 @@ export class UploadService {
       status: 'completed',
       events: parsedEvents,
       message: 'PDF processed successfully',
+      semesterDates: detectedSemesterDates.semester ? detectedSemesterDates : undefined,
     };
   }
 
@@ -280,6 +309,24 @@ export class UploadService {
       return { name: 'S1', start: s1Start, end: s1End };
     }
 
+    return null;
+  }
+
+  /**
+   * Get the start and end dates for a specific semester
+   */
+  private getSemesterDates(semester: 'S1' | 'S2'): { start: string; end: string } | null {
+    const s1Start = this.configService.get<string>('FIRST_SEMESTER_START');
+    const s1End = this.configService.get<string>('FIRST_SEMESTER_END');
+    const s2Start = this.configService.get<string>('SECOND_SEMESTER_START');
+    const s2End = this.configService.get<string>('SECOND_SEMESTER_END');
+
+    if (semester === 'S1' && s1Start && s1End) {
+      return { start: s1Start, end: s1End };
+    }
+    if (semester === 'S2' && s2Start && s2End) {
+      return { start: s2Start, end: s2End };
+    }
     return null;
   }
 }

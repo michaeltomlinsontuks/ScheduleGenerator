@@ -45,4 +45,16 @@ export class UploadResponseDto {
   })
   @IsString()
   message!: string;
+
+  @ApiProperty({
+    description: 'Detected semester dates based on PDF content',
+    required: false,
+    example: { semester: 'S1', startDate: '2026-02-09', endDate: '2026-05-22' },
+  })
+  @IsOptional()
+  semesterDates?: {
+    semester: 'S1' | 'S2' | null;
+    startDate: string | null;
+    endDate: string | null;
+  };
 }
