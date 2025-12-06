@@ -169,7 +169,7 @@ export default function UploadPage() {
 
   // Custom message for resuming state or processing
   const displayMessage = uploadPhase === 'resuming' ? 'Resuming job...' :
-    uploadPhase === 'processing' || uploadPhase === 'uploading' ? 'Processing PDF... This may take up to 30 seconds.' :
+    uploadPhase === 'processing' || uploadPhase === 'uploading' ? 'Processing PDF... This may take up to a minute.' :
       errorMessage || undefined;
 
   return (

@@ -27,9 +27,11 @@ export function useAuth() {
 
   /**
    * Redirect to Google OAuth login
+   * @param returnUrl - Optional URL to redirect back to after authentication (defaults to current page)
    */
-  const login = () => {
-    window.location.href = authService.getLoginUrl();
+  const login = (returnUrl?: string) => {
+    const url = returnUrl || window.location.pathname;
+    window.location.href = authService.getLoginUrl(url);
   };
 
   return {

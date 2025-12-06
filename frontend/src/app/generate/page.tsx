@@ -11,7 +11,7 @@ import { calendarService } from '@/services/calendarService';
 import { formatDateRange } from '@/utils/dates';
 import { getColorById } from '@/utils/colors';
 import { mapEventsToConfig } from '@/utils/eventMapper';
-import { clearWorkflowState, clearAllState } from '@/utils/stateManagement';
+import { clearAllState } from '@/utils/stateManagement';
 
 /**
  * Generate Page - Display summary and output options
@@ -98,15 +98,7 @@ export default function GeneratePage() {
       URL.revokeObjectURL(url);
 
       setDownloadStatus('success');
-      setSuccessMessage(`Successfully generated calendar with ${selectedEvents.length} events! Your workflow state has been cleared.`);
-
-      // Clear workflow state after successful download
-      try {
-        clearWorkflowState();
-      } catch (clearError) {
-        console.error('Failed to clear workflow state after download:', clearError);
-        // Don't fail the download if state clearing fails
-      }
+      setSuccessMessage(`Successfully generated calendar with ${selectedEvents.length} events!`);
     } catch (error) {
       console.error('Failed to generate ICS:', error);
       setDownloadStatus('error');
@@ -154,15 +146,7 @@ export default function GeneratePage() {
       });
 
       setSyncStatus('success');
-      setSuccessMessage(`Successfully added ${response.data.count} events to Google Calendar! Your workflow state has been cleared.`);
-
-      // Clear workflow state after successful sync
-      try {
-        clearWorkflowState();
-      } catch (clearError) {
-        console.error('Failed to clear workflow state after sync:', clearError);
-        // Don't fail the sync if state clearing fails
-      }
+      setSuccessMessage(`Successfully added ${response.data.count} events to Google Calendar!`);
     } catch (error) {
       console.error('Failed to sync to Google Calendar:', error);
       setSyncStatus('error');
@@ -306,10 +290,10 @@ export default function GeneratePage() {
               variant="primary"
               onClick={handleDownloadICS}
               loading={isGeneratingIcs}
-              disabled={isGeneratingIcs || (pdfType === 'lecture' && (!semesterStart || !semesterEnd))}
+              disabled={isGeneratingIcs || downloadStatus === 'success' || (pdfType === 'lecture' && (!semesterStart || !semesterEnd))}
               className="w-full"
             >
-              {isGeneratingIcs ? 'Generating...' : 'Download ICS File'}
+              {downloadStatus === 'success' ? '✓ Downloaded' : isGeneratingIcs ? 'Generating...' : 'Download ICS File'}
             </Button>
           </div>
         </Card>
@@ -331,15 +315,15 @@ export default function GeneratePage() {
                 variant="primary"
                 onClick={handleAddToGoogleCalendar}
                 loading={isSyncingCalendar}
-                disabled={isSyncingCalendar || (pdfType === 'lecture' && (!semesterStart || !semesterEnd)) || !selectedCalendarId}
+                disabled={isSyncingCalendar || syncStatus === 'success' || (pdfType === 'lecture' && (!semesterStart || !semesterEnd)) || !selectedCalendarId}
                 className="w-full"
               >
-                {isSyncingCalendar ? 'Syncing...' : 'Add to Google Calendar'}
+                {syncStatus === 'success' ? '✓ Synced to Calendar' : isSyncingCalendar ? 'Syncing...' : 'Add to Google Calendar'}
               </Button>
             ) : (
               <div className="flex justify-center">
                 <button
-                  onClick={login}
+                  onClick={() => login()}
                   className="google-signin-btn px-6 py-3"
                   aria-label="Sign in with Google"
                 >

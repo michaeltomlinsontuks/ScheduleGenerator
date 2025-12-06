@@ -35,7 +35,10 @@ import { IpBlockingService } from './ip-blocking.service.js';
 interface AuthRequest {
   user?: SessionUser;
   logout: (callback: (err?: Error) => void) => void;
-  session: { destroy: (callback: (err?: Error) => void) => void };
+  session: {
+    destroy: (callback: (err?: Error) => void) => void;
+    returnUrl?: string;
+  };
 }
 
 interface AuthResponse {
@@ -51,13 +54,18 @@ export class AuthController {
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
     private readonly ipBlockingService: IpBlockingService,
-  ) {}
+  ) { }
 
   @Get('google')
   @UseGuards(IpBlockingGuard, GoogleAuthGuard)
   @ApiOperation({
     summary: 'Initiate Google OAuth',
     description: 'Redirects to Google OAuth consent screen with calendar scopes',
+  })
+  @ApiQuery({
+    name: 'returnUrl',
+    description: 'URL to redirect back to after successful authentication',
+    required: false,
   })
   @ApiOAuth2(['https://www.googleapis.com/auth/calendar'])
   @ApiResponse({
@@ -69,7 +77,7 @@ export class AuthController {
     description: 'IP address is blocked due to too many failed attempts',
   })
   async googleAuth(): Promise<void> {
-    // Guard handles the redirect to Google
+    // Guard handles the redirect to Google with returnUrl in state parameter
   }
 
   @Get('google/callback')
@@ -91,13 +99,27 @@ export class AuthController {
     description: 'IP address is blocked due to too many failed attempts',
   })
   async googleCallback(
+    @Query('state') state: string | undefined,
     @Req() _req: AuthRequest,
     @Res() res: AuthResponse,
   ): Promise<void> {
     const frontendUrl = this.configService.get<string>('frontend.url');
-    
-    // Redirect to frontend after successful authentication
-    res.redirect(`${frontendUrl}/generate`);
+
+    // Parse the return URL from the OAuth state parameter
+    let returnUrl = '/generate'; // Default fallback
+    if (state) {
+      try {
+        const stateData = JSON.parse(state);
+        if (stateData.returnUrl) {
+          returnUrl = stateData.returnUrl;
+        }
+      } catch {
+        // Invalid state, use default
+      }
+    }
+
+    // Redirect to frontend at the return URL
+    res.redirect(`${frontendUrl}${returnUrl}`);
   }
 
   @Get('status')

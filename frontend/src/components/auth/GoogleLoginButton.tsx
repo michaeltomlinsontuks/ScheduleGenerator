@@ -16,7 +16,7 @@ export function GoogleLoginButton({ className = '' }: GoogleLoginButtonProps) {
 
   return (
     <button
-      onClick={login}
+      onClick={() => login()}
       disabled={isLoading}
       className={`google-signin-btn ${className}`}
       aria-label="Sign in with Google"

@@ -14,7 +14,7 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
   POSTGRES_HOST = "schedgen-db.internal"
 
   # CORS: Allow frontend to make requests
-  FRONTEND_URL = "https://schedgen-frontend.fly.dev"
+  FRONTEND_URL = "https://tuks-pdf-calendar.co.za"
 
   # Semester dates (2026)
   FIRST_SEMESTER_START = "2026-02-09"

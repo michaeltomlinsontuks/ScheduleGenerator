@@ -6,7 +6,7 @@
  * the required state to access a particular page in the workflow.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useEventStore } from '@/stores/eventStore';
 
@@ -36,16 +36,40 @@ export function useWorkflowGuard(page: WorkflowPage) {
   const router = useRouter();
   const events = useEventStore((state) => state.events);
   const selectedIds = useEventStore((state) => state.selectedIds);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  // Wait for store hydration before checking guard
+  useEffect(() => {
+    // Check if we're already hydrated (has events in storage)
+    // The persist middleware sets _hasHydrated after rehydration
+    const unsubscribe = useEventStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+
+    // If already hydrated, set immediately
+    if (useEventStore.persist.hasHydrated()) {
+      setIsHydrated(true);
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
+    // Don't check until hydration is complete
+    if (!isHydrated) {
+      return;
+    }
+
     // Define requirements for each workflow page
     const requirements: WorkflowRequirements = {
       // Preview page requires events to be loaded
       preview: () => events.length > 0,
-      
+
       // Customize page requires events AND at least one selected event
       customize: () => events.length > 0 && selectedIds.size > 0,
-      
+
       // Generate page requires events AND at least one selected event
       generate: () => events.length > 0 && selectedIds.size > 0,
     };
@@ -61,12 +85,12 @@ export function useWorkflowGuard(page: WorkflowPage) {
     if (!requirements[page]()) {
       console.log(
         `Workflow guard: redirecting from ${page} to ${redirects[page]}`,
-        { 
-          eventsCount: events.length, 
-          selectedCount: selectedIds.size 
+        {
+          eventsCount: events.length,
+          selectedCount: selectedIds.size
         }
       );
       router.push(redirects[page]);
     }
-  }, [page, events.length, selectedIds.size, router]);
+  }, [page, events.length, selectedIds.size, router, isHydrated]);
 }

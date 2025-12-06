@@ -44,6 +44,20 @@ export class GoogleAuthGuard extends AuthGuard('google') {
   }
 
   /**
+   * Get request for authentication options
+   * This allows us to pass the returnUrl as the OAuth state parameter
+   */
+  getAuthenticateOptions(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest<Request>();
+    const returnUrl = request.query.returnUrl as string | undefined;
+
+    // Pass returnUrl in the state parameter so it survives the OAuth redirect
+    return {
+      state: returnUrl ? JSON.stringify({ returnUrl }) : undefined,
+    };
+  }
+
+  /**
    * Extracts the client IP address from the request
    * Handles proxied requests by checking X-Forwarded-For header
    */

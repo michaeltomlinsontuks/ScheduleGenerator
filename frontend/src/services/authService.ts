@@ -24,8 +24,15 @@ export interface AuthStatus {
 export const authService = {
   /**
    * Get the Google OAuth login URL
+   * @param returnUrl - Optional URL to redirect back to after authentication
    */
-  getLoginUrl: (): string => `${api.defaults.baseURL}/api/auth/google`,
+  getLoginUrl: (returnUrl?: string): string => {
+    const baseUrl = `${api.defaults.baseURL}/api/auth/google`;
+    if (returnUrl) {
+      return `${baseUrl}?returnUrl=${encodeURIComponent(returnUrl)}`;
+    }
+    return baseUrl;
+  },
 
   /**
    * Check current authentication status

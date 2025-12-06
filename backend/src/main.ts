@@ -66,8 +66,8 @@ async function bootstrap() {
   // Global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  // Global query timeout interceptor (30 seconds)
-  app.useGlobalInterceptors(new QueryTimeoutInterceptor(30000));
+  // Global query timeout interceptor (60 seconds to accommodate PDF parsing)
+  app.useGlobalInterceptors(new QueryTimeoutInterceptor(60000));
 
   // Global validation pipe with detailed error messages
   app.useGlobalPipes(

@@ -212,7 +212,7 @@ export default function CustomizePage() {
               ) : (
                 <div className="flex justify-center mt-4">
                   <button
-                    onClick={login}
+                    onClick={() => login()}
                     className="google-signin-btn px-6 py-3"
                     aria-label="Sign in with Google"
                   >

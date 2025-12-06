@@ -21,7 +21,7 @@ const statusConfig: Record<UploadProgressProps['status'], {
     ),
   },
   processing: {
-    label: 'Processing PDF... This may take up to 30 seconds.',
+    label: 'Processing PDF... This may take up to a minute.',
     progressClass: 'progress-primary',
     icon: (
       <span className="loading loading-spinner loading-sm text-primary" />
