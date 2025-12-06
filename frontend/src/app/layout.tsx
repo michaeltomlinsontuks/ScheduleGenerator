@@ -49,8 +49,8 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="schedule-light" suppressHydrationWarning>
       <head>
-        <title>UP Schedule Generator</title>
-        <meta name="description" content="Convert your UP PDF schedule to calendar events" />
+        <title>Tuks Schedule Generator</title>
+        <meta name="description" content="Convert your Tuks PDF schedule to calendar events" />
         <link rel="icon" type="image/png" href="/favicon.png" />
       </head>
       <body

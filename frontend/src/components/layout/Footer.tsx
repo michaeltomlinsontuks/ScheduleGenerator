@@ -12,7 +12,7 @@ export function Footer({ minimal = false }: FooterProps) {
     return (
       <footer className="footer footer-center p-4 bg-base-200 text-base-content border-t border-base-300">
         <aside>
-          <p>© {currentYear} UP Schedule Generator</p>
+          <p>© {currentYear} Tuks Schedule Generator</p>
         </aside>
       </footer>
     );
@@ -21,9 +21,9 @@ export function Footer({ minimal = false }: FooterProps) {
   return (
     <footer className="footer footer-center p-6 bg-base-200 text-base-content border-t border-base-300">
       <aside className="text-center">
-        <p className="font-semibold">UP Schedule Generator</p>
-        <p>Convert your UP PDF schedule to calendar events</p>
-        
+        <p className="font-semibold">Tuks Schedule Generator</p>
+        <p>Convert your Tuks PDF schedule to calendar events</p>
+
         <nav className="flex gap-4 mt-3 text-sm">
           <Link href="/privacy" className="link link-hover opacity-70 hover:opacity-100">
             Privacy Policy
@@ -33,7 +33,7 @@ export function Footer({ minimal = false }: FooterProps) {
             Terms of Service
           </Link>
         </nav>
-        
+
         <p className="text-sm opacity-70 mt-2">© {currentYear} All rights reserved</p>
       </aside>
     </footer>

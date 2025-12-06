@@ -1,4 +1,4 @@
-# UP Schedule Generator V3 - Docker Compose Configuration
+# Tuks Schedule Generator V3 - Docker Compose Configuration
 # Main configuration file for all services
 
 services:

@@ -19,21 +19,21 @@ type Theme = 'schedule-light' | 'schedule-dark';
 // Theme store using useSyncExternalStore pattern
 const themeStore = {
   listeners: new Set<() => void>(),
-  
+
   getSnapshot(): Theme {
     if (typeof window === 'undefined') return 'schedule-light';
     return (localStorage.getItem('theme') as Theme) || 'schedule-light';
   },
-  
+
   getServerSnapshot(): Theme {
     return 'schedule-light';
   },
-  
+
   subscribe(listener: () => void) {
     themeStore.listeners.add(listener);
     return () => themeStore.listeners.delete(listener);
   },
-  
+
   setTheme(newTheme: Theme) {
     localStorage.setItem('theme', newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -59,7 +59,7 @@ function useTheme() {
 // Custom hook to safely check if we're mounted (client-side)
 function useIsMounted() {
   return useSyncExternalStore(
-    () => () => {},
+    () => () => { },
     () => true,
     () => false
   );
@@ -82,7 +82,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
         <div className="navbar-start flex items-center gap-2">
           <Sidebar />
           <Link href="/" className="btn btn-ghost text-xl font-bold text-primary">
-            UP Schedule
+            Tuks Schedule
           </Link>
         </div>
 

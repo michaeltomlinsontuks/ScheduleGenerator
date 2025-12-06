@@ -22,7 +22,7 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
   SECOND_SEMESTER_START = "2026-07-13"
   SECOND_SEMESTER_END = "2026-10-16"
   # Google OAuth callback URL for production
-  GOOGLE_CALLBACK_URL = "https://schedgen-backend.fly.dev/api/auth/google/callback"
+  GOOGLE_CALLBACK_URL = "https://api.tuks-pdf-calendar.co.za/api/auth/google/callback"
 
 [http_service]
   internal_port = 3001

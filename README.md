@@ -1,6 +1,6 @@
-# UP Schedule Generator V3
+# Tuks Schedule Generator V3
 
-A web application that converts University of Pretoria (UP) class schedule PDFs into Google Calendar events. Upload your PDF, preview the extracted events, and sync directly to your Google Calendar.
+A web application that converts Tuks class schedule PDFs into Google Calendar events. Upload your PDF, preview the extracted events, and sync directly to your Google Calendar.
 
 ## Tech Stack
 

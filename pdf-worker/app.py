@@ -16,7 +16,7 @@ from parser import parse_pdf, process_events
 
 app = FastAPI(
     title="PDF Worker",
-    description="Microservice for parsing University of Pretoria schedule PDFs",
+    description="Microservice for parsing Tuks schedule PDFs",
     version="1.0.0"
 )
 

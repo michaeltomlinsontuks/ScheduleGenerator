@@ -20,7 +20,7 @@ primary_region = "jnb"
   PORT = "3000"
   NODE_ENV = "production"
   # URL to your backend Fly app
-  NEXT_PUBLIC_API_URL = "https://schedgen-backend.fly.dev"
+  NEXT_PUBLIC_API_URL = "https://api.tuks-pdf-calendar.co.za"
 
   # Semester dates (2026)
   NEXT_PUBLIC_FIRST_SEMESTER_START = "2026-02-09"

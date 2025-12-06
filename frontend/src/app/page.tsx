@@ -11,11 +11,11 @@ export default function Home() {
         <div className="hero-content text-center">
           <div className="max-w-2xl">
             <h1 className="text-5xl font-bold text-base-content">
-              UP Schedule Generator
+              Tuks Schedule Generator
             </h1>
             <p className="py-6 text-lg text-base-content/80">
-              Transform your University of Pretoria PDF schedule into calendar events. 
-              Upload your timetable, preview and customize your events, then export to 
+              Transform your Tuks PDF schedule into calendar events.
+              Upload your timetable, preview and customize your events, then export to
               ICS or sync directly with Google Calendar.
             </p>
             <Link href="/upload">
@@ -40,7 +40,7 @@ export default function Home() {
                 <div className="text-4xl mb-4">📄</div>
                 <h3 className="card-title text-base-content">Upload PDF</h3>
                 <p className="text-base-content/70">
-                  Simply drag and drop your UP timetable PDF or click to browse. 
+                  Simply drag and drop your Tuks timetable PDF or click to browse.
                   We&apos;ll automatically extract all your classes and events.
                 </p>
               </div>
@@ -52,7 +52,7 @@ export default function Home() {
                 <div className="text-4xl mb-4">👁️</div>
                 <h3 className="card-title text-base-content">Preview Events</h3>
                 <p className="text-base-content/70">
-                  Review all extracted events grouped by day. Select which classes 
+                  Review all extracted events grouped by day. Select which classes
                   to include and filter by module.
                 </p>
               </div>
@@ -64,7 +64,7 @@ export default function Home() {
                 <div className="text-4xl mb-4">📅</div>
                 <h3 className="card-title text-base-content">Export Calendar</h3>
                 <p className="text-base-content/70">
-                  Customize colors for each module, set your semester dates, 
+                  Customize colors for each module, set your semester dates,
                   then download as ICS or sync to Google Calendar.
                 </p>
               </div>

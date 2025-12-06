@@ -170,7 +170,7 @@ def _parse_exam_schedule(tables: List[List[str]]) -> List[Dict[str, Any]]:
 
 def parse_pdf(file_path: str) -> Dict[str, Any]:
     """
-    Parses a University of Pretoria schedule PDF to extract table data.
+    Parses a Tuks schedule PDF to extract table data.
     
     Includes timeout protection (60 seconds) and page limit validation (100 pages).
     

@@ -31,15 +31,15 @@ interface SessionData {
 @ApiTags('Upload')
 @Controller('api/upload')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  constructor(private readonly uploadService: UploadService) { }
 
   @Post()
   @Throttle({ default: { ttl: 60000, limit: 5 } }) // 5 uploads per minute
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
-    summary: 'Upload a UP schedule PDF',
+    summary: 'Upload a Tuks schedule PDF',
     description:
-      'Upload a PDF file containing a University of Pretoria schedule. ' +
+      'Upload a PDF file containing a Tuks schedule. ' +
       'The system automatically detects the PDF mode (Lecture, Test, or Exam) ' +
       'by scanning for identifying keywords on the first page. ' +
       'The file will be validated and queued for processing.',
@@ -160,7 +160,7 @@ export class UploadController {
         summary: 'Unrecognized Format',
         value: {
           statusCode: 400,
-          message: 'Invalid PDF: Not a recognized UP schedule format',
+          message: 'Invalid PDF: Not a recognized Tuks schedule format',
           timestamp: '2025-01-15T10:30:00.000Z',
           path: '/api/upload',
           details:

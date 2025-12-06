@@ -11,6 +11,8 @@ import { QueryTimeoutInterceptor } from './common/interceptors/query-timeout.int
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // trust proxy is required for secure cookies to work behind the Fly.io proxy
+  app.getHttpAdapter().getInstance().set('trust proxy', 1);
   const configService = app.get(ConfigService);
 
   // Security middleware
@@ -19,7 +21,7 @@ async function bootstrap() {
   // Session configuration for Passport
   app.use(
     session({
-      secret: process.env.SESSION_SECRET ?? 'up-schedule-generator-secret',
+      secret: process.env.SESSION_SECRET ?? 'tuks-schedule-generator-secret',
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -85,9 +87,9 @@ async function bootstrap() {
 
   // Swagger documentation
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('UP Schedule Generator API')
+    .setTitle('Tuks Schedule Generator API')
     .setDescription(
-      'API for converting University of Pretoria schedule PDFs into calendar events',
+      'API for converting Tuks schedule PDFs into calendar events',
     )
     .setVersion('3.0.0')
     .addOAuth2({
