@@ -5,8 +5,6 @@ import {
   HealthCheckResult,
 } from '@nestjs/terminus';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { RedisHealthIndicator } from './indicators/redis.health.js';
-import { MinioHealthIndicator } from './indicators/minio.health.js';
 import { DatabaseHealthIndicator } from './indicators/database.health.js';
 
 @ApiTags('Health')
@@ -15,9 +13,7 @@ export class HealthController {
   constructor(
     private health: HealthCheckService,
     private database: DatabaseHealthIndicator,
-    private redis: RedisHealthIndicator,
-    private minio: MinioHealthIndicator,
-  ) {}
+  ) { }
 
   @Get()
   @HealthCheck()
@@ -31,11 +27,7 @@ export class HealthController {
     description: 'One or more health checks failed',
   })
   async check(): Promise<HealthCheckResult> {
-    return this.health.check([
-      () => this.database.isHealthy('database'),
-      () => this.redis.isHealthy('redis'),
-      () => this.minio.isHealthy('minio'),
-    ]);
+    return this.health.check([() => this.database.isHealthy('database')]);
   }
 
   @Get('db')
@@ -55,3 +47,4 @@ export class HealthController {
     return this.health.check([() => this.database.isHealthy('database')]);
   }
 }
+
