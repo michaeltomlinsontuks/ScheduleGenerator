@@ -11,16 +11,13 @@ import { ParserModule } from './parser/parser.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { CalendarModule } from './calendar/calendar.module.js';
 import { HealthModule } from './health/health.module.js';
-import { MetricsModule } from './metrics/metrics.module.js';
 import { CustomThrottlerGuard } from './common/guards/custom-throttler.guard.js';
-import { MetricsInterceptor } from './common/interceptors/metrics.interceptor.js';
 import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js';
 
 @Module({
   imports: [
     AppConfigModule,
     CacheModule,
-    MetricsModule,
     // Rate limiting configuration
     ThrottlerModule.forRoot([
       {
@@ -47,11 +44,6 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
-    },
-    // Apply MetricsInterceptor globally (tracks HTTP request duration)
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: MetricsInterceptor,
     },
   ],
 })
