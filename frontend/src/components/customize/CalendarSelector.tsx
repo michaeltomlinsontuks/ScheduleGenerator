@@ -72,6 +72,9 @@ export function CalendarSelector({
       if (detailsRef.current) {
         detailsRef.current.open = false;
       }
+    } catch {
+      // Error is already set in useCalendars hook and displayed to user
+      // We just need to prevent the unhandled promise rejection
     } finally {
       setIsCreating(false);
     }
