@@ -18,10 +18,9 @@ A web application that converts University of Pretoria class schedule PDFs into 
 | Service | Technology |
 |---------|------------|
 | Frontend | Next.js 16, React 19, TailwindCSS, DaisyUI |
-| Backend | NestJS 11, TypeORM, PostgreSQL |
+| Backend | NestJS 11 (Stateless) |
 | PDF Worker | Python FastAPI, pdfplumber |
 | Hosting | Fly.io (3 services) |
-| Database | Fly Postgres |
 | CI/CD | GitHub Actions → Docker Hub → Fly.io |
 
 ## Architecture
@@ -33,17 +32,10 @@ A web application that converts University of Pretoria class schedule PDFs into 
 │                                                                  │
 │  ┌──────────────────┐   ┌──────────────────┐   ┌──────────────┐ │
 │  │  schedgen-       │   │  schedgen-       │   │  schedgen-   │ │
-│  │  frontend        │──▶│  backend         │──▶│  pdf-worker  │ │
 │  │  (Next.js)       │   │  (NestJS)        │   │  (FastAPI)   │ │
 │  │                  │   │                  │   │              │ │
 │  │  Port: 3000      │   │  Port: 3001      │   │  Port: 5001  │ │
-│  └──────────────────┘   └────────┬─────────┘   └──────────────┘ │
-│                                  │                               │
-│                                  ▼                               │
-│                         ┌──────────────────┐                     │
-│                         │  schedgen-db     │                     │
-│                         │  (Fly Postgres)  │                     │
-│                         └──────────────────┘                     │
+│  └──────────────────┘   └──────────────────┘   └──────────────┘ │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 
@@ -176,7 +168,6 @@ The GitHub Actions workflow (`.github/workflows/docker-build-push.yml`) automati
 ### Backend (`backend/fly.toml`)
 | Variable | Description |
 |----------|-------------|
-| `POSTGRES_HOST` | Database host (Fly internal DNS) |
 | `FRONTEND_URL` | Frontend URL for CORS |
 | `GOOGLE_CALLBACK_URL` | OAuth callback URL |
 | `FIRST_SEMESTER_START/END` | Semester date defaults |

@@ -1,14 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
-import { ScheduleModule } from '@nestjs/schedule';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { AppConfigModule } from './config/config.module.js';
 import { CacheModule } from './cache/cache.module.js';
-import { Job } from './jobs/entities/job.entity.js';
 import { UploadModule } from './upload/upload.module.js';
 import { JobsModule } from './jobs/jobs.module.js';
 import { ParserModule } from './parser/parser.module.js';
@@ -25,8 +21,6 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
     AppConfigModule,
     CacheModule,
     MetricsModule,
-    // Schedule module for cron jobs (cleanup, etc.)
-    ScheduleModule.forRoot(),
     // Rate limiting configuration
     ThrottlerModule.forRoot([
       {
@@ -34,31 +28,6 @@ import { LoggingInterceptor } from './common/interceptors/logging.interceptor.js
         limit: 100, // 100 requests per minute (default)
       },
     ]),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('database.host'),
-        port: configService.get<number>('database.port'),
-        username: configService.get<string>('database.username'),
-        password: configService.get<string>('database.password'),
-        database: configService.get<string>('database.database'),
-        entities: [Job],
-        autoLoadEntities: true,
-        synchronize: false, // Disabled to use migrations instead
-        // Connection pool configuration
-        extra: {
-          max: 50, // Maximum connections in pool
-          min: 10, // Minimum connections in pool
-          connectionTimeoutMillis: 30000, // 30 seconds to acquire connection
-          idleTimeoutMillis: 30000, // 30 seconds idle timeout
-          statement_timeout: 10000, // 10 seconds query timeout
-        },
-        // Connection retry logic
-        retryAttempts: 3,
-        retryDelay: 3000, // 3 seconds between retry attempts
-      }),
-    }),
     UploadModule,
     JobsModule,
     ParserModule,

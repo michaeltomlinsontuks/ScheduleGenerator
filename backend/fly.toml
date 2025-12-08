@@ -11,7 +11,7 @@ primary_region = "jnb" # Johannesburg (closest to TUKS/UP)
   PORT = "3001"
   NODE_ENV = "production"
   # Update these with actual Fly.io internal DNS or secrets
-  POSTGRES_HOST = "schedgen-db.internal"
+
 
   # CORS: Allow frontend to make requests
   FRONTEND_URL = "https://tuks-pdf-calendar.co.za"

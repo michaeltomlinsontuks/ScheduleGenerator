@@ -25,7 +25,7 @@ export default function CustomizePage() {
   const { isAuthenticated, isLoading: isAuthLoading, login } = useAuth();
 
   // Calendar hook - Requirements: 4.1, 4.2, 4.4
-  const { calendars, isLoading: isCalendarsLoading, fetchCalendars, createCalendar } = useCalendars();
+  const { calendars, isLoading: isCalendarsLoading, error: calendarsError, fetchCalendars, createCalendar } = useCalendars();
 
   // Event store
   const selectedIds = useEventStore((state) => state.selectedIds);
@@ -208,6 +208,7 @@ export default function CustomizePage() {
                   onSelect={setSelectedCalendarId}
                   onCreate={handleCreateCalendar}
                   isLoading={isCalendarsLoading}
+                  error={calendarsError}
                 />
               ) : (
                 <div className="flex justify-center mt-4">

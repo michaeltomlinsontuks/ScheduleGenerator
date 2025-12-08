@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
-import { PdfType, ParsedEvent } from '../jobs/entities/job.entity.js';
+import { PdfType, ParsedEvent } from '../common/types.js';
 import FormData from 'form-data';
 
 export interface ParserResponse {

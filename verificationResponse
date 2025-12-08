@@ -1,0 +1,65 @@
+# Google OAuth Verification Response & Action Plan
+
+## 1. Improved Explanations for Sensitive Scopes
+
+**Justification for `../auth/calendar.events`**
+"Our application, Schedule Generator, is designed to automate the transfer of university class schedules from PDF format to Google Calendar. The `calendar.events` scope is strictly required to perform the core function of the app: programmatically creating and managing these class events in the user's calendar. Without write access, the application cannot save the parsed schedule to the user's account, preventing it from fulfilling its purpose."
+
+**Justification for `../auth/calendar`**
+"We request the `calendar` scope to offer users better organization options. This scope allows the application to:
+1. List existing calendars, letting the user choose where to add their schedule.
+2. Create a new, dedicated calendar (e.g., 'University Schedule') specifically for these events, ensuring they don't clutter the user's primary personal calendar.
+We do not read or modify events in calendars other than those explicitly selected or created by the user for this purpose."
+
+---
+
+## 2. Privacy Policy & Terms Review
+
+### Privacy Policy (Review of `src/app/privacy/page.tsx`)
+*   **Data Retention Accuracy**: The current policy claims "Only your Google account email is stored".
+    *   **Reality**: The database (`users` table) currently stores First Name, Last Name, and Profile Picture. The `jobs` table stores the *entire parsed schedule result* and file references.
+    *   **Action**: We must either update the policy to admit this retention OR (recommended) modify the code to stop storing this data (see "Data Collection Removal" below).
+*   **"Deleted Immediately" Claim**: The policy says files are deleted "immediately after processing".
+    *   **Investigation**: Currently, jobs are deleted via a cron job every hour, but only if they are marked as expired (24-hour retention by default). This is not "immediate". Also, we need to confirm if the S3 file is actually deleted or just the database record.
+*   **Contact Email**: Verify `privacy@upschedule.com` is a real address you control.
+
+### Terms of Service (Review of `src/app/terms/page.tsx`)
+*   **Service Name**: Ensure "UP Schedule Generator" is consistent with the branding in the Google Cloud Console exactly.
+*   **Google Calendar Access**: The section correctly explains strict usage.
+*   **Liability**: Standard clauses look good.
+
+---
+
+## 3. Data Collection Summary & Removal Plan
+
+### Technical Plan: The "Nuclear Option" (Remove Database Entirely)
+This plan completely removes the database (`Postgres`/`SQLite`), making the application **stateless** and **privacy-first**.
+
+**1. Session Storage Safety Check**
+*   **Current State**: The application uses `express-session` with the default `MemoryStore` (in-memory).
+*   **Verdict**: **Safe to remove DB.** The session storage is *already* independent of the database.
+    *   *Note*: `MemoryStore` resets when the server restarts. For a purely stateless deployment, this is acceptable, or we can switch to `cookie-session` later to store session data in the browser cookie itself.
+
+**2. Backend Refactoring Plan**
+*   **Auth Service**:
+    *   Remove `User` entity repository.
+    *   Update `validateGoogleUser` to simply format the Google Profile into a `SessionUser` object without saving it.
+    *   *Result*: User logs in, session is created in memory, no record remains in a persistent DB.
+*   **Upload Service**:
+    *   Remove `Job` entity repository.
+    *   Update `processUpload` to parse the PDF in memory (already done), generate a *random* `jobId` (for frontend compatibility), and return the results immediately.
+    *   *Result*: File is processed and forgotten instantly.
+*   **Cleanup**:
+    *   Delete `src/auth/entities/user.entity.ts`, `src/jobs/entities/job.entity.ts`, `src/jobs/jobs.service.ts`.
+    *   Remove `TypeOrmModule` from `app.module.ts`.
+    *   Uninstall `typeorm`, `pg` (Postgres driver).
+
+**3. Frontend Impact**
+*   **None**. The API response structure will remain identical (including a generated `jobId`), so the frontend will not break.
+
+---
+
+### Executing this plan will:
+1.  **Guarantee 0% Data Collection**: It becomes physically impossible to store user data persistently.
+2.  **Simplify Deployment**: No database hosting required.
+3.  **Ensure Privacy Compliance**: "Deleted immediately" becomes "Never saved".

@@ -1,4 +1,4 @@
-import { PdfType } from '../../jobs/entities/job.entity.js';
+import { PdfType } from '../types.js';
 import { PDFParse } from 'pdf-parse';
 
 export enum PdfContentError {

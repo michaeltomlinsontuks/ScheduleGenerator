@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsUUID, IsEnum, IsDate, IsOptional, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
-import { JobStatus, PdfType } from '../entities/job.entity.js';
+import { JobStatus, PdfType } from '../../common/types.js';
 
 export class JobStatusDto {
   @ApiProperty({

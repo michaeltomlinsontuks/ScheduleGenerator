@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsUUID, IsEnum, IsString, IsArray, ValidateNested, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
-import { PdfType, ParsedEvent } from '../../jobs/entities/job.entity.js';
+import { PdfType, ParsedEvent } from '../../common/types.js';
 
 export class UploadResponseDto {
   @ApiProperty({

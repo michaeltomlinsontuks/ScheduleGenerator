@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { GoogleUser } from './strategies/google.strategy.js';
-import { User } from './entities/user.entity.js';
 
 export interface SessionUser {
   id: string;
@@ -26,60 +23,22 @@ export interface AuthStatus {
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-  ) {}
-
   /**
-   * Validates and stores user credentials from Google OAuth
-   * Creates or updates user in database
+   * Validates user credentials from Google OAuth
+   * In this stateless version, we simply pass through the profile data
    * @param user - The Google user profile with tokens
    * @returns The session user object
    */
   async validateGoogleUser(user: GoogleUser): Promise<SessionUser> {
-    // Find or create user in database
-    let dbUser = await this.userRepository.findOne({
-      where: { email: user.email },
-    });
-
-    if (!dbUser) {
-      // Create new user with default quota
-      dbUser = this.userRepository.create({
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        picture: user.picture,
-        storageUsedBytes: 0,
-        storageQuotaBytes: 52428800, // 50MB default
-      });
-      await this.userRepository.save(dbUser);
-    } else {
-      // Update user profile if changed
-      let updated = false;
-      if (dbUser.firstName !== user.firstName) {
-        dbUser.firstName = user.firstName;
-        updated = true;
-      }
-      if (dbUser.lastName !== user.lastName) {
-        dbUser.lastName = user.lastName;
-        updated = true;
-      }
-      if (dbUser.picture !== user.picture) {
-        dbUser.picture = user.picture;
-        updated = true;
-      }
-      if (updated) {
-        await this.userRepository.save(dbUser);
-      }
-    }
-
+    // In a stateless/DB-less architecture, we don't save the user.
+    // We just map the Google profile to our SessionUser structure.
+    // We use the email as the ID since we don't have a DB UUID.
     return {
-      id: dbUser.id,
-      email: dbUser.email,
-      firstName: dbUser.firstName,
-      lastName: dbUser.lastName,
-      picture: dbUser.picture ?? '',
+      id: user.email, // Use email as ID since we don't have a DB
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      picture: user.picture,
       accessToken: user.accessToken,
       refreshToken: user.refreshToken,
     };

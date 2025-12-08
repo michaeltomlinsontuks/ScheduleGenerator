@@ -9,7 +9,7 @@ import { Throttle } from '@nestjs/throttler';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { JobsService } from './jobs.service.js';
 import { JobStatusDto, JobResultDto } from './dto/index.js';
-import { JobStatus } from './entities/job.entity.js';
+import { JobStatus } from '../common/types.js';
 import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
 
 @ApiTags('jobs')

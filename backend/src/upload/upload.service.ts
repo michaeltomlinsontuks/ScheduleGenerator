@@ -1,10 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { v4 as uuidv4 } from 'uuid';
-import { Job, JobStatus, PdfType, ParsedEvent } from '../jobs/entities/job.entity.js';
-import { User } from '../auth/entities/user.entity.js';
+import { PdfType, ParsedEvent } from '../common/types.js';
 import { ParserService } from '../parser/parser.service.js';
 import { validatePdfContent } from '../common/validators/pdf-content.validator.js';
 import { UploadResponseDto } from './dto/upload-response.dto.js';
@@ -14,54 +11,39 @@ import { StorageQuotaExceededException } from './exceptions/storage-quota-exceed
 @Injectable()
 export class UploadService {
   private readonly logger = new Logger(UploadService.name);
+  private readonly MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB limit per file
 
   constructor(
-    @InjectRepository(Job)
-    private readonly jobRepository: Repository<Job>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     private readonly parserService: ParserService,
     private readonly configService: ConfigService,
   ) { }
 
   /**
    * Process an uploaded PDF file synchronously:
-   * 1. Check user storage quota (if user is authenticated)
+   * 1. Check file size limit
    * 2. Validate PDF content to determine type (lecture/test/exam)
    * 3. Call parser service to extract events
-   * 4. Create job record in database with results
-   * 5. Return job ID, events, and PDF type immediately
+   * 4. Return job ID (random UUID), events, and PDF type immediately
    *
    * @param file - The uploaded PDF file
-   * @param userId - Optional user ID for quota tracking
+   * @param userId - Optional user ID (unused in stateless mode)
    * @returns UploadResponseDto with job ID, events, and PDF type
    * @throws BadRequestException if PDF validation fails
-   * @throws StorageQuotaExceededException if user quota is exceeded
+   * @throws StorageQuotaExceededException if file is too large
    */
   async processUpload(
     file: MulterFile,
-    userId?: string,
+    _userId?: string,
   ): Promise<UploadResponseDto> {
     const fileSize = file.buffer.length;
 
-    // Check storage quota if user is authenticated
-    if (userId) {
-      const user = await this.userRepository.findOne({
-        where: { id: userId },
-      });
-
-      if (user) {
-        const wouldExceed =
-          user.storageUsedBytes + fileSize > user.storageQuotaBytes;
-
-        if (wouldExceed) {
-          throw new StorageQuotaExceededException(
-            user.storageUsedBytes,
-            user.storageQuotaBytes,
-            fileSize,
-          );
-        }
-      }
+    // Check simple file size limit instead of database quota
+    if (fileSize > this.MAX_FILE_SIZE) {
+      throw new StorageQuotaExceededException(
+        fileSize,
+        this.MAX_FILE_SIZE,
+        fileSize,
+      );
     }
 
     // Validate PDF content and determine type
@@ -74,24 +56,13 @@ export class UploadService {
       throw new BadRequestException(message);
     }
 
-    // Generate unique S3 key for storage (used for cleanup tracking)
-    const s3Key = `${uuidv4()}-${file.originalname}`;
-
-    // Create job record with pending status
-    const job = this.jobRepository.create({
-      status: JobStatus.PROCESSING,
-      pdfType,
-      s3Key,
-      result: null,
-      error: null,
-      fileSizeBytes: fileSize,
-      userId: userId ?? null,
-    });
-    const savedJob = await this.jobRepository.save(job);
+    // Generate random Job ID for frontend compatibility
+    // In stateless mode, this ID is local to this request/response cycle
+    const jobId = uuidv4();
 
     this.logger.log({
-      message: 'Processing PDF synchronously',
-      jobId: savedJob.id,
+      message: 'Processing PDF synchronously (Stateless)',
+      jobId,
       pdfType,
       fileSize,
     });
@@ -161,53 +132,26 @@ export class UploadService {
         });
       }
 
-      // Update job with completed status and results
-      savedJob.status = JobStatus.COMPLETED;
-      savedJob.result = filteredEvents;
-      savedJob.completedAt = new Date();
-
-      // Set expiration to 24 hours after completion
-      const expiresAt = new Date(savedJob.completedAt);
-      expiresAt.setHours(expiresAt.getHours() + 24);
-      savedJob.expiresAt = expiresAt;
-
-      await this.jobRepository.save(savedJob);
-
       this.logger.log({
         message: 'PDF processed successfully',
-        jobId: savedJob.id,
+        jobId,
         eventCount: filteredEvents.length,
       });
 
       parsedEvents = filteredEvents; // Use filtered events for response
     } catch (error) {
-      // Update job with failed status
-      savedJob.status = JobStatus.FAILED;
-      savedJob.error = error instanceof Error ? error.message : 'Unknown error';
-      savedJob.completedAt = new Date();
-      await this.jobRepository.save(savedJob);
-
       this.logger.error({
         message: 'PDF processing failed',
-        jobId: savedJob.id,
-        error: savedJob.error,
+        jobId,
+        error: error instanceof Error ? error.message : String(error),
       });
 
-      throw new BadRequestException(`Failed to parse PDF: ${savedJob.error}`);
-    }
-
-    // Update user storage usage if authenticated
-    if (userId) {
-      await this.userRepository.increment(
-        { id: userId },
-        'storageUsedBytes',
-        fileSize,
-      );
+      throw new BadRequestException(`Failed to parse PDF: ${error instanceof Error ? error.message : String(error)}`);
     }
 
     return {
-      jobId: savedJob.id,
-      pdfType: savedJob.pdfType,
+      jobId,
+      pdfType,
       status: 'completed',
       events: parsedEvents,
       message: 'PDF processed successfully',
@@ -217,49 +161,29 @@ export class UploadService {
 
   /**
    * Release storage quota when a job is deleted
-   * @param jobId - The job ID to release storage for
+   * Deprecated: In stateless mode, no storage is used.
    */
-  async releaseStorageForJob(jobId: string): Promise<void> {
-    const job = await this.jobRepository.findOne({
-      where: { id: jobId },
-      relations: ['user'],
-    });
-
-    if (job && job.userId && job.fileSizeBytes > 0) {
-      await this.userRepository.decrement(
-        { id: job.userId },
-        'storageUsedBytes',
-        job.fileSizeBytes,
-      );
-    }
+  async releaseStorageForJob(_jobId: string): Promise<void> {
+    // No-op in stateless mode
+    return;
   }
 
   /**
    * Get storage usage for a user
-   * @param userId - The user ID
-   * @returns Storage usage information
+   * Deprecated: Returns dummy values for stateless mode
    */
-  async getStorageUsage(userId: string): Promise<{
+  async getStorageUsage(_userId: string): Promise<{
     usedBytes: number;
     quotaBytes: number;
     usedPercentage: number;
     availableBytes: number;
   } | null> {
-    const user = await this.userRepository.findOne({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      return null;
-    }
-
+    // Return dummy values indicating empty storage
     return {
-      usedBytes: user.storageUsedBytes,
-      quotaBytes: user.storageQuotaBytes,
-      usedPercentage: Math.round(
-        (user.storageUsedBytes / user.storageQuotaBytes) * 100,
-      ),
-      availableBytes: user.storageQuotaBytes - user.storageUsedBytes,
+      usedBytes: 0,
+      quotaBytes: this.MAX_FILE_SIZE, // Show max file size as quota
+      usedPercentage: 0,
+      availableBytes: this.MAX_FILE_SIZE,
     };
   }
 

@@ -10,6 +10,7 @@ export interface CalendarSelectorProps {
   onSelect: (id: string) => void;
   onCreate: (name: string) => Promise<void>;
   isLoading: boolean;
+  error?: string | null;
 }
 
 /**
@@ -22,6 +23,7 @@ export function CalendarSelector({
   onSelect,
   onCreate,
   isLoading,
+  error,
 }: CalendarSelectorProps) {
   const [showCreateInput, setShowCreateInput] = useState(false);
   const [newCalendarName, setNewCalendarName] = useState('');
@@ -124,9 +126,8 @@ export function CalendarSelector({
             <li key={calendar.id}>
               <button
                 type="button"
-                className={`flex items-center gap-2 ${
-                  selectedId === calendar.id ? 'active' : ''
-                }`}
+                className={`flex items-center gap-2 ${selectedId === calendar.id ? 'active' : ''
+                  }`}
                 onClick={() => handleSelect(calendar.id)}
               >
                 {calendar.backgroundColor && (
@@ -147,25 +148,30 @@ export function CalendarSelector({
 
           {showCreateInput ? (
             <li className="p-2">
-              <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder="Calendar name"
-                  className="input input-sm input-bordered flex-1"
-                  value={newCalendarName}
-                  onChange={(e) => setNewCalendarName(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  disabled={isCreating}
-                />
-                <Button
-                  size="sm"
-                  onClick={handleCreateCalendar}
-                  loading={isCreating}
-                  disabled={!newCalendarName.trim()}
-                >
-                  Create
-                </Button>
+              <div className="flex flex-col gap-1 w-full">
+                <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Calendar name"
+                    className="input input-sm input-bordered flex-1"
+                    value={newCalendarName}
+                    onChange={(e) => setNewCalendarName(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    disabled={isCreating}
+                  />
+                  <Button
+                    size="sm"
+                    onClick={handleCreateCalendar}
+                    loading={isCreating}
+                    disabled={!newCalendarName.trim()}
+                  >
+                    Create
+                  </Button>
+                </div>
+                {error && (
+                  <span className="text-xs text-error px-1">{error}</span>
+                )}
               </div>
             </li>
           ) : (

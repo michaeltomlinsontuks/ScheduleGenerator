@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { ParsedEvent } from '../entities/job.entity.js';
+import { ParsedEvent } from '../../common/types.js';
 
 export class ParsedEventDto implements ParsedEvent {
   @ApiProperty({

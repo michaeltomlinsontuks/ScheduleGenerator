@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsDateString, IsEnum, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { EventConfigDto } from './event-config.dto.js';
-import { PdfType } from '../../jobs/entities/job.entity.js';
+import { PdfType } from '../../common/types.js';
 
 export class AddEventsDto {
   @ApiProperty({
