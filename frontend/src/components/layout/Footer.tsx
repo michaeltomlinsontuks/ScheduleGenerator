@@ -25,6 +25,10 @@ export function Footer({ minimal = false }: FooterProps) {
         <p>Convert your Tuks PDF schedule to calendar events</p>
 
         <nav className="flex gap-4 mt-3 text-sm">
+          <Link href="/about" className="link link-hover opacity-70 hover:opacity-100">
+            About
+          </Link>
+          <span className="opacity-50">•</span>
           <Link href="/privacy" className="link link-hover opacity-70 hover:opacity-100">
             Privacy Policy
           </Link>

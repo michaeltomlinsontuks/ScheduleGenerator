@@ -53,7 +53,7 @@ export function DateRangePicker({
           <input
             id="start-date"
             type="date"
-            className={`input input-bordered input-sm w-full ${error ? 'input-error' : ''}`}
+            className={`input input-sm w-full bg-base-200 focus:bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary ${error ? 'input-error' : ''}`}
             value={formatDateForInput(startDate)}
             onChange={handleStartChange}
           />
@@ -66,7 +66,7 @@ export function DateRangePicker({
           <input
             id="end-date"
             type="date"
-            className={`input input-bordered input-sm w-full ${error ? 'input-error' : ''}`}
+            className={`input input-sm w-full bg-base-200 focus:bg-base-100 focus:outline-none focus:ring-1 focus:ring-primary ${error ? 'input-error' : ''}`}
             value={formatDateForInput(endDate)}
             onChange={handleEndChange}
           />

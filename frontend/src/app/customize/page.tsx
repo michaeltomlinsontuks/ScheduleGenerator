@@ -98,10 +98,13 @@ export default function CustomizePage() {
 
   // Handle calendar creation - Requirements: 4.4
   const handleCreateCalendar = async (name: string) => {
+    console.log('page.handleCreateCalendar called', { name });
     try {
       const newCalendar = await createCalendar(name);
+      console.log('page.handleCreateCalendar: calendar created', newCalendar);
       setSelectedCalendarId(newCalendar.id);
-    } catch {
+    } catch (error) {
+      console.error('page.handleCreateCalendar: error', error);
       // Error is already handled and displayed by useCalendars hook
     }
   };

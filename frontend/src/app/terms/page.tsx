@@ -2,15 +2,45 @@ export default function TermsPage() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
-      
+
       <div className="prose prose-lg max-w-none">
+        <div className="card bg-base-200 shadow-sm mb-8 not-prose border border-base-300">
+          <div className="card-body">
+            <h2 className="card-title text-primary flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+              </svg>
+              What you need to know (TL;DR)
+            </h2>
+            <ul className="space-y-2 mt-2">
+              <li className="flex gap-2 items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-warning shrink-0 mt-0.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                <span><strong>Check Your Schedule:</strong> This tool is accurate but not perfect. Always verify against your official PDF.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-warning shrink-0 mt-0.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+                <span><strong>Your Responsibility:</strong> You are responsible for ensuring your Google Calendar events are correct.</span>
+              </li>
+              <li className="flex gap-2 items-start">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-info shrink-0 mt-0.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                </svg>
+                <span><strong>Convenience Tool:</strong> This is an unofficial tool made to help you, not an official university service.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
         <p className="text-sm text-gray-600 mb-8">Last updated: November 30, 2024</p>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Acceptance of Terms</h2>
           <p>
-            By accessing and using UP Schedule Generator ("the Service"), you accept and agree to be bound 
-            by the terms and provisions of this agreement. If you do not agree to these terms, please do 
+            By accessing and using UP Schedule Generator ("the Service"), you accept and agree to be bound
+            by the terms and provisions of this agreement. If you do not agree to these terms, please do
             not use the Service.
           </p>
         </section>
@@ -18,7 +48,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Description of Service</h2>
           <p>
-            UP Schedule Generator is a web application that converts University of Pretoria (UP) class 
+            UP Schedule Generator is a web application that converts University of Pretoria (UP) class
             schedule PDF files into Google Calendar events. The Service allows you to:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -46,7 +76,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Google Calendar Access</h2>
           <p>
-            By authorizing Google Calendar access, you permit the Service to create calendar events in 
+            By authorizing Google Calendar access, you permit the Service to create calendar events in
             your Google Calendar on your behalf. You understand that:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -86,8 +116,8 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Intellectual Property</h2>
           <p>
-            The Service, including its original content, features, and functionality, is owned by 
-            UP Schedule Generator and is protected by international copyright, trademark, and other 
+            The Service, including its original content, features, and functionality, is owned by
+            UP Schedule Generator and is protected by international copyright, trademark, and other
             intellectual property laws.
           </p>
         </section>
@@ -95,7 +125,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Limitation of Liability</h2>
           <p>
-            The Service is provided "as is" without warranties of any kind, either express or implied. 
+            The Service is provided "as is" without warranties of any kind, either express or implied.
             To the fullest extent permitted by law:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -135,7 +165,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Termination</h2>
           <p>
-            We may terminate or suspend your access to the Service immediately, without prior notice or 
+            We may terminate or suspend your access to the Service immediately, without prior notice or
             liability, for any reason, including:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -144,7 +174,7 @@ export default function TermsPage() {
             <li>Violation of applicable laws</li>
           </ul>
           <p className="mt-4">
-            You may also terminate your use of the Service at any time by revoking Google Calendar access 
+            You may also terminate your use of the Service at any time by revoking Google Calendar access
             through your Google Account settings.
           </p>
         </section>
@@ -152,8 +182,8 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Changes to Terms</h2>
           <p>
-            We reserve the right to modify or replace these Terms at any time. If a revision is material, 
-            we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes 
+            We reserve the right to modify or replace these Terms at any time. If a revision is material,
+            we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes
             a material change will be determined at our sole discretion.
           </p>
         </section>
@@ -161,7 +191,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Governing Law</h2>
           <p>
-            These Terms shall be governed and construed in accordance with the laws of South Africa, 
+            These Terms shall be governed and construed in accordance with the laws of South Africa,
             without regard to its conflict of law provisions.
           </p>
         </section>
@@ -169,7 +199,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Dispute Resolution</h2>
           <p>
-            Any disputes arising from these Terms or use of the Service shall be resolved through good 
+            Any disputes arising from these Terms or use of the Service shall be resolved through good
             faith negotiation. If negotiation fails, disputes shall be resolved in the courts of South Africa.
           </p>
         </section>
@@ -177,8 +207,8 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Severability</h2>
           <p>
-            If any provision of these Terms is held to be unenforceable or invalid, such provision will be 
-            changed and interpreted to accomplish the objectives of such provision to the greatest extent 
+            If any provision of these Terms is held to be unenforceable or invalid, such provision will be
+            changed and interpreted to accomplish the objectives of such provision to the greatest extent
             possible under applicable law, and the remaining provisions will continue in full force and effect.
           </p>
         </section>
@@ -189,14 +219,14 @@ export default function TermsPage() {
             If you have any questions about these Terms, please contact us at:
           </p>
           <p className="mt-2">
-            <strong>Email:</strong> <a href="mailto:legal@upschedule.com" className="text-blue-600 hover:underline">legal@upschedule.com</a>
+            <strong>Email:</strong> <a href="mailto:michael@tomlinson.co.za" className="text-blue-600 hover:underline">michael@tomlinson.co.za</a>
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Acknowledgment</h2>
           <p>
-            By using the Service, you acknowledge that you have read these Terms of Service and agree to 
+            By using the Service, you acknowledge that you have read these Terms of Service and agree to
             be bound by them.
           </p>
         </section>
