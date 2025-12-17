@@ -78,7 +78,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
   return (
     <header className="bg-base-100 border-b border-base-300">
       {/* Top Navigation Bar */}
-      <div className="navbar px-4">
+      <div className="navbar px-4 overflow-visible">
         <div className="navbar-start flex items-center gap-2">
           <Sidebar />
           <Link href="/" className="btn btn-ghost text-xl font-bold text-primary">
@@ -93,7 +93,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
           </div>
         )}
 
-        <div className="navbar-end gap-2">
+        <div className="navbar-end gap-2 overflow-visible">
           {/* Auth UI - Show login button or user avatar based on auth state */}
           {mounted && (
             <>

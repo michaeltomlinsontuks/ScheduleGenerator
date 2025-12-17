@@ -46,10 +46,10 @@ export function UserAvatar({ user, onLogout }: UserAvatarProps) {
         </div>
       </summary>
 
-      <ul className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-64">
+      <ul className="dropdown-content z-50 menu p-2 shadow-xl bg-base-100 rounded-box w-72 border border-base-300 mt-1">
         <li className="menu-title px-4 py-2">
-          <div className="flex items-center gap-3">
-            <div className="avatar">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="avatar shrink-0">
               <div className="w-10 rounded-full">
                 <img
                   src={user.picture}
@@ -58,11 +58,11 @@ export function UserAvatar({ user, onLogout }: UserAvatarProps) {
                 />
               </div>
             </div>
-            <div className="flex flex-col">
-              <span className="font-semibold text-base-content">
+            <div className="flex flex-col min-w-0 overflow-hidden">
+              <span className="font-semibold text-base-content truncate">
                 {user.firstName} {user.lastName}
               </span>
-              <span className="text-xs text-base-content/70">{user.email}</span>
+              <span className="text-xs text-base-content/70 truncate">{user.email}</span>
             </div>
           </div>
         </li>

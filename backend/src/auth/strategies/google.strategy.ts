@@ -24,10 +24,10 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientSecret: configService.get<string>('google.clientSecret') ?? '',
       callbackURL: configService.get<string>('google.callbackUrl') ?? '',
       scope: [
-        'email',
-        'profile',
-        'https://www.googleapis.com/auth/calendar',
-        'https://www.googleapis.com/auth/calendar.events',
+        'email', // Basic user identification
+        'profile', // User name and picture for UI
+        'https://www.googleapis.com/auth/calendar', // Full calendar access: list, create calendars
+        'https://www.googleapis.com/auth/calendar.events', // Create calendar events
       ],
     });
   }
