@@ -8,6 +8,7 @@ primary_region = 'jnb'
 
 [build]
   dockerfile = "Dockerfile"
+  context = "."
 
 [env]
   PORT = '5001'
