@@ -245,7 +245,7 @@ export default function PreviewPage() {
       )}
 
       {/* Event List */}
-      <div className="card card-border bg-base-100 min-h-[50vh]">
+      <div className="card card-border bg-base-200 min-h-[50vh]">
         <div className="card-body">
           {filteredEvents.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

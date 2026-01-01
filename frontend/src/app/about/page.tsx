@@ -43,7 +43,7 @@ export default function AboutPage() {
             </div>
 
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="card bg-base-100 shadow-sm border border-base-200">
+                <div className="card bg-base-200 shadow-sm border border-base-300">
                     <div className="card-body">
                         <h3 className="card-title text-base-content/70">Open Source</h3>
                         <p>This project is open source. You can check the code to verify that verified "I don't care" claim.</p>
@@ -55,7 +55,7 @@ export default function AboutPage() {
                     </div>
                 </div>
 
-                <div className="card bg-base-100 shadow-sm border border-base-200">
+                <div className="card bg-base-200 shadow-sm border border-base-300">
                     <div className="card-body">
                         <h3 className="card-title text-base-content/70">Contact</h3>
                         <p>Found a bug or have a suggestion? Feel free to reach out.</p>

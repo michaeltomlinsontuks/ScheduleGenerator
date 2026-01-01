@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
 import { UserAvatar } from '@/components/auth/UserAvatar';
-import { Sidebar } from './Sidebar';
 import { Stepper } from './Stepper';
 
 interface HeaderProps {
@@ -79,8 +78,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
     <header className="bg-base-100 border-b border-base-300">
       {/* Top Navigation Bar */}
       <div className="navbar px-4 overflow-visible">
-        <div className="navbar-start flex items-center gap-2">
-          <Sidebar />
+        <div className="navbar-start">
           <Link href="/" className="btn btn-ghost text-xl font-bold text-primary">
             Tuks Schedule
           </Link>

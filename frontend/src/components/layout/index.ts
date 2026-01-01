@@ -3,4 +3,5 @@ export { Header } from './Header';
 export { Footer } from './Footer';
 export { Stepper } from './Stepper';
 export { ThemeProvider } from './ThemeProvider';
-export { Sidebar } from './Sidebar';
+export { LayoutContent } from './LayoutContent';
+

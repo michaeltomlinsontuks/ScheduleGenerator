@@ -35,7 +35,7 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Upload PDF Card */}
-            <div className="card card-border bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="card card-border bg-base-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="card-body items-center text-center">
                 <div className="text-4xl mb-4">📄</div>
                 <h3 className="card-title text-base-content">Upload PDF</h3>
@@ -47,7 +47,7 @@ export default function Home() {
             </div>
 
             {/* Preview Events Card */}
-            <div className="card card-border bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="card card-border bg-base-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="card-body items-center text-center">
                 <div className="text-4xl mb-4">👁️</div>
                 <h3 className="card-title text-base-content">Preview Events</h3>
@@ -59,7 +59,7 @@ export default function Home() {
             </div>
 
             {/* Export Calendar Card */}
-            <div className="card card-border bg-base-100 shadow-sm hover:shadow-md transition-shadow">
+            <div className="card card-border bg-base-200 shadow-sm hover:shadow-md transition-shadow">
               <div className="card-body items-center text-center">
                 <div className="text-4xl mb-4">📅</div>
                 <h3 className="card-title text-base-content">Export Calendar</h3>
