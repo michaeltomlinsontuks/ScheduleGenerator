@@ -246,7 +246,7 @@ export default function GeneratePage() {
           {/* Date Range */}
           <div className="stat bg-base-200 rounded-lg p-4">
             <div className="stat-title text-base-content/70">Date Range</div>
-            <div className="stat-value text-sm text-primary">{dateRangeDisplay}</div>
+            <div className="stat-value text-xs sm:text-sm text-primary break-words">{dateRangeDisplay}</div>
           </div>
         </div>
 

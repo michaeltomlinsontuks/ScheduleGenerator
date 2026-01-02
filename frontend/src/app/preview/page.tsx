@@ -168,7 +168,7 @@ export default function PreviewPage() {
   return (
     <div className="container mx-auto px-4 py-6 max-w-6xl">
       {/* Page Header with Summary */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-base-content">
             {getPageTitle()}
@@ -196,7 +196,7 @@ export default function PreviewPage() {
       </div>
 
       {/* Controls: Bulk Actions and Filter */}
-      <div className="flex flex-wrap items-end justify-between gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-end justify-between gap-4 mb-4">
         <BulkActions
           totalCount={totalEvents}
           selectedCount={selectedCount}
@@ -213,7 +213,7 @@ export default function PreviewPage() {
 
       {/* Day/Date Tabs - Show days for lectures, dates for tests/exams */}
       {pdfType === 'lecture' ? (
-        <div className="tabs tabs-boxed mb-4 bg-base-200">
+        <div className="tabs tabs-boxed mb-4 bg-base-200 overflow-x-auto flex-nowrap">
           {DAYS_ORDER.map((day) => (
             <button
               key={day}

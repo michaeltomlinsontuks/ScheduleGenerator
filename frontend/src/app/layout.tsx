@@ -30,6 +30,7 @@ export default function RootLayout({
     <html lang="en" data-theme="schedule-light" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-base-100 flex flex-col`}
+        suppressHydrationWarning
       >
         <LayoutContent>{children}</LayoutContent>
       </body>

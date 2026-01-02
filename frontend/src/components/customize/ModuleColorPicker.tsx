@@ -144,7 +144,7 @@ function ColorDropdown({ module, selectedColor, currentColorId, onChange }: Colo
         </svg>
       </summary>
 
-      <ul className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-96 max-h-60 overflow-y-auto">
+      <ul className="dropdown-content z-50 menu p-2 shadow-lg bg-base-100 rounded-box w-64 sm:w-80 max-h-60 overflow-y-auto">
         {GOOGLE_CALENDAR_COLORS.map((color) => (
           <li key={color.id}>
             <button

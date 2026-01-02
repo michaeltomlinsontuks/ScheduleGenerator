@@ -79,7 +79,7 @@ export function Header({ showNav = true, showStepper = false, currentStep }: Hea
       {/* Top Navigation Bar */}
       <div className="navbar px-4 overflow-visible">
         <div className="navbar-start">
-          <Link href="/" className="btn btn-ghost text-xl font-bold text-primary">
+          <Link href="/" className="btn btn-ghost text-base sm:text-xl font-bold text-primary px-2 sm:px-4">
             Tuks Schedule
           </Link>
         </div>

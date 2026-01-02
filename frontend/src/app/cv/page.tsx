@@ -201,7 +201,7 @@ export default function CVPage() {
         <div className="container mx-auto px-4 py-12 max-w-3xl">
             {/* Hero Section */}
             <div className="text-center mb-10">
-                <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                <h1 className="text-2xl sm:text-4xl font-bold mb-3 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                     Development Journey
                 </h1>
                 <p className="text-base-content/70">

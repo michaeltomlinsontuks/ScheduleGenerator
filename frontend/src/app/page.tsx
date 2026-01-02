@@ -10,7 +10,7 @@ export default function Home() {
       <div className="hero min-h-[60vh] bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-2xl">
-            <h1 className="text-5xl font-bold text-base-content">
+            <h1 className="text-3xl sm:text-5xl font-bold text-base-content">
               Tuks Schedule Generator
             </h1>
             <p className="py-6 text-lg text-base-content/80">
@@ -30,7 +30,7 @@ export default function Home() {
       {/* Feature Cards Section */}
       <div className="py-16 px-4 bg-base-100">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-base-content">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-12 text-base-content">
             How It Works
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

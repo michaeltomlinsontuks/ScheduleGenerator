@@ -211,7 +211,7 @@ export function CalendarSelector({
             <div className="p-2">
               {showCreateForm ? (
                 <div className="space-y-2">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <input
                       ref={inputRef}
                       type="text"
