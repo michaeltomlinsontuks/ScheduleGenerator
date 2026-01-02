@@ -34,12 +34,12 @@ export default function TermsPage() {
             </ul>
           </div>
         </div>
-        <p className="text-sm text-gray-600 mb-8">Last updated: November 30, 2024</p>
+        <p className="text-sm text-gray-600 mb-8">Last updated: December 2025</p>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Acceptance of Terms</h2>
           <p>
-            By accessing and using UP Schedule Generator ("the Service"), you accept and agree to be bound
+            By accessing and using Tuks Schedule Generator ("the Service"), you accept and agree to be bound
             by the terms and provisions of this agreement. If you do not agree to these terms, please do
             not use the Service.
           </p>
@@ -48,7 +48,7 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Description of Service</h2>
           <p>
-            UP Schedule Generator is a web application that converts University of Pretoria (UP) class
+            Tuks Schedule Generator is a web application that converts University of Pretoria class
             schedule PDF files into Google Calendar events. The Service allows you to:
           </p>
           <ul className="list-disc pl-6 space-y-2">
@@ -117,7 +117,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold mb-4">Intellectual Property</h2>
           <p>
             The Service, including its original content, features, and functionality, is owned by
-            UP Schedule Generator and is protected by international copyright, trademark, and other
+            the developer and is protected by international copyright, trademark, and other
             intellectual property laws.
           </p>
         </section>

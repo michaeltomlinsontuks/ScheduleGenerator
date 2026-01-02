@@ -46,7 +46,7 @@ export default function AboutPage() {
                 <div className="card bg-base-200 shadow-sm border border-base-300">
                     <div className="card-body">
                         <h3 className="card-title text-base-content/70">Open Source</h3>
-                        <p>This project is open source. You can check the code to verify that verified "I don't care" claim.</p>
+                        <p>This project is open source. You can check the code to verify that "I don't care" claim.</p>
                         <div className="card-actions mt-4">
                             <a href="https://github.com/michaeltomlinsontuks/ScheduleGenerator" target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">
                                 View on GitHub

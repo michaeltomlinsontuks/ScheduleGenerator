@@ -41,12 +41,12 @@ export default function PrivacyPage() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-600 mb-8">Last updated: November 30, 2024</p>
+        <p className="text-sm text-gray-600 mb-8">Last updated: December 2025</p>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
           <p>
-            UP Schedule Generator ("we", "our", "us") operates this website. This page informs you of our
+            Tuks Schedule Generator ("we", "our", "us") operates this website. This page informs you of our
             policies regarding the collection, use, and disclosure of personal data when you use our service.
           </p>
         </section>
@@ -109,8 +109,8 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold mb-4">Your Rights</h2>
           <p>You have the following rights regarding your data:</p>
           <ul className="list-disc pl-6 space-y-2">
-            <li><strong>Access:</strong> You can request information about the data we store</li>
-            <li><strong>Deletion:</strong> You can request deletion of your account and associated data</li>
+            <li><strong>Access:</strong> You can request information about any data we hold (spoiler: we don&apos;t store any)</li>
+            <li><strong>No Account:</strong> Since we don&apos;t store your data, there&apos;s no account to delete</li>
             <li><strong>Revoke Access:</strong> You can revoke Google Calendar access at any time through your Google Account settings</li>
             <li><strong>Data Portability:</strong> Calendar events remain in your Google Calendar and can be exported using Google's tools</li>
           </ul>
@@ -152,14 +152,7 @@ export default function PrivacyPage() {
           </p>
         </section>
 
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">GDPR Compliance</h2>
-          <p>
-            If you are located in the European Economic Area (EEA), you have certain data protection rights.
-            We aim to take reasonable steps to allow you to correct, amend, delete, or limit the use of your
-            personal data.
-          </p>
-        </section>
+
       </div>
     </div>
   );
