@@ -51,7 +51,7 @@ interface GoogleCalendarResponse {
 
 @Injectable()
 export class GoogleCalendarService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService) { }
 
   /**
    * Lists all calendars for the authenticated user
@@ -192,10 +192,10 @@ export class GoogleCalendarService {
   ): object {
     const startDate = this.getFirstOccurrence(event.day!, semesterStart);
     const endDate = new Date(startDate);
-    
+
     const [startHours, startMinutes] = event.startTime.split(':').map(Number);
     const [endHours, endMinutes] = event.endTime.split(':').map(Number);
-    
+
     startDate.setHours(startHours, startMinutes, 0, 0);
     endDate.setHours(endHours, endMinutes, 0, 0);
 
@@ -207,11 +207,11 @@ export class GoogleCalendarService {
       summary: event.summary,
       location: event.location,
       start: {
-        dateTime: startDate.toISOString(),
+        dateTime: this.toLocalISOString(startDate),
         timeZone: 'Africa/Johannesburg',
       },
       end: {
-        dateTime: endDate.toISOString(),
+        dateTime: this.toLocalISOString(endDate),
         timeZone: 'Africa/Johannesburg',
       },
       recurrence: [`RRULE:FREQ=WEEKLY;BYDAY=${dayCode};UNTIL=${until}`],
@@ -238,11 +238,11 @@ export class GoogleCalendarService {
       summary: event.summary,
       location: event.location,
       start: {
-        dateTime: startDate.toISOString(),
+        dateTime: this.toLocalISOString(startDate),
         timeZone: 'Africa/Johannesburg',
       },
       end: {
-        dateTime: endDate.toISOString(),
+        dateTime: this.toLocalISOString(endDate),
         timeZone: 'Africa/Johannesburg',
       },
       colorId: event.colorId,
@@ -254,6 +254,16 @@ export class GoogleCalendarService {
     }
 
     return googleEvent;
+  }
+
+  /**
+   * Formats a date as a local ISO string without UTC conversion.
+   * Google Calendar API expects local time when a timeZone is specified.
+   * Using toISOString() converts to UTC which causes timezone offset issues.
+   */
+  private toLocalISOString(date: Date): string {
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
   }
 
   /**
