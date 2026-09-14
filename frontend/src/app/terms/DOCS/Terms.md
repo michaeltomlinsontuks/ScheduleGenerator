@@ -31,6 +31,7 @@ critic:
 # Terms
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Terms.evidence.md#summary)
@@ -85,11 +86,13 @@ flowchart TB
 | TermsPage (default export) | none — takes no props | A static Terms of Service page | Renders the complete Terms of Service for Tuks Schedule Generator as static content, with no state and no data fetching <!-- ev:research.frontend-src-app-terms.f1357926 --><sup>[21](Terms.evidence.md#research.frontend-src-app-terms.f1357926)</sup> <!-- ev:research.frontend-src-app-terms.709797fa --><sup>[2](Terms.evidence.md#research.frontend-src-app-terms.709797fa)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Terms.evidence.md#dependencies)
@@ -97,6 +100,7 @@ flowchart TB
 The page declares no dependencies; it is a single presentational component rendering static content. <!-- ev:research.frontend-src-app-terms.709797fa --><sup>[2](Terms.evidence.md#research.frontend-src-app-terms.709797fa)</sup>
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Terms.evidence.md#data-model)
@@ -104,6 +108,7 @@ The page declares no dependencies; it is a single presentational component rende
 This page declares and references no entities (inference: the research records none for this unit). It renders static Terms of Service text only. <!-- ev:research.frontend-src-app-terms.709797fa --><sup>[2](Terms.evidence.md#research.frontend-src-app-terms.709797fa)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Terms.evidence.md#decisions-and-limitations)
@@ -111,4 +116,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the terms means editing the page source directly, since it takes no props, holds no state, and performs no data fetching. <!-- ev:research.frontend-src-app-terms.709797fa --><sup>[2](Terms.evidence.md#research.frontend-src-app-terms.709797fa)</sup> The 'Last updated: December 2025' date is hard-coded in the page. <!-- ev:research.frontend-src-app-terms.6c7397f6 --><sup>[5](Terms.evidence.md#research.frontend-src-app-terms.6c7397f6)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 3 of 3, wave 1
 <!-- /tyto-docs:generated:navigation -->

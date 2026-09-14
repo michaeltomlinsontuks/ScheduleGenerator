@@ -37,6 +37,7 @@ critic:
 # Cache
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Cache.evidence.md#summary)
@@ -72,11 +73,13 @@ flowchart LR
 | CacheModule | none — a NestJS module class | A global cache module | Registers a global cache with a 5-minute default TTL and a 1000-item maximum; any module that imports it can use the cache <!-- ev:research.backend-src-cache.7f2e5345 --><sup>[1](Cache.evidence.md#research.backend-src-cache.7f2e5345)</sup> <!-- ev:research.backend-src-cache.3854dd3f --><sup>[2](Cache.evidence.md#research.backend-src-cache.3854dd3f)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Cache.evidence.md#dependencies)
@@ -86,6 +89,13 @@ flowchart LR
 | @nestjs/cache-manager | Global cache module with configurable TTL and item limit | Provides the cache infrastructure CacheModule registers and re-exports <!-- ev:research.backend-src-cache.7f2e5345 --><sup>[1](Cache.evidence.md#research.backend-src-cache.7f2e5345)</sup> <!-- ev:research.backend-src-cache.3854dd3f --><sup>[2](Cache.evidence.md#research.backend-src-cache.3854dd3f)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_cache["backend/src/cache"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_cache
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Cache.evidence.md#data-model)
@@ -93,6 +103,7 @@ flowchart LR
 This module declares and references no entities (inference: the research records none for this unit). It only configures the shared cache infrastructure. <!-- ev:research.backend-src-cache.7f2e5345 --><sup>[1](Cache.evidence.md#research.backend-src-cache.7f2e5345)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Cache.evidence.md#decisions-and-limitations)
@@ -100,4 +111,5 @@ This module declares and references no entities (inference: the research records
 CacheModule applies a default TTL of 300000 milliseconds (5 minutes) and a maximum of 1000 cached items to every entry that does not override them. <!-- ev:research.backend-src-cache.7f2e5345 --><sup>[1](Cache.evidence.md#research.backend-src-cache.7f2e5345)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 1 of 3, wave 1
 <!-- /tyto-docs:generated:navigation -->

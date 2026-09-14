@@ -44,6 +44,7 @@ critic:
 # Config
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Config.evidence.md#summary)
@@ -84,11 +85,13 @@ flowchart LR
 | AppConfigModule | none — a NestJS module class | A global configuration module | Registers the @nestjs/config ConfigModule globally, loading the configuration factory from environment variables with fallback defaults; any module that imports it can read the configuration <!-- ev:research.backend-src-config.f3479eba --><sup>[1](Config.evidence.md#research.backend-src-config.f3479eba)</sup> <!-- ev:research.backend-src-config.27c1ac53 --><sup>[3](Config.evidence.md#research.backend-src-config.27c1ac53)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Config.evidence.md#dependencies)
@@ -99,6 +102,13 @@ flowchart LR
 | @nestjs/common | NestJS module infrastructure, including the @Module() decorator | Provides the decorator that declares AppConfigModule <!-- ev:research.backend-src-config.658a6c1d --><sup>[4](Config.evidence.md#research.backend-src-config.658a6c1d)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_config["backend/src/config"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_config
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Config.evidence.md#data-model)
@@ -106,6 +116,7 @@ flowchart LR
 This module declares and references no entities (inference: the research records none for this unit). It only loads the application's configuration from environment variables. <!-- ev:research.backend-src-config.27c1ac53 --><sup>[3](Config.evidence.md#research.backend-src-config.27c1ac53)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Config.evidence.md#decisions-and-limitations)
@@ -113,4 +124,5 @@ This module declares and references no entities (inference: the research records
 The minio section prefers MINIO_* variables but falls back to AWS S3/Tigris variables, and auto-enables SSL whenever an S3 endpoint URL is set. <!-- ev:research.backend-src-config.6c6f7892 --><sup>[8](Config.evidence.md#research.backend-src-config.6c6f7892)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 2 of 3, wave 1
 <!-- /tyto-docs:generated:navigation -->
