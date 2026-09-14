@@ -12,20 +12,16 @@ accepted: null
 evidence: Terms.evidence.md
 critic:
   attempts: 1
-  findings:
-    - key: critic.frontend-src-app-terms.ebd3c353
-      owner: researcher
-      claim: "The research records no finding for the page's 'Acceptance of Terms' section (page.tsx L39-L46), which is the first section of the page; the document's 'How it works' prose and its behaviour diagram therefore enumerate the page's sections without it, so the document's claim of 'Terms sections, in fixed order' does not fully represent the page it documents."
-      locus:
-        document_section: "How it works"
-        finding_id: research.frontend-src-app-terms.118f95e7
-      severity: blocking
-      raised_at: "2026-09-14T13:40:00+02:00"
-      raised_in_pass: w0
+  findings: []
   review_complete: true
   sections_reviewed: 8
   sections_total: 8
   last_reviewed_document: "sha256:207c7d83ef9be0e9d72ca29d05255710382dc9511521da78fdcd59c9089433df"
+  retired:
+    - key: critic.frontend-src-app-terms.ebd3c353
+      finding: "The research records no finding for the page's 'Acceptance of Terms' section (page.tsx L39-L46), which is the first section of the page; the document's 'How it works' prose and its behaviour diagram therefore enumerate the page's sections without it, so the document's claim of 'Terms sections, in fixed order' does not fully represent the page it documents."
+      as: resolved
+      at: "2026-09-14T18:30:37.195Z"
 -->
 
 # Terms
