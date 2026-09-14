@@ -43,3 +43,6 @@ coverage/
 postgres_data/
 redis_data/
 minio_data/
+
+# tyto-docs regenerable cache
+.tyto-docs-cache/

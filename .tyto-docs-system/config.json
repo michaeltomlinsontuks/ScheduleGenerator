@@ -1,0 +1,68 @@
+{
+  "schema_version": "3.0.0",
+  "application_root": ".",
+  "documentation_root": "DOCS",
+  "cache_root": ".tyto-docs-cache",
+  "developer_owned_documents": [],
+  "mermaid": {
+    "cli": "@mermaid-js/mermaid-cli",
+    "version": "pinned-at-install"
+  },
+  "exclusions": [],
+  "templates": {
+    "override_root": ".tyto-docs-system/templates"
+  },
+  "adapters": {
+    "nestjs": "auto",
+    "entities": [
+      "typescript-generic"
+    ]
+  },
+  "notifier": {
+    "kind": "discord",
+    "file": {
+      "path": ".tyto-docs-cache/questions.outbox.md"
+    },
+    "github": {
+      "target": "issue",
+      "number": null
+    },
+    "discord": {
+      "channel_id": "1544350490610106539",
+      "channel_id_env": "DISCORD_CHANNEL_ID",
+      "token_env": "DISCORD_BOT_TOKEN",
+      "api_base": "https://discord.com/api/v10",
+      "mentions": {}
+    }
+  },
+  "authority": {
+    "default": "@michaeltomlinsontuks",
+    "routes": []
+  },
+  "lock": {
+    "stale_after_seconds": 5400
+  },
+  "harness": {
+    "role_timeout_seconds": 900,
+    "retries": 1,
+    "retry_backoff_seconds": 15,
+    "command_timeout_seconds": 600,
+    "role_grace_seconds": 15,
+    "role_idle_timeout_seconds": 300,
+    "writer_idle_timeout_seconds": 900,
+    "role_min_distinct_lines": 12,
+    "tick_budget_seconds": 3600,
+    "tool_output_bytes": 46000,
+    "commit_per_unit": 1,
+    "workers": 1,
+    "runaway_spend_fuse_usd": 2,
+    "consecutive_fuse_trips": 3,
+    "critic_rework_attempts": 0
+  },
+  "cron": {
+    "branch": "tyto-docs/documentation",
+    "branch_prefix": "tyto-docs/",
+    "base": "main",
+    "remote": "origin"
+  }
+}

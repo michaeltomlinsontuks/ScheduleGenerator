@@ -1,0 +1,39 @@
+# Deterministic documentation gate. Spends no model tokens: it checks that documents own the
+# source that changed, that every generated region is current, and that the corpus validates.
+name: docs-check
+
+on:
+  pull_request:
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@tytoltd"
+
+      # GITHUB_TOKEN can read packages published by the same organisation. Nothing else in this
+      # job needs a credential.
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # The Mermaid gate compiles every fence through `mmdc`. Without the CLI on PATH the engine
+      # skips that rule rather than failing it, so an uninstalled CLI silently checks less than a
+      # developer's machine does.
+      - name: Mermaid CLI
+        run: npm install --global @mermaid-js/mermaid-cli@11.15.0
+
+      - name: Documents own changed source
+        run: npx tyto-docs-engine diff --repository-root . --base origin/main
+      - name: Generated documents are current
+        run: npx tyto-docs-engine generate --all --check --repository-root . --format human
+      - name: Documentation validates
+        run: npx tyto-docs-engine validate --repository-root . --format human

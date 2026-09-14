@@ -1,0 +1,101 @@
+# The unattended documentation lifecycle. It synchronises one accumulating documentation branch,
+# runs whichever model roles are configured, regenerates evidence and mechanical regions,
+# validates, and publishes. With no model slots configured it still runs — deterministically, and
+# for free — which is the recommended way to prove the branch and push path before spending
+# anything.
+name: docs-cron
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: docs-cron
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: read
+
+jobs:
+  documentation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@tytoltd"
+
+      - run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Mermaid CLI
+        run: npm install --global @mermaid-js/mermaid-cli@11.15.0
+
+      # Only installed when a model slot is actually configured, so a repository running the
+      # deterministic lifecycle alone does not pay for it every fifteen minutes.
+      - name: Goose CLI
+        if: vars.TYTO_DOCS_GOOSE_VERSION != ''
+        env:
+          GOOSE_VERSION: ${{ vars.TYTO_DOCS_GOOSE_VERSION }}
+          CONFIGURE: "false"
+        run: |
+          curl -fsSL https://github.com/block/goose/releases/download/stable/download_cli.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          installed="$($HOME/.local/bin/goose --version | head -1)"
+          if [[ "$installed" != "$GOOSE_VERSION" ]]; then
+            echo "expected Goose $GOOSE_VERSION, installed $installed" >&2
+            exit 1
+          fi
+
+      - name: Run documentation lifecycle
+        env:
+          DISCORD_CHANNEL_ID: ${{ vars.DISCORD_CHANNEL_ID }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          # The tier contract the recipes read. Unset, the slots above are simply not configured
+          # and the lifecycle runs without model work; there is no half-configured state here.
+          TYTO_DOCS_LOW_BASE_URL: ${{ vars.TYTO_DOCS_LOW_BASE_URL }}
+          TYTO_DOCS_LOW_MODEL: ${{ vars.TYTO_DOCS_LOW_MODEL }}
+          TYTO_DOCS_LOW_API_KEY: ${{ secrets.TYTO_DOCS_LOW_API_KEY }}
+          TYTO_DOCS_HIGH_BASE_URL: ${{ vars.TYTO_DOCS_HIGH_BASE_URL }}
+          TYTO_DOCS_HIGH_MODEL: ${{ vars.TYTO_DOCS_HIGH_MODEL }}
+          TYTO_DOCS_HIGH_API_KEY: ${{ secrets.TYTO_DOCS_HIGH_API_KEY }}
+          TYTO_DOCS_OPEN_PR: "1"
+          TYTO_DOCS_PR_BASE: main
+          TYTO_DOCS_GIT_NAME: tyto-docs
+          TYTO_DOCS_GIT_EMAIL: tyto-docs@users.noreply.github.com
+          # A published partial tick is not a broken Actions job. Codes 3 and 4 collapse to zero;
+          # failed publication and the runaway fuse remain non-zero. The next step reports the
+          # original outcome from the tick record.
+          TYTO_DOCS_PARTIAL_EXIT: quiet
+          # `gh` authenticates from the environment. Without this the pull-request step fails and
+          # the run still reports success, so the branch advances and no pull request ever opens.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Resolves the engine, the lifecycle scripts and the role recipes out of node_modules,
+        # then execs the tick. Exit codes: 0 completed, 3 completed with findings, 4 partial.
+        run: npx tyto-docs run --repository-root .
+
+      - name: Report documentation outcome
+        if: always()
+        shell: bash
+        run: |
+          status="$(find .tyto-docs-cache/ticks -name status.json -type f -print 2>/dev/null | sort | tail -1)"
+          if [[ -z "$status" ]]; then
+            echo "## tyto-docs" >> "$GITHUB_STEP_SUMMARY"
+            echo "No tick status was produced. Read the lifecycle step for the failure." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          jq -r '"## tyto-docs\n\n- Outcome: `\(.outcome)`\n- Lifecycle exit: `\(.exit_code)`\n- Branch: `\(.branch)`\n- Tick: `\(.tick_id)`"' \
+            "$status" >> "$GITHUB_STEP_SUMMARY"
