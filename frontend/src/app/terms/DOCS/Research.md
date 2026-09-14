@@ -2,7 +2,7 @@
 tyto_docs: 1
 kind: research
 unit: frontend/src/app/terms
-researched_at_commit: 0dcd10678c036ca027caa59a81bb95fac80fb882
+researched_at_commit: d0f11b8b31ce95700c09f2c31d81d093ba5f68d3
 sources:
   - path: frontend/src/app/terms/page.tsx
     blob_sha: 57abb8405b17d6a4cadf20029f1bfb7b934988f2
@@ -143,6 +143,12 @@ The page's 'Contact Us' section provides the email address michael@tomlinson.co.
 The page's 'Acknowledgment' section states that by using the Service, users acknowledge that they have read the Terms of Service and agree to be bound by them.
 
 - `frontend/src/app/terms/page.tsx` L226-L232 @57abb8405b17d6a4cadf20029f1bfb7b934988f2
+
+### `research.frontend-src-app-terms.cefb3743`
+
+The page's 'Acceptance of Terms' section states that by accessing and using Tuks Schedule Generator ("the Service"), users accept and agree to be bound by the terms and provisions of the agreement, and that users who do not agree to these terms should not use the Service.
+
+- `frontend/src/app/terms/page.tsx` L39-L46 @57abb8405b17d6a4cadf20029f1bfb7b934988f2
 
 ## Open questions
 
