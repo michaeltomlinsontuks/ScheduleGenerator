@@ -1,0 +1,13 @@
+{
+  "name": "schedulegenerator-root",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Repository root used for tyto-docs tooling only; backend/ and frontend/ keep their own package manifests.",
+  "devDependencies": {
+    "@tytoltd/tyto-docs": "file:/tmp/tyto-docs-local-0.9.0/tytoltd-tyto-docs-0.9.0.tgz",
+    "@tytoltd/tyto-docs-engine": "file:/tmp/tyto-docs-local-0.9.0/tytoltd-tyto-docs-engine-0.9.0.tgz"
+  },
+  "overrides": {
+    "@tytoltd/tyto-docs-engine": "file:/tmp/tyto-docs-local-0.9.0/tytoltd-tyto-docs-engine-0.9.0.tgz"
+  }
+}
