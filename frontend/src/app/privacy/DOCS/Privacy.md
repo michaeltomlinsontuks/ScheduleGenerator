@@ -3,16 +3,45 @@ tyto_docs: 1
 kind: component
 unit: frontend/src/app/privacy
 title: Privacy
-status: draft
-written_at_commit: 54ff10ec3c1c30794b2631b06cb113f52787a575
-written_at: "2026-09-15T03:08:19.085Z"
+status: current
+written_at_commit: 995c4193bcae31c5163de11a3469826e13906e4e
+written_at: "2026-09-15T12:42:44.522Z"
 research: frontend/src/app/privacy/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T12:48:02.082Z"
+  commit: 995c4193bcae31c5163de11a3469826e13906e4e
+  research_fingerprint: "sha256:c71b7a7c7969d51ecfae572e55076269e16e6c78fa9c45d2de15d209d9e576eb"
+  research_findings:
+    - research.frontend-src-app-privacy.06d54963
+    - research.frontend-src-app-privacy.08b22396
+    - research.frontend-src-app-privacy.094bff10
+    - research.frontend-src-app-privacy.173cc638
+    - research.frontend-src-app-privacy.1eafdc5c
+    - research.frontend-src-app-privacy.29d65031
+    - research.frontend-src-app-privacy.2d3ab8cb
+    - research.frontend-src-app-privacy.828771e3
+    - research.frontend-src-app-privacy.9b291345
+    - research.frontend-src-app-privacy.a786a279
+    - research.frontend-src-app-privacy.a7c28641
+    - research.frontend-src-app-privacy.b0ee3492
+    - research.frontend-src-app-privacy.b9a38460
+    - research.frontend-src-app-privacy.ddc51185
+    - research.frontend-src-app-privacy.f35515be
+    - research.frontend-src-app-privacy.f5d5f7e7
+  critic_pass: critic.frontend-src-app-privacy.1
+  sources:
+    - path: frontend/src/app/privacy/page.tsx
+      blob_sha: 5a43fed1c00af119ee5ad69f9c4f71c61edf2275
 evidence: Privacy.evidence.md
 critic:
-  attempts: 0
+  attempts: 1
   findings: []
+  review_complete: true
+  sections_reviewed: 8
+  sections_total: 8
+  last_reviewed_document: "sha256:4f2b0b9e09989766767ccea9f1445c3ce3db06793268939985dd3d819438cde7"
+  retired: []
 -->
 
 # Privacy
