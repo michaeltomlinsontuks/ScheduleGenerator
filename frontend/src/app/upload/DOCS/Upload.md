@@ -46,6 +46,7 @@ critic:
 # Upload
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Upload.evidence.md#summary)
@@ -91,11 +92,13 @@ stateDiagram-v2
 | UploadPage (default export) | none — the component takes no props (inference) | The upload page | Drives the upload workflow from file selection through completion, showing progress and error states, and redirects to /preview after a successful upload <!-- ev:research.frontend-src-app-upload.1dfb9cdd --><sup>[1](Upload.evidence.md#research.frontend-src-app-upload.1dfb9cdd)</sup> <!-- ev:research.frontend-src-app-upload.ec70049a --><sup>[2](Upload.evidence.md#research.frontend-src-app-upload.ec70049a)</sup> <!-- ev:research.frontend-src-app-upload.e1e0b822 --><sup>[3](Upload.evidence.md#research.frontend-src-app-upload.e1e0b822)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Upload.evidence.md#dependencies)
@@ -111,6 +114,7 @@ The page's imports are declared in frontend/src/app/upload/page.tsx. <!-- ev:res
 | next/navigation (useRouter) | Client-side routing | Navigates to /preview after a successful upload <!-- ev:research.frontend-src-app-upload.4b13b959 --><sup>[4](Upload.evidence.md#research.frontend-src-app-upload.4b13b959)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Upload.evidence.md#data-model)
@@ -118,6 +122,7 @@ The page's imports are declared in frontend/src/app/upload/page.tsx. <!-- ev:res
 This unit declares no entities of its own; it reads and writes the event store's job id, events, and job status through useEventStore. <!-- ev:research.frontend-src-app-upload.4015880b --><sup>[5](Upload.evidence.md#research.frontend-src-app-upload.4015880b)</sup> <!-- ev:research.frontend-src-app-upload.f6387d2a --><sup>[7](Upload.evidence.md#research.frontend-src-app-upload.f6387d2a)</sup> <!-- ev:research.frontend-src-app-upload.20aa94bc --><sup>[10](Upload.evidence.md#research.frontend-src-app-upload.20aa94bc)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Upload.evidence.md#decisions-and-limitations)
@@ -127,4 +132,5 @@ The page contains an effect that emulates progress during the 'processing' phase
 The page holds a completion state for 800 ms before redirecting to /preview, and simulates processing progress capped at 90% until completion. <!-- ev:research.frontend-src-app-upload.e1e0b822 --><sup>[3](Upload.evidence.md#research.frontend-src-app-upload.e1e0b822)</sup> <!-- ev:research.frontend-src-app-upload.52b1453f --><sup>[12](Upload.evidence.md#research.frontend-src-app-upload.52b1453f)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 26 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

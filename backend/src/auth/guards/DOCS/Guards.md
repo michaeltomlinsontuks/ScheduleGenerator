@@ -43,6 +43,7 @@ critic:
 # Guards
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Guards.evidence.md#summary)
@@ -96,11 +97,13 @@ sequenceDiagram
 | IpBlockingGuard.canActivate | ExecutionContext | Promise<boolean> | Returns true when the client IP is not blocked; throws a ForbiddenException with statusCode 403, message 'IP_BLOCKED', minutes remaining, and retryAfter when it is <!-- ev:research.backend-src-auth-guards.2b44575c --><sup>[6](Guards.evidence.md#research.backend-src-auth-guards.2b44575c)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Guards.evidence.md#dependencies)
@@ -112,6 +115,14 @@ sequenceDiagram
 | @nestjs/common | @Injectable, CanActivate, ExecutionContext, ForbiddenException, Logger | NestJS guard infrastructure and the 403 response for blocked IPs <!-- ev:research.backend-src-auth-guards.0a33100e --><sup>[2](Guards.evidence.md#research.backend-src-auth-guards.0a33100e)</sup> <!-- ev:research.backend-src-auth-guards.2b44575c --><sup>[6](Guards.evidence.md#research.backend-src-auth-guards.2b44575c)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_auth_guards["backend/src/auth/guards"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_auth_guards --> backend_src_auth
+    backend_src_auth --> backend_src_auth_guards
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## Data model
@@ -119,6 +130,7 @@ sequenceDiagram
 This unit declares no entities; the guards consume IpBlockingService and the request context and define no data shapes of their own.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Guards.evidence.md#decisions-and-limitations)
@@ -126,4 +138,5 @@ This unit declares no entities; the guards consume IpBlockingService and the req
 Both guards trust the first entry of the X-Forwarded-For header as the client IP, falling back to the direct connection address and finally to the literal 'unknown'; a request that reaches the guard without a usable address is treated as the string 'unknown'. <!-- ev:research.backend-src-auth-guards.43ae735e --><sup>[9](Guards.evidence.md#research.backend-src-auth-guards.43ae735e)</sup> <!-- ev:research.backend-src-auth-guards.7518b4ff --><sup>[10](Guards.evidence.md#research.backend-src-auth-guards.7518b4ff)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 3 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

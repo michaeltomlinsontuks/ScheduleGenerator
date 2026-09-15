@@ -38,6 +38,7 @@ critic:
 # Preview
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Preview.evidence.md#summary)
@@ -95,11 +96,13 @@ flowchart TB
 | index.ts (barrel) | — | Re-exports of the four components and their prop types | A single import point for the unit's public surface <!-- ev:research.frontend-src-components-preview.8d2e31a0 --><sup>[5](Preview.evidence.md#research.frontend-src-components-preview.8d2e31a0)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Preview.evidence.md#dependencies)
@@ -114,6 +117,7 @@ The unit's components are built on React and share the ParsedEvent type and the 
 | EventCard ('./EventCard') | Single event card | EventList renders each event as an EventCard in its day grid <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Preview.evidence.md#data-model)
@@ -121,6 +125,7 @@ The unit's components are built on React and share the ParsedEvent type and the 
 This unit declares no entities; the components render UI driven by their props, with event data typed as ParsedEvent, a type defined outside this unit (inference: the findings record the import but no definition in this unit). <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup> <!-- ev:research.frontend-src-components-preview.97fd0b5a --><sup>[2](Preview.evidence.md#research.frontend-src-components-preview.97fd0b5a)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Preview.evidence.md#decisions-and-limitations)
@@ -130,4 +135,5 @@ All four components are client components ('use client' directive), so they rend
 EventCard's unfinalised-exam detection depends on the event venue or date containing the text 'unfinalised' or 'tba', so an event that spells the marker differently is not flagged. <!-- ev:research.frontend-src-components-preview.a7bf4a97 --><sup>[10](Preview.evidence.md#research.frontend-src-components-preview.a7bf4a97)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 29 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -47,6 +47,7 @@ critic:
 # Parser
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Parser.evidence.md#summary)
@@ -86,11 +87,13 @@ flowchart LR
 | ParserResponse | — | { events: ParsedEvent[] } | The unit's exported response shape: a single events property holding an array of ParsedEvent <!-- ev:research.backend-src-parser.3d5cb3fc --><sup>[4](Parser.evidence.md#research.backend-src-parser.3d5cb3fc)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Parser.evidence.md#dependencies)
@@ -103,6 +106,17 @@ flowchart LR
 | backend/src/common/types.ts | PdfType and ParsedEvent types | Types the parse request and the normalized response <!-- ev:research.backend-src-parser.ac8c4268 --><sup>[7](Parser.evidence.md#research.backend-src-parser.ac8c4268)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_parser["backend/src/parser"]
+    backend_src_common["backend/src/common"]
+    backend_src["backend/src"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_parser --> backend_src_common
+    backend_src --> backend_src_parser
+    backend_src_upload --> backend_src_parser
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Parser.evidence.md#data-model)
@@ -110,6 +124,7 @@ flowchart LR
 The unit declares no entities of its own; it references ParsedEvent and PdfType from backend/src/common/types.ts and returns ParsedEvent instances from parsePdf. <!-- ev:research.backend-src-parser.ac8c4268 --><sup>[7](Parser.evidence.md#research.backend-src-parser.ac8c4268)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Parser.evidence.md#decisions-and-limitations)
@@ -117,4 +132,5 @@ The unit declares no entities of its own; it references ParsedEvent and PdfType 
 ParserService generates event ids with crypto.randomUUID when available, falling back to a template-based UUID v4 generator, so ids stay unique even where randomUUID is missing. <!-- ev:research.backend-src-parser.bf0fdbff --><sup>[9](Parser.evidence.md#research.backend-src-parser.bf0fdbff)</sup> <!-- ev:research.backend-src-parser.bcfc00c5 --><sup>[10](Parser.evidence.md#research.backend-src-parser.bcfc00c5)</sup> The parser URL defaults to 'http://localhost:5000' when 'parser.url' is not configured, so non-local deployments must set it explicitly. <!-- ev:research.backend-src-parser.7c1b30b5 --><sup>[6](Parser.evidence.md#research.backend-src-parser.7c1b30b5)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 16 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

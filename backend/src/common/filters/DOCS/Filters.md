@@ -30,6 +30,7 @@ critic:
 # Filters
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Filters.evidence.md#summary)
@@ -72,11 +73,13 @@ flowchart LR
 | ErrorResponse | none — an exported interface with five declared fields | The JSON error-response body shape | Describes error responses with required statusCode, message, and timestamp and optional path and requestId <!-- ev:research.backend-src-common-filters.afca5efd --><sup>[8](Filters.evidence.md#research.backend-src-common-filters.afca5efd)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Filters.evidence.md#dependencies)
@@ -87,6 +90,13 @@ flowchart LR
 | express | The Request type, which RequestWithContext extends | Types the request object the filter reads for requestId, userId, method, url, body, query, and params when building the response and log entry <!-- ev:research.backend-src-common-filters.4e746b8d --><sup>[9](Filters.evidence.md#research.backend-src-common-filters.4e746b8d)</sup> <!-- ev:research.backend-src-common-filters.bda5b518 --><sup>[3](Filters.evidence.md#research.backend-src-common-filters.bda5b518)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_filters["backend/src/common/filters"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_common_filters
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Filters.evidence.md#data-model)
@@ -94,7 +104,9 @@ flowchart LR
 This unit declares two data shapes: the exported ErrorResponse interface, the JSON error body the filter sends to clients, and the internal RequestWithContext interface, which extends Express's Request with optional requestId and userId fields. <!-- ev:research.backend-src-common-filters.afca5efd --><sup>[8](Filters.evidence.md#research.backend-src-common-filters.afca5efd)</sup> <!-- ev:research.backend-src-common-filters.4e746b8d --><sup>[9](Filters.evidence.md#research.backend-src-common-filters.4e746b8d)</sup> Neither is a persisted entity.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 8 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

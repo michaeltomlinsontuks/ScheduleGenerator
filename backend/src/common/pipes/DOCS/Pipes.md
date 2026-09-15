@@ -46,6 +46,7 @@ critic:
 # Pipes
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Pipes.evidence.md#summary)
@@ -85,11 +86,13 @@ flowchart LR
 | FileValidationPipe.transform | An uploaded file (MulterFile) | The same file, unchanged | Rejects a missing file, a non-PDF file, or a file over 10MB with a BadRequestException carrying a FileValidationError code; returns the file unchanged when it passes all checks <!-- ev:research.backend-src-common-pipes.583c665f --><sup>[1](Pipes.evidence.md#research.backend-src-common-pipes.583c665f)</sup> <!-- ev:research.backend-src-common-pipes.1da762c0 --><sup>[2](Pipes.evidence.md#research.backend-src-common-pipes.1da762c0)</sup> <!-- ev:research.backend-src-common-pipes.b3934f5d --><sup>[3](Pipes.evidence.md#research.backend-src-common-pipes.b3934f5d)</sup> <!-- ev:research.backend-src-common-pipes.5d2f6012 --><sup>[4](Pipes.evidence.md#research.backend-src-common-pipes.5d2f6012)</sup> <!-- ev:research.backend-src-common-pipes.43edab1e --><sup>[5](Pipes.evidence.md#research.backend-src-common-pipes.43edab1e)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Pipes.evidence.md#dependencies)
@@ -99,6 +102,13 @@ flowchart LR
 | @nestjs/common | PipeTransform, Injectable, and BadRequestException | Provides the pipe contract, the injectable decorator, and the error responses the pipe throws <!-- ev:research.backend-src-common-pipes.583c665f --><sup>[1](Pipes.evidence.md#research.backend-src-common-pipes.583c665f)</sup> <!-- ev:research.backend-src-common-pipes.1da762c0 --><sup>[2](Pipes.evidence.md#research.backend-src-common-pipes.1da762c0)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_pipes["backend/src/common/pipes"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_upload --> backend_src_common_pipes
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Pipes.evidence.md#data-model)
@@ -106,7 +116,9 @@ flowchart LR
 This unit declares two data shapes: the MulterFile interface, describing an uploaded file's fieldname, originalname, encoding, mimetype, size, and buffer; and the FileValidationError enum with members INVALID_FILE_TYPE, FILE_TOO_LARGE, and NO_FILE_PROVIDED. <!-- ev:research.backend-src-common-pipes.8b544a92 --><sup>[6](Pipes.evidence.md#research.backend-src-common-pipes.8b544a92)</sup> <!-- ev:research.backend-src-common-pipes.3178fd79 --><sup>[8](Pipes.evidence.md#research.backend-src-common-pipes.3178fd79)</sup> Both are plain TypeScript declarations, not persisted entities.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 11 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

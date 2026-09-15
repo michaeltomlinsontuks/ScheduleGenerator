@@ -52,6 +52,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -112,11 +113,13 @@ flowchart LR
 | CreateCalendarDto | — | A create-calendar request shape | Requires a name and optionally accepts a description <!-- ev:research.backend-src-calendar-dto.40e94606 --><sup>[6](Dto.evidence.md#research.backend-src-calendar-dto.40e94606)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -129,6 +132,15 @@ flowchart LR
 | ../../common/types.js | PdfType enum with LECTURE, TEST, and EXAM members | Types the optional pdfType field of AddEventsDto and GenerateIcsDto <!-- ev:research.backend-src-calendar-dto.36976215 --><sup>[11](Dto.evidence.md#research.backend-src-calendar-dto.36976215)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_calendar_dto["backend/src/calendar/dto"]
+    backend_src_common["backend/src/common"]
+    backend_src_calendar["backend/src/calendar"]
+    backend_src_calendar_dto --> backend_src_common
+    backend_src_calendar --> backend_src_calendar_dto
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -136,7 +148,9 @@ flowchart LR
 This unit declares the DTO classes that shape the calendar module's request and response payloads. EventConfigDto is embedded in AddEventsDto and GenerateIcsDto as an array of events, and CalendarDto is embedded in CalendarListDto as an array of calendars. <!-- ev:research.backend-src-calendar-dto.ba516a14 --><sup>[3](Dto.evidence.md#research.backend-src-calendar-dto.ba516a14)</sup> <!-- ev:research.backend-src-calendar-dto.7e196b5d --><sup>[8](Dto.evidence.md#research.backend-src-calendar-dto.7e196b5d)</sup> <!-- ev:research.backend-src-calendar-dto.2ad7a509 --><sup>[5](Dto.evidence.md#research.backend-src-calendar-dto.2ad7a509)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 6 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

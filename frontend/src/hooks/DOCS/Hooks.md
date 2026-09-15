@@ -18,6 +18,7 @@ critic:
 # Hooks
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Hooks.evidence.md#summary)
@@ -75,11 +76,13 @@ flowchart TB
 | useWorkflowGuard | the workflow page to guard | A redirect when requirements are unmet | Waits for store hydration, then redirects to the previous workflow step when the page's requirements are not met <!-- ev:research.frontend-src-hooks.dee1cbf0 --><sup>[12](Hooks.evidence.md#research.frontend-src-hooks.dee1cbf0)</sup> <!-- ev:research.frontend-src-hooks.c7935c6d --><sup>[13](Hooks.evidence.md#research.frontend-src-hooks.c7935c6d)</sup> <!-- ev:research.frontend-src-hooks.10b5cdd4 --><sup>[14](Hooks.evidence.md#research.frontend-src-hooks.10b5cdd4)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Hooks.evidence.md#dependencies)
@@ -96,6 +99,7 @@ The unit's hooks are backed by the application's state stores and services rathe
 | uploadService | PDF upload with progress | useUpload uploads PDFs through uploadService.uploadPdf with progress tracking <!-- ev:research.frontend-src-hooks.7014decc --><sup>[5](Hooks.evidence.md#research.frontend-src-hooks.7014decc)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Hooks.evidence.md#data-model)
@@ -103,6 +107,7 @@ The unit's hooks are backed by the application's state stores and services rathe
 This unit declares no data entities of its own; its only type-level surface is the WorkflowPage type re-exported from index.ts, and the state it exposes is held by the stores it wraps. <!-- ev:research.frontend-src-hooks.4201f24c --><sup>[1](Hooks.evidence.md#research.frontend-src-hooks.4201f24c)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Hooks.evidence.md#decisions-and-limitations)
@@ -114,4 +119,5 @@ useWorkflowGuard encodes the workflow order — upload, preview, customize, gene
 useAuth checks the authentication status once on mount, guarded by a hasChecked ref so the check runs only a single time. <!-- ev:research.frontend-src-hooks.d56cd0d3 --><sup>[8](Hooks.evidence.md#research.frontend-src-hooks.d56cd0d3)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 30 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

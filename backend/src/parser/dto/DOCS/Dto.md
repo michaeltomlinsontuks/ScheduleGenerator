@@ -36,6 +36,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -71,11 +72,13 @@ flowchart LR
 | ParsedEventDto | Field values assigned to the class properties | A validated, typed ParsedEventDto instance | Represents a parsed event; required fields id, module, activity, startTime, endTime, venue and isRecurring, optional group, day and date, each validated by class-validator rules <!-- ev:research.backend-src-parser-dto.acf782fb --><sup>[1](Dto.evidence.md#research.backend-src-parser-dto.acf782fb)</sup> <!-- ev:research.backend-src-parser-dto.6d90d151 --><sup>[5](Dto.evidence.md#research.backend-src-parser-dto.6d90d151)</sup> <!-- ev:research.backend-src-parser-dto.e0cd8a63 --><sup>[2](Dto.evidence.md#research.backend-src-parser-dto.e0cd8a63)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -86,6 +89,7 @@ flowchart LR
 | @nestjs/swagger | ApiProperty and ApiPropertyOptional decorators | Documents the DTO's fields in the OpenAPI/Swagger output <!-- ev:research.backend-src-parser-dto.6b15c218 --><sup>[4](Dto.evidence.md#research.backend-src-parser-dto.6b15c218)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -93,6 +97,7 @@ flowchart LR
 ParsedEventDto is the unit's single entity: a data transfer object whose fields describe a parsed event. <!-- ev:research.backend-src-parser-dto.acf782fb --><sup>[1](Dto.evidence.md#research.backend-src-parser-dto.acf782fb)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Dto.evidence.md#decisions-and-limitations)
@@ -100,4 +105,5 @@ ParsedEventDto is the unit's single entity: a data transfer object whose fields 
 startTime and endTime are restricted to the HH:MM format, so times carrying seconds or timezone offsets are rejected by validation. <!-- ev:research.backend-src-parser-dto.e0cd8a63 --><sup>[2](Dto.evidence.md#research.backend-src-parser-dto.e0cd8a63)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 17 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -49,6 +49,7 @@ critic:
 # Jobs
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Jobs.evidence.md#summary)
@@ -93,11 +94,13 @@ sequenceDiagram
 | GET api/jobs/:id/result (getJobResult) | UUID id, validated with ParseUUIDPipe | JobResultDto | Returns parsed events from job.result, defaulting to an empty array; throws 400 JOB_NOT_COMPLETED unless the job status is COMPLETED <!-- ev:research.backend-src-jobs.681c0b98 --><sup>[9](Jobs.evidence.md#research.backend-src-jobs.681c0b98)</sup> <!-- ev:research.backend-src-jobs.1070c31f --><sup>[10](Jobs.evidence.md#research.backend-src-jobs.1070c31f)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Jobs.evidence.md#dependencies)
@@ -112,6 +115,19 @@ sequenceDiagram
 | backend/src/common/dto | ErrorResponseDto | Documented error response shape <!-- ev:research.backend-src-jobs.06a68913 --><sup>[6](Jobs.evidence.md#research.backend-src-jobs.06a68913)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_jobs["backend/src/jobs"]
+    backend_src_common["backend/src/common"]
+    backend_src_common_dto["backend/src/common/dto"]
+    backend_src_jobs_dto["backend/src/jobs/dto"]
+    backend_src["backend/src"]
+    backend_src_jobs --> backend_src_common
+    backend_src_jobs --> backend_src_common_dto
+    backend_src_jobs --> backend_src_jobs_dto
+    backend_src --> backend_src_jobs
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Jobs.evidence.md#data-model)
@@ -119,6 +135,7 @@ sequenceDiagram
 This unit declares no entities of its own; its endpoints reference the JobStatusDto and JobResultDto shapes from the jobs DTO index and the JobStatus enum from the common types. <!-- ev:research.backend-src-jobs.06a68913 --><sup>[6](Jobs.evidence.md#research.backend-src-jobs.06a68913)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Jobs.evidence.md#decisions-and-limitations)
@@ -126,4 +143,6 @@ This unit declares no entities of its own; its endpoints reference the JobStatus
 The unit runs in stateless mode: jobs are not stored, so JobsService.getJobById always throws a 404 JOB_NOT_FOUND NotFoundException, and both controller endpoints currently fail every request with that response. <!-- ev:research.backend-src-jobs.d01fa15b --><sup>[5](Jobs.evidence.md#research.backend-src-jobs.d01fa15b)</sup> <!-- ev:research.backend-src-jobs.111c1710 --><sup>[11](Jobs.evidence.md#research.backend-src-jobs.111c1710)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Common dto](../../common/dto/DOCS/Dto.md), [Jobs dto](../dto/DOCS/Dto.md)
+- **Schedule:** 14 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

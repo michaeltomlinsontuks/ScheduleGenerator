@@ -54,6 +54,7 @@ critic:
 # Guards
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Guards.evidence.md#summary)
@@ -93,11 +94,13 @@ flowchart LR
 | CustomThrottlerGuard | An HTTP request, typed as express Request and optionally carrying requestId and userId | A response with rate limit headers, or a ThrottlerException when the limit is exceeded | Throttles requests per IP tracker key, attaching rateLimitInfo and X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset headers, and a Retry-After header on rejection <!-- ev:research.backend-src-common-guards.3df3c657 --><sup>[5](Guards.evidence.md#research.backend-src-common-guards.3df3c657)</sup> <!-- ev:research.backend-src-common-guards.b98d9ce0 --><sup>[6](Guards.evidence.md#research.backend-src-common-guards.b98d9ce0)</sup> <!-- ev:research.backend-src-common-guards.f1aa9f05 --><sup>[3](Guards.evidence.md#research.backend-src-common-guards.f1aa9f05)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Guards.evidence.md#dependencies)
@@ -108,6 +111,13 @@ flowchart LR
 | express | Request type | RequestWithContext extends the express Request type with optional requestId and userId string fields <!-- ev:research.backend-src-common-guards.f1aa9f05 --><sup>[3](Guards.evidence.md#research.backend-src-common-guards.f1aa9f05)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_guards["backend/src/common/guards"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_common_guards
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Guards.evidence.md#data-model)
@@ -115,7 +125,9 @@ flowchart LR
 This unit declares one data shape: RequestWithContext, an interface extending the express Request type with optional requestId and userId string fields. <!-- ev:research.backend-src-common-guards.f1aa9f05 --><sup>[3](Guards.evidence.md#research.backend-src-common-guards.f1aa9f05)</sup> It is a request-time shape, not a persisted entity.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 9 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

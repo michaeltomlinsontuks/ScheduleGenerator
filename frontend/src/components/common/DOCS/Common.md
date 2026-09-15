@@ -46,6 +46,7 @@ critic:
 # Common
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Common.evidence.md#summary)
@@ -106,11 +107,13 @@ flowchart TB
 | index.ts (barrel) | — | Re-exports of the five components and their prop types | A single import point for the unit's public surface <!-- ev:research.frontend-src-components-common.4c93d27b --><sup>[1](Common.evidence.md#research.frontend-src-components-common.4c93d27b)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Common.evidence.md#dependencies)
@@ -123,6 +126,7 @@ The unit's components are built on React and styled with DaisyUI utility classes
 | DaisyUI / Tailwind | Utility classes for styling | Provides the alert, button, card, loading, and modal classes the components compose <!-- ev:research.frontend-src-components-common.1da5943e --><sup>[5](Common.evidence.md#research.frontend-src-components-common.1da5943e)</sup> <!-- ev:research.frontend-src-components-common.206ce3a0 --><sup>[8](Common.evidence.md#research.frontend-src-components-common.206ce3a0)</sup> <!-- ev:research.frontend-src-components-common.513b77f1 --><sup>[9](Common.evidence.md#research.frontend-src-components-common.513b77f1)</sup> <!-- ev:research.frontend-src-components-common.f9bbb9f7 --><sup>[10](Common.evidence.md#research.frontend-src-components-common.f9bbb9f7)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Common.evidence.md#data-model)
@@ -130,6 +134,7 @@ The unit's components are built on React and styled with DaisyUI utility classes
 This unit declares and references no entities (inference: the research records none for this unit). The components render presentational UI only, driven by their props. <!-- ev:research.frontend-src-components-common.50ccbeea --><sup>[12](Common.evidence.md#research.frontend-src-components-common.50ccbeea)</sup> <!-- ev:research.frontend-src-components-common.8146bcfd --><sup>[13](Common.evidence.md#research.frontend-src-components-common.8146bcfd)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Common.evidence.md#decisions-and-limitations)
@@ -139,4 +144,5 @@ All five components are client components ('use client' directive), so they rend
 Modal is a controlled dialog: it drives the native <dialog> element's showModal() and close() from the isOpen prop via useEffect, and treats a click on the dialog element itself as a backdrop click that invokes onClose. <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 28 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

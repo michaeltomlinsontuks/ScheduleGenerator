@@ -18,6 +18,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -62,11 +63,13 @@ flowchart LR
 | JobStatusDto | — | A job status shape | Carries a UUID id, a JobStatus status, a PdfType pdfType, and a createdAt Date, with optional completedAt and error <!-- ev:research.backend-src-jobs-dto.fa86a777 --><sup>[10](Dto.evidence.md#research.backend-src-jobs-dto.fa86a777)</sup> <!-- ev:research.backend-src-jobs-dto.66e75985 --><sup>[6](Dto.evidence.md#research.backend-src-jobs-dto.66e75985)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -78,6 +81,15 @@ flowchart LR
 | backend/src/common/types.ts | ParsedEvent, JobStatus, and PdfType types | Shared type definitions the DTOs implement or reference <!-- ev:research.backend-src-jobs-dto.30c730c8 --><sup>[7](Dto.evidence.md#research.backend-src-jobs-dto.30c730c8)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_jobs_dto["backend/src/jobs/dto"]
+    backend_src_common["backend/src/common"]
+    backend_src_jobs["backend/src/jobs"]
+    backend_src_jobs_dto --> backend_src_common
+    backend_src_jobs --> backend_src_jobs_dto
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -85,7 +97,10 @@ flowchart LR
 This unit declares the three DTO classes that shape the jobs module's payloads. JobResultDto embeds ParsedEventDto in its events array, and JobStatusDto references the shared JobStatus and PdfType enums. <!-- ev:research.backend-src-jobs-dto.16481720 --><sup>[5](Dto.evidence.md#research.backend-src-jobs-dto.16481720)</sup> <!-- ev:research.backend-src-jobs-dto.fa86a777 --><sup>[10](Dto.evidence.md#research.backend-src-jobs-dto.fa86a777)</sup> <!-- ev:research.backend-src-jobs-dto.30c730c8 --><sup>[7](Dto.evidence.md#research.backend-src-jobs-dto.30c730c8)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Used by:** [Jobs](../../DOCS/Jobs.md)
+- **Schedule:** 15 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

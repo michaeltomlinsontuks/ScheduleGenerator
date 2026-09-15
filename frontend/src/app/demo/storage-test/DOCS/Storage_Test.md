@@ -18,6 +18,7 @@ critic:
 # Storage Test
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Storage_Test.evidence.md#summary)
@@ -69,11 +70,13 @@ flowchart TB
 | testStorageDisabled | none | A result line in testResults | Records instructions for testing disabled storage and shows an info toast <!-- ev:research.frontend-src-app-demo-storage-test.1151c4eb --><sup>[10](Storage_Test.evidence.md#research.frontend-src-app-demo-storage-test.1151c4eb)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Storage_Test.evidence.md#dependencies)
@@ -89,6 +92,7 @@ The page's imports are declared in frontend/src/app/demo/storage-test/page.tsx. 
 | sessionStorage | Quota probe | testStorageQuota writes 1MB strings to sessionStorage to exercise quota errors <!-- ev:research.frontend-src-app-demo-storage-test.9a0c5fad --><sup>[9](Storage_Test.evidence.md#research.frontend-src-app-demo-storage-test.9a0c5fad)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Storage_Test.evidence.md#data-model)
@@ -96,6 +100,7 @@ The page's imports are declared in frontend/src/app/demo/storage-test/page.tsx. 
 The page declares no entities of its own; its only state is the testResults array of timestamped strings appended by addResult. The event and config stores it writes to are owned by their own units. <!-- ev:research.frontend-src-app-demo-storage-test.fcc2acd2 --><sup>[4](Storage_Test.evidence.md#research.frontend-src-app-demo-storage-test.fcc2acd2)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Storage_Test.evidence.md#decisions-and-limitations)
@@ -105,4 +110,5 @@ testStorageQuota treats a QuotaExceededError as expected behavior rather than a 
 testStorageDisabled cannot run automatically; it records step-by-step instructions for testing disabled storage and points the tester to the console. <!-- ev:research.frontend-src-app-demo-storage-test.1151c4eb --><sup>[10](Storage_Test.evidence.md#research.frontend-src-app-demo-storage-test.1151c4eb)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 23 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

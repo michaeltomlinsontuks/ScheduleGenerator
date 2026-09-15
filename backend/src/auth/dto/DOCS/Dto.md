@@ -43,6 +43,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -97,11 +98,13 @@ flowchart LR
 | IpStatusDto | — | An IP status shape | Reports whether an address is blocked, with optional failedAttempts and blockInfo <!-- ev:research.backend-src-auth-dto.b892d58a --><sup>[10](Dto.evidence.md#research.backend-src-auth-dto.b892d58a)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -112,6 +115,13 @@ flowchart LR
 | class-validator | @IsIP decorator | Validates the ip property of UnblockIpDto <!-- ev:research.backend-src-auth-dto.8678031f --><sup>[5](Dto.evidence.md#research.backend-src-auth-dto.8678031f)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_auth_dto["backend/src/auth/dto"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_auth --> backend_src_auth_dto
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -119,7 +129,9 @@ flowchart LR
 This unit declares the eight DTO classes that shape the auth module's request and response payloads. UserDto is embedded in AuthStatusDto and AuthResponseDto, and BlockedIpInfoDto is embedded in IpStatusDto. <!-- ev:research.backend-src-auth-dto.06c54672 --><sup>[1](Dto.evidence.md#research.backend-src-auth-dto.06c54672)</sup> <!-- ev:research.backend-src-auth-dto.3360858c --><sup>[4](Dto.evidence.md#research.backend-src-auth-dto.3360858c)</sup> <!-- ev:research.backend-src-auth-dto.be3a6715 --><sup>[6](Dto.evidence.md#research.backend-src-auth-dto.be3a6715)</sup> <!-- ev:research.backend-src-auth-dto.b892d58a --><sup>[10](Dto.evidence.md#research.backend-src-auth-dto.b892d58a)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 2 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

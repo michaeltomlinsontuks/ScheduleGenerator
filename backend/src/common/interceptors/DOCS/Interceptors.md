@@ -53,6 +53,7 @@ critic:
 # Interceptors
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Interceptors.evidence.md#summary)
@@ -99,11 +100,13 @@ flowchart LR
 | RateLimitHeadersInterceptor | ExecutionContext and CallHandler from NestJS | Observable stream | Sets X-RateLimit-Limit, X-RateLimit-Remaining, and X-RateLimit-Reset from the guard's rateLimitInfo, or falls back to 'throttle' metadata (omitting X-RateLimit-Remaining). <!-- ev:research.backend-src-common-interceptors.61a7a445 --><sup>[4](Interceptors.evidence.md#research.backend-src-common-interceptors.61a7a445)</sup> <!-- ev:research.backend-src-common-interceptors.f6a184f0 --><sup>[15](Interceptors.evidence.md#research.backend-src-common-interceptors.f6a184f0)</sup> <!-- ev:research.backend-src-common-interceptors.5d2a50a2 --><sup>[7](Interceptors.evidence.md#research.backend-src-common-interceptors.5d2a50a2)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Interceptors.evidence.md#dependencies)
@@ -115,6 +118,13 @@ flowchart LR
 | uuid | v4 | Generates a fallback request ID when the x-request-id header is absent. <!-- ev:research.backend-src-common-interceptors.da54c6bb --><sup>[11](Interceptors.evidence.md#research.backend-src-common-interceptors.da54c6bb)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_interceptors["backend/src/common/interceptors"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_common_interceptors
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Interceptors.evidence.md#data-model)
@@ -122,6 +132,7 @@ flowchart LR
 This unit declares no entities. It reads the rateLimitInfo object — with limit, remaining, and reset fields — that CustomThrottlerGuard attaches to the response, and the 'throttle' route metadata used as a fallback. <!-- ev:research.backend-src-common-interceptors.82c2bf04 --><sup>[6](Interceptors.evidence.md#research.backend-src-common-interceptors.82c2bf04)</sup> <!-- ev:research.backend-src-common-interceptors.5d2a50a2 --><sup>[7](Interceptors.evidence.md#research.backend-src-common-interceptors.5d2a50a2)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Interceptors.evidence.md#decisions-and-limitations)
@@ -129,4 +140,5 @@ This unit declares no entities. It reads the rateLimitInfo object — with limit
 RateLimitHeadersInterceptor is defined and exported but no repository file imports it — the only importers of this unit are app.module.ts and main.ts, which use LoggingInterceptor and QueryTimeoutInterceptor — so it is not registered as a global interceptor (inferred from the import scan). <!-- ev:research.backend-src-common-interceptors.c22ec7bf --><sup>[16](Interceptors.evidence.md#research.backend-src-common-interceptors.c22ec7bf)</sup> When the throttler guard has not attached rateLimitInfo, the interceptor cannot determine the remaining count and omits X-RateLimit-Remaining. <!-- ev:research.backend-src-common-interceptors.5d2a50a2 --><sup>[7](Interceptors.evidence.md#research.backend-src-common-interceptors.5d2a50a2)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 10 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

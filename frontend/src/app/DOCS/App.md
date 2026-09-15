@@ -18,6 +18,7 @@ critic:
 # App
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](App.evidence.md#summary)
@@ -66,11 +67,13 @@ flowchart TB
 | Home (default export) | none — the component takes no props (inference) | The landing page | Renders the hero section and the 'How It Works' feature cards <!-- ev:research.frontend-src-app.04e4ad6e --><sup>[3](App.evidence.md#research.frontend-src-app.04e4ad6e)</sup> <!-- ev:research.frontend-src-app.c3887a51 --><sup>[10](App.evidence.md#research.frontend-src-app.c3887a51)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](App.evidence.md#dependencies)
@@ -86,6 +89,7 @@ The unit's imports are declared in frontend/src/app/layout.tsx and frontend/src/
 | tailwindcss / daisyUI | Utility styling and theming | Provides the utility classes and the schedule-light and schedule-dark themes used across the application <!-- ev:research.frontend-src-app.fc596589 --><sup>[11](App.evidence.md#research.frontend-src-app.fc596589)</sup> <!-- ev:research.frontend-src-app.d210f15b --><sup>[12](App.evidence.md#research.frontend-src-app.d210f15b)</sup> <!-- ev:research.frontend-src-app.9ceebbfe --><sup>[13](App.evidence.md#research.frontend-src-app.9ceebbfe)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](App.evidence.md#data-model)
@@ -93,6 +97,7 @@ The unit's imports are declared in frontend/src/app/layout.tsx and frontend/src/
 This unit declares and references no entities (inference: the research records none for this unit). The layout and landing page render static content only. <!-- ev:research.frontend-src-app.300cc84c --><sup>[2](App.evidence.md#research.frontend-src-app.300cc84c)</sup> <!-- ev:research.frontend-src-app.04e4ad6e --><sup>[3](App.evidence.md#research.frontend-src-app.04e4ad6e)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](App.evidence.md#decisions-and-limitations)
@@ -102,4 +107,5 @@ The root layout hard-codes data-theme='schedule-light' on the <html> element, so
 The landing page is a client component whose content is static: the hero copy and the 'How It Works' feature cards are hard-coded in frontend/src/app/page.tsx. <!-- ev:research.frontend-src-app.4cbacf2a --><sup>[9](App.evidence.md#research.frontend-src-app.4cbacf2a)</sup> <!-- ev:research.frontend-src-app.04e4ad6e --><sup>[3](App.evidence.md#research.frontend-src-app.04e4ad6e)</sup> <!-- ev:research.frontend-src-app.c3887a51 --><sup>[10](App.evidence.md#research.frontend-src-app.c3887a51)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 21 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

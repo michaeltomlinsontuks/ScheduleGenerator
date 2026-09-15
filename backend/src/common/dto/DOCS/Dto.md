@@ -18,6 +18,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -53,11 +54,13 @@ flowchart LR
 | ErrorResponseDto | none — a plain class with five declared properties | An HTTP error-response body shape | Describes error responses with required statusCode, message, and timestamp and optional path and details; usable as the type of @ApiResponse error responses in Swagger <!-- ev:research.backend-src-common-dto.3dc17d40 --><sup>[2](Dto.evidence.md#research.backend-src-common-dto.3dc17d40)</sup> <!-- ev:research.backend-src-common-dto.de431570 --><sup>[3](Dto.evidence.md#research.backend-src-common-dto.de431570)</sup> <!-- ev:research.backend-src-common-dto.8be4350b --><sup>[4](Dto.evidence.md#research.backend-src-common-dto.8be4350b)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -67,6 +70,15 @@ flowchart LR
 | @nestjs/swagger | @ApiProperty and @ApiPropertyOptional decorators | Documents each ErrorResponseDto field with a description and example for the OpenAPI schema <!-- ev:research.backend-src-common-dto.3dc17d40 --><sup>[2](Dto.evidence.md#research.backend-src-common-dto.3dc17d40)</sup> <!-- ev:research.backend-src-common-dto.de431570 --><sup>[3](Dto.evidence.md#research.backend-src-common-dto.de431570)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_dto["backend/src/common/dto"]
+    backend_src_jobs["backend/src/jobs"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_jobs --> backend_src_common_dto
+    backend_src_upload --> backend_src_common_dto
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -74,7 +86,10 @@ flowchart LR
 This unit declares one data shape: ErrorResponseDto, the shared HTTP error-response DTO with required statusCode, message, and timestamp fields and optional path and details fields. <!-- ev:research.backend-src-common-dto.3dc17d40 --><sup>[2](Dto.evidence.md#research.backend-src-common-dto.3dc17d40)</sup> <!-- ev:research.backend-src-common-dto.de431570 --><sup>[3](Dto.evidence.md#research.backend-src-common-dto.de431570)</sup> It is a transfer object, not a persisted entity.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Used by:** [Jobs](../../../jobs/DOCS/Jobs.md)
+- **Schedule:** 7 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

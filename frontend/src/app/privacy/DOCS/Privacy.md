@@ -18,6 +18,7 @@ critic:
 # Privacy
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Privacy.evidence.md#summary)
@@ -67,11 +68,13 @@ flowchart TB
 | PrivacyPage (default export) | none — takes no props | A static Privacy Policy page | Renders the complete Privacy Policy for Tuks Schedule Generator as static content, with no state and no data fetching <!-- ev:research.frontend-src-app-privacy.a786a279 --><sup>[2](Privacy.evidence.md#research.frontend-src-app-privacy.a786a279)</sup> <!-- ev:research.frontend-src-app-privacy.06d54963 --><sup>[1](Privacy.evidence.md#research.frontend-src-app-privacy.06d54963)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Privacy.evidence.md#dependencies)
@@ -79,6 +82,7 @@ flowchart TB
 The page declares no dependencies; it is a single presentational component rendering static content. <!-- ev:research.frontend-src-app-privacy.a786a279 --><sup>[2](Privacy.evidence.md#research.frontend-src-app-privacy.a786a279)</sup>
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Privacy.evidence.md#data-model)
@@ -86,6 +90,7 @@ The page declares no dependencies; it is a single presentational component rende
 This page declares and references no entities (inference: the research records none for this unit). It renders static Privacy Policy text only. <!-- ev:research.frontend-src-app-privacy.a786a279 --><sup>[2](Privacy.evidence.md#research.frontend-src-app-privacy.a786a279)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Privacy.evidence.md#decisions-and-limitations)
@@ -93,4 +98,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the policy means editing the page source directly, since it takes no props, holds no state, and performs no data fetching. <!-- ev:research.frontend-src-app-privacy.a786a279 --><sup>[2](Privacy.evidence.md#research.frontend-src-app-privacy.a786a279)</sup> The 'Last updated: December 2025' date is hard-coded in the page. <!-- ev:research.frontend-src-app-privacy.828771e3 --><sup>[5](Privacy.evidence.md#research.frontend-src-app-privacy.828771e3)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 24 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

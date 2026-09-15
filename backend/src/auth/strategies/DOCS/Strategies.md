@@ -18,6 +18,7 @@ critic:
 # Strategies
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Strategies.evidence.md#summary)
@@ -61,11 +62,13 @@ sequenceDiagram
 | GoogleUser | — | A Google-authenticated user shape | Describes a Google user with email, firstName, lastName, picture, accessToken, and optional refreshToken <!-- ev:research.backend-src-auth-strategies.f35d5bfb --><sup>[4](Strategies.evidence.md#research.backend-src-auth-strategies.f35d5bfb)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Strategies.evidence.md#dependencies)
@@ -78,6 +81,14 @@ sequenceDiagram
 | AuthService (auth unit) | validateGoogleUser | Creates or updates the user and returns the session user <!-- ev:research.backend-src-auth-strategies.c71fd0cb --><sup>[2](Strategies.evidence.md#research.backend-src-auth-strategies.c71fd0cb)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_auth_strategies["backend/src/auth/strategies"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_auth_strategies --> backend_src_auth
+    backend_src_auth --> backend_src_auth_strategies
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Strategies.evidence.md#data-model)
@@ -85,6 +96,7 @@ sequenceDiagram
 This unit declares the GoogleUser interface, the shape of a Google-authenticated user that the strategy builds and passes to the auth service. <!-- ev:research.backend-src-auth-strategies.f35d5bfb --><sup>[4](Strategies.evidence.md#research.backend-src-auth-strategies.f35d5bfb)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Strategies.evidence.md#decisions-and-limitations)
@@ -94,4 +106,5 @@ GoogleStrategy requests the scopes 'email', 'profile', 'https://www.googleapis.c
 The constructor reads the OAuth client ID, client secret, and callback URL from ConfigService, defaulting each to an empty string when the value is unset. <!-- ev:research.backend-src-auth-strategies.fe4be2b9 --><sup>[5](Strategies.evidence.md#research.backend-src-auth-strategies.fe4be2b9)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 4 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

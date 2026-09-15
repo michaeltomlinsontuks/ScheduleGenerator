@@ -18,6 +18,7 @@ critic:
 # Auth
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Auth.evidence.md#summary)
@@ -69,11 +70,13 @@ flowchart TB
 | index.ts (barrel) | — | Re-exports of the two components and their prop types | A single import point for the unit's public surface <!-- ev:research.frontend-src-components-auth.3458c6e3 --><sup>[3](Auth.evidence.md#research.frontend-src-components-auth.3458c6e3)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Auth.evidence.md#dependencies)
@@ -87,6 +90,7 @@ The unit's components are built on React and delegate authentication to the useA
 | React | Component and hook primitives | Both components are client components, and UserAvatar registers a document-level click listener in a useEffect <!-- ev:research.frontend-src-components-auth.303282e0 --><sup>[1](Auth.evidence.md#research.frontend-src-components-auth.303282e0)</sup> <!-- ev:research.frontend-src-components-auth.bb264047 --><sup>[2](Auth.evidence.md#research.frontend-src-components-auth.bb264047)</sup> <!-- ev:research.frontend-src-components-auth.84bd8abf --><sup>[9](Auth.evidence.md#research.frontend-src-components-auth.84bd8abf)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Auth.evidence.md#data-model)
@@ -94,6 +98,7 @@ The unit's components are built on React and delegate authentication to the useA
 This unit declares no entities; the components render UI driven by their props, with UserAvatar's user prop typed as AuthUser, a type defined outside this unit (inference: the findings record the reference but no definition in this unit). <!-- ev:research.frontend-src-components-auth.b59e649e --><sup>[4](Auth.evidence.md#research.frontend-src-components-auth.b59e649e)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Auth.evidence.md#decisions-and-limitations)
@@ -103,4 +108,5 @@ Both components are client components ('use client' directive), so they render a
 GoogleLoginButton is documented as following Google's branding guidelines and as satisfying requirements 3.1 and 7.1; UserAvatar is documented as satisfying requirements 3.3 and 3.4. <!-- ev:research.frontend-src-components-auth.9d828014 --><sup>[14](Auth.evidence.md#research.frontend-src-components-auth.9d828014)</sup> <!-- ev:research.frontend-src-components-auth.5364eb81 --><sup>[15](Auth.evidence.md#research.frontend-src-components-auth.5364eb81)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 27 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

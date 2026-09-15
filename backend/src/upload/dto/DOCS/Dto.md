@@ -30,6 +30,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -72,11 +73,13 @@ flowchart LR
 | StorageQuotaExceededDto | currentUsage, quota, fileSize — numbers | HTTP 413 response body with statusCode, message, error, and details | Constructor fixes statusCode 413 and message 'STORAGE_QUOTA_EXCEEDED', and computes wouldExceedBy <!-- ev:research.backend-src-upload-dto.7ff4b838 --><sup>[3](Dto.evidence.md#research.backend-src-upload-dto.7ff4b838)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Dto.evidence.md#dependencies)
@@ -89,6 +92,17 @@ flowchart LR
 | class-transformer (Type) | Nested type transformation | UploadResponseDto transforms the events array with the Type decorator <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_upload_dto["backend/src/upload/dto"]
+    backend_src_common["backend/src/common"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_upload_exceptions["backend/src/upload/exceptions"]
+    backend_src_upload_dto --> backend_src_common
+    backend_src_upload --> backend_src_upload_dto
+    backend_src_upload_exceptions --> backend_src_upload_dto
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Dto.evidence.md#data-model)
@@ -96,6 +110,7 @@ flowchart LR
 This unit declares three data-transfer entities — UploadResponseDto, StorageUsageDto, and StorageQuotaExceededDto — each a plain class whose constructor fixes or computes its fields. The types they reference, PdfType and ParsedEvent, are owned by backend/src/common/types.ts. <!-- ev:research.backend-src-upload-dto.884c10ce --><sup>[4](Dto.evidence.md#research.backend-src-upload-dto.884c10ce)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Dto.evidence.md#decisions-and-limitations)
@@ -103,4 +118,6 @@ This unit declares three data-transfer entities — UploadResponseDto, StorageUs
 StorageQuotaExceededDto hard-codes its HTTP semantics: the constructor fixes statusCode to 413 and message to 'STORAGE_QUOTA_EXCEEDED', coupling the DTO to the quota error rather than a generic error body. <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageUsageDto rounds usedPercentage to a whole number, so the reported percentage is an approximation. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Used by:** [Exceptions](../../exceptions/DOCS/Exceptions.md)
+- **Schedule:** 18 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

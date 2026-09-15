@@ -40,6 +40,7 @@ critic:
 # About
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](About.evidence.md#summary)
@@ -82,11 +83,13 @@ flowchart TB
 | AboutPage (default export) | none — the component takes no props (inference) | A static About page | Renders the About page: developer introduction, zero-data-policy alert, and links to home, the GitHub repository, and email <!-- ev:research.frontend-src-app-about.0ed6fab4 --><sup>[1](About.evidence.md#research.frontend-src-app-about.0ed6fab4)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](About.evidence.md#dependencies)
@@ -99,6 +102,7 @@ The page imports Link from 'next/link' and React from 'react'. <!-- ev:research.
 | react | JSX rendering | The page is written as a React component in JSX <!-- ev:research.frontend-src-app-about.16b63a4a --><sup>[3](About.evidence.md#research.frontend-src-app-about.16b63a4a)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](About.evidence.md#data-model)
@@ -106,6 +110,7 @@ The page imports Link from 'next/link' and React from 'react'. <!-- ev:research.
 This page declares and references no entities (inference: the research records none for this unit). It renders static content only. <!-- ev:research.frontend-src-app-about.0ed6fab4 --><sup>[1](About.evidence.md#research.frontend-src-app-about.0ed6fab4)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](About.evidence.md#decisions-and-limitations)
@@ -113,4 +118,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the about content means editing the page source directly (inference: the unit holds a single presentational component). <!-- ev:research.frontend-src-app-about.0ed6fab4 --><sup>[1](About.evidence.md#research.frontend-src-app-about.0ed6fab4)</sup> The profile image is served from /pfp.png, and the GitHub repository URL and contact email are hard-coded in the page. <!-- ev:research.frontend-src-app-about.168ca24f --><sup>[5](About.evidence.md#research.frontend-src-app-about.168ca24f)</sup> <!-- ev:research.frontend-src-app-about.c2a091ec --><sup>[8](About.evidence.md#research.frontend-src-app-about.c2a091ec)</sup> <!-- ev:research.frontend-src-app-about.d25948de --><sup>[9](About.evidence.md#research.frontend-src-app-about.d25948de)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 22 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

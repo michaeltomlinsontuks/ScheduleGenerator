@@ -34,6 +34,7 @@ critic:
 # Exceptions
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Exceptions.evidence.md#summary)
@@ -67,11 +68,13 @@ flowchart LR
 | StorageQuotaExceededException | currentUsage, quota, fileSize — numbers | A NestJS HttpException with a StorageQuotaExceededDto body and status 413 Payload Too Large | Thrown when an upload exceeds the per-file quota; serializes the usage, quota, and file size in the response <!-- ev:research.backend-src-upload-exceptions.eacb61cc --><sup>[2](Exceptions.evidence.md#research.backend-src-upload-exceptions.eacb61cc)</sup> <!-- ev:research.backend-src-upload-exceptions.4ca6495a --><sup>[1](Exceptions.evidence.md#research.backend-src-upload-exceptions.4ca6495a)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Exceptions.evidence.md#dependencies)
@@ -82,6 +85,15 @@ flowchart LR
 | StorageQuotaExceededDto (upload dto unit) | Response body for the quota error | The constructor builds the DTO from currentUsage, quota, and fileSize to carry in the exception response <!-- ev:research.backend-src-upload-exceptions.eacb61cc --><sup>[2](Exceptions.evidence.md#research.backend-src-upload-exceptions.eacb61cc)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_upload_exceptions["backend/src/upload/exceptions"]
+    backend_src_upload_dto["backend/src/upload/dto"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_upload_exceptions --> backend_src_upload_dto
+    backend_src_upload --> backend_src_upload_exceptions
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Exceptions.evidence.md#data-model)
@@ -89,7 +101,10 @@ flowchart LR
 This unit declares no entities of its own; the exception's response body is a StorageQuotaExceededDto owned by the upload dto unit (inference: the research records no entities for this unit). <!-- ev:research.backend-src-upload-exceptions.eacb61cc --><sup>[2](Exceptions.evidence.md#research.backend-src-upload-exceptions.eacb61cc)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Upload dto](../../dto/DOCS/Dto.md)
+- **Schedule:** 19 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -45,6 +45,7 @@ critic:
 # Validators
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Validators.evidence.md#summary)
@@ -91,11 +92,13 @@ flowchart LR
 | isPdfValidUpSchedule | A buffer | { isValid: true, pdfType } or { isValid: false, error } | Checks whether a buffer is a valid UP schedule PDF without throwing; error is the thrown message or 'Unknown error' <!-- ev:research.backend-src-common-validators.b49da522 --><sup>[3](Validators.evidence.md#research.backend-src-common-validators.b49da522)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Validators.evidence.md#dependencies)
@@ -106,6 +109,15 @@ flowchart LR
 | backend/src/common/types.ts | PdfType enum | Provides the schedule-mode type that validatePdfContent returns and isPdfValidUpSchedule reports <!-- ev:research.backend-src-common-validators.47ffdba6 --><sup>[5](Validators.evidence.md#research.backend-src-common-validators.47ffdba6)</sup> <!-- ev:research.backend-src-common-validators.9b47ae2b --><sup>[6](Validators.evidence.md#research.backend-src-common-validators.9b47ae2b)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common_validators["backend/src/common/validators"]
+    backend_src_common["backend/src/common"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_common_validators --> backend_src_common
+    backend_src_upload --> backend_src_common_validators
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Validators.evidence.md#data-model)
@@ -113,6 +125,7 @@ flowchart LR
 This unit declares one enum, PdfContentError, with the members INVALID_PDF_CONTENT, UNRECOGNIZED_FORMAT, and TEXT_EXTRACTION_FAILED, though nothing in the repository references it. <!-- ev:research.backend-src-common-validators.82ea47d1 --><sup>[12](Validators.evidence.md#research.backend-src-common-validators.82ea47d1)</sup> <!-- ev:research.backend-src-common-validators.724eb903 --><sup>[13](Validators.evidence.md#research.backend-src-common-validators.724eb903)</sup> It also references PdfType, defined in backend/src/common/types.ts with the values LECTURE = 'lecture', TEST = 'test', and EXAM = 'exam', as the return type of its validation functions. <!-- ev:research.backend-src-common-validators.9b47ae2b --><sup>[6](Validators.evidence.md#research.backend-src-common-validators.9b47ae2b)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Validators.evidence.md#decisions-and-limitations)
@@ -122,4 +135,5 @@ This unit declares one enum, PdfContentError, with the members INVALID_PDF_CONTE
 - No test files exist for this unit. <!-- ev:research.backend-src-common-validators.153ec0f0 --><sup>[14](Validators.evidence.md#research.backend-src-common-validators.153ec0f0)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 12 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->
