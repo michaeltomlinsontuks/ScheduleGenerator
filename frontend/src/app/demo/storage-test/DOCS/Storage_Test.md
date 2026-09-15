@@ -4,8 +4,8 @@ kind: component
 unit: frontend/src/app/demo/storage-test
 title: Storage Test
 status: draft
-written_at_commit: f6ad691b935992530f243abbfa172846604749dc
-written_at: "2026-09-15T02:43:53.557Z"
+written_at_commit: ee39ae6bdcb91a097b08de84d294e700c44434be
+written_at: "2026-09-15T12:34:35.989Z"
 research: frontend/src/app/demo/storage-test/DOCS/Research.md
 sources: []
 accepted: null
