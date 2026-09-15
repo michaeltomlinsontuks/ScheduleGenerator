@@ -4,15 +4,35 @@ kind: component
 unit: frontend/src/hooks
 title: Hooks
 status: draft
-written_at_commit: 7e5ae2f99594266a7e7e740b473abbbffcff0588
-written_at: "2026-09-15T03:56:01.876Z"
+written_at_commit: 458dcbd89a9d22117863e67cea5e1350c293ae8d
+written_at: "2026-09-15T13:10:01.733Z"
 research: frontend/src/hooks/DOCS/Research.md
 sources: []
 accepted: null
 evidence: Hooks.evidence.md
 critic:
-  attempts: 0
-  findings: []
+  attempts: 1
+  findings:
+    - key: critic.frontend-src-hooks.6091e778
+      owner: writer
+      claim: "The Data model section asserts 'This unit declares no data entities of its own; its only type-level surface is the WorkflowPage type re-exported from index.ts' — negative and exclusive claims that the cited finding research.frontend-src-hooks.4201f24c does not support and that are not marked as inference, contrary to the inference convention."
+      locus:
+        document_section: "Data model"
+      severity: blocking
+      raised_at: "2026-09-15T13:15:56Z"
+      raised_in_pass: write
+    - key: critic.frontend-src-hooks.cc94c8c0
+      owner: writer
+      claim: "The Dependencies section asserts the unit's hooks are backed by the application's state stores and services 'rather than by external packages' — the negative claim about external packages is not supported by the cited findings and is not marked as inference."
+      locus:
+        document_section: Dependencies
+      severity: blocking
+      raised_at: "2026-09-15T13:15:56Z"
+      raised_in_pass: write
+  review_complete: true
+  sections_reviewed: 6
+  sections_total: 6
+  last_reviewed_document: "sha256:9e6d0d014c3b0f43c62a2868a79f92eae591a182e52414a2d1f5b5b439390d42"
 -->
 
 # Hooks
