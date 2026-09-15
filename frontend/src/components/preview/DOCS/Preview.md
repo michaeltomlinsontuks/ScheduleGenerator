@@ -4,35 +4,28 @@ kind: component
 unit: frontend/src/components/preview
 title: Preview
 status: draft
-written_at_commit: 06b8256dc758063007c43d842b98af24bf60c3ec
-written_at: "2026-09-15T02:05:10.689Z"
+written_at_commit: 1db5d6248e310abdedfcbccfb3debdfada4e62f8
+written_at: "2026-09-15T06:16:38.031Z"
 research: frontend/src/components/preview/DOCS/Research.md
 sources: []
 accepted: null
 evidence: Preview.evidence.md
 critic:
   attempts: 1
-  findings:
-    - key: critic.frontend-src-components-preview.2ad0bb5c
-      owner: writer
-      claim: "The Summary sentence 'The preview components unit owns the schedule preview UI of the Tuks Schedule Generator frontend' names the application 'Tuks Schedule Generator', a claim no research finding supports (the cited findings research.frontend-src-components-preview.28920490, .97fd0b5a, .67168661, .7c45d4cc and .8d2e31a0 record only that the four components are client components importing from '@/types' and '@/components/common') and is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: Summary
-      severity: blocking
-      raised_at: "2026-09-15T04:05:00+02:00"
-      raised_in_pass: critic-078
-    - key: critic.frontend-src-components-preview.878b799e
-      owner: writer
-      claim: "The Dependencies sentence 'The unit's components are built on React and share the ParsedEvent type and the common Button and Alert components' claims the components are built on React, a claim no research finding supports (the cited findings research.frontend-src-components-preview.7c45d4cc, .97fd0b5a and .28920490 record the 'use client' directive and imports from '@/types' and '@/components/common' but never mention React) and is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: Dependencies
-      severity: blocking
-      raised_at: "2026-09-15T04:05:00+02:00"
-      raised_in_pass: critic-078
+  findings: []
   review_complete: true
   sections_reviewed: 8
   sections_total: 8
   last_reviewed_document: "sha256:b685a4dfd804773ca06f4b36935fc3a2db266d6081f6dc10730c2024793369e7"
+  retired:
+    - key: critic.frontend-src-components-preview.2ad0bb5c
+      finding: "The Summary sentence 'The preview components unit owns the schedule preview UI of the Tuks Schedule Generator frontend' names the application 'Tuks Schedule Generator', a claim no research finding supports (the cited findings research.frontend-src-components-preview.28920490, .97fd0b5a, .67168661, .7c45d4cc and .8d2e31a0 record only that the four components are client components importing from '@/types' and '@/components/common') and is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
+      as: superseded
+      at: "2026-09-15T06:16:38.046Z"
+    - key: critic.frontend-src-components-preview.878b799e
+      finding: "The Dependencies sentence 'The unit's components are built on React and share the ParsedEvent type and the common Button and Alert components' claims the components are built on React, a claim no research finding supports (the cited findings research.frontend-src-components-preview.7c45d4cc, .97fd0b5a and .28920490 record the 'use client' directive and imports from '@/types' and '@/components/common' but never mention React) and is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
+      as: superseded
+      at: "2026-09-15T06:16:38.046Z"
 -->
 
 # Preview
@@ -43,7 +36,7 @@ critic:
 
 ## [Summary](Preview.evidence.md#summary)
 
-The preview components unit owns the schedule preview UI of the Tuks Schedule Generator frontend: EventList, a day-grouped, filterable list of selectable event cards, EventFilter, a module filter dropdown, and BulkActions, a Select All / Deselect All control with a selection count, re-exported with their prop types from a single barrel module. A dependant can rely on a filterable, selectable schedule preview with bulk selection and unfinalised-exam warnings. <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup> <!-- ev:research.frontend-src-components-preview.97fd0b5a --><sup>[2](Preview.evidence.md#research.frontend-src-components-preview.97fd0b5a)</sup> <!-- ev:research.frontend-src-components-preview.67168661 --><sup>[3](Preview.evidence.md#research.frontend-src-components-preview.67168661)</sup> <!-- ev:research.frontend-src-components-preview.7c45d4cc --><sup>[4](Preview.evidence.md#research.frontend-src-components-preview.7c45d4cc)</sup> <!-- ev:research.frontend-src-components-preview.8d2e31a0 --><sup>[5](Preview.evidence.md#research.frontend-src-components-preview.8d2e31a0)</sup>
+The preview components unit owns the schedule preview UI of the frontend: EventList, a day-grouped, filterable list of selectable event cards, EventFilter, a module filter dropdown, and BulkActions, a Select All / Deselect All control with a selection count, re-exported with their prop types from a single barrel module. A dependant can rely on a filterable, selectable schedule preview with bulk selection and unfinalised-exam warnings. <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup> <!-- ev:research.frontend-src-components-preview.97fd0b5a --><sup>[2](Preview.evidence.md#research.frontend-src-components-preview.97fd0b5a)</sup> <!-- ev:research.frontend-src-components-preview.67168661 --><sup>[3](Preview.evidence.md#research.frontend-src-components-preview.67168661)</sup> <!-- ev:research.frontend-src-components-preview.7c45d4cc --><sup>[4](Preview.evidence.md#research.frontend-src-components-preview.7c45d4cc)</sup> <!-- ev:research.frontend-src-components-preview.8d2e31a0 --><sup>[5](Preview.evidence.md#research.frontend-src-components-preview.8d2e31a0)</sup>
 
 ## [Purpose and boundaries](Preview.evidence.md#purpose-and-boundaries)
 
@@ -107,7 +100,7 @@ flowchart TB
 
 ## [Dependencies](Preview.evidence.md#dependencies)
 
-The unit's components are built on React and share the ParsedEvent type and the common Button and Alert components. <!-- ev:research.frontend-src-components-preview.7c45d4cc --><sup>[4](Preview.evidence.md#research.frontend-src-components-preview.7c45d4cc)</sup> <!-- ev:research.frontend-src-components-preview.97fd0b5a --><sup>[2](Preview.evidence.md#research.frontend-src-components-preview.97fd0b5a)</sup> <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup>
+The unit's components share the ParsedEvent type and the common Button and Alert components. <!-- ev:research.frontend-src-components-preview.7c45d4cc --><sup>[4](Preview.evidence.md#research.frontend-src-components-preview.7c45d4cc)</sup> <!-- ev:research.frontend-src-components-preview.97fd0b5a --><sup>[2](Preview.evidence.md#research.frontend-src-components-preview.97fd0b5a)</sup> <!-- ev:research.frontend-src-components-preview.28920490 --><sup>[1](Preview.evidence.md#research.frontend-src-components-preview.28920490)</sup>
 
 | Dependency | Capability used | Why |
 |---|---|---|
