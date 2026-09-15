@@ -3,16 +3,43 @@ tyto_docs: 1
 kind: component
 unit: backend/src/jobs/dto
 title: Dto
-status: draft
-written_at_commit: 9d25b6bc7f50cd2b7e795fdc4e79a57886cdbeee
-written_at: "2026-09-14T23:52:14.151Z"
+status: current
+written_at_commit: 3dec9a55a54dbbeb8d5864ed814e3fd9cc95a8ec
+written_at: "2026-09-15T12:19:00.909Z"
 research: backend/src/jobs/dto/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T12:25:42.189Z"
+  commit: 3dec9a55a54dbbeb8d5864ed814e3fd9cc95a8ec
+  research_fingerprint: "sha256:ab3f60e3395a1730c2a5a7f87055396bf822d59153334c453e2f129abaf3ebce"
+  research_findings:
+    - research.backend-src-jobs-dto.16481720
+    - research.backend-src-jobs-dto.30c730c8
+    - research.backend-src-jobs-dto.37121d21
+    - research.backend-src-jobs-dto.3ca8491a
+    - research.backend-src-jobs-dto.554a1db5
+    - research.backend-src-jobs-dto.66e75985
+    - research.backend-src-jobs-dto.ced7f633
+    - research.backend-src-jobs-dto.e2eefccc
+    - research.backend-src-jobs-dto.f0a084ca
+    - research.backend-src-jobs-dto.fa86a777
+  critic_pass: critic.backend-src-jobs-dto.1
+  sources:
+    - path: backend/src/jobs/dto/index.ts
+      blob_sha: 3273d40bc62f1f09dce2d2f304346599777fc1a2
+    - path: backend/src/jobs/dto/job-result.dto.ts
+      blob_sha: d8674fd7da58caba03fe07d59a38d3a5e924cc90
+    - path: backend/src/jobs/dto/job-status.dto.ts
+      blob_sha: c55a81e5f20a4f7a3443288ea7576b2c81117e63
 evidence: Dto.evidence.md
 critic:
-  attempts: 0
+  attempts: 1
   findings: []
+  review_complete: true
+  sections_reviewed: 7
+  sections_total: 7
+  last_reviewed_document: "sha256:fc8f8f1c30a9c171424636dc6e50ec41b92809c27efb5c19e3cffcbf7f4331ca"
+  retired: []
 -->
 
 # Dto
