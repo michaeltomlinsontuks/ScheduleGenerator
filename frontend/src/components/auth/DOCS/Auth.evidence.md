@@ -35,6 +35,8 @@
   [`GoogleLoginButton.tsx:9-13`](../GoogleLoginButton.tsx#L9-L13)
 - <a id="research.frontend-src-components-auth.5364eb81"></a>**15. The UserAvatar component is documented as satisfying requirements 3.3 and 3.4.**
   [`UserAvatar.tsx:11-14`](../UserAvatar.tsx#L11-L14)
+- <a id="research.frontend-src-components-auth.553a2e3c"></a>**16. The auth components barrel is documented as satisfying requirements 3.1 and 3.3.**
+  [`index.ts:1-4`](../index.ts#L1-L4)
 
 ## Cited by
 <a id="cited-by"></a>
@@ -72,4 +74,4 @@
 ### Decisions and limitations
 <a id="decisions-and-limitations"></a>
 
-[research.frontend-src-components-auth.303282e0](#research.frontend-src-components-auth.303282e0) · [research.frontend-src-components-auth.bb264047](#research.frontend-src-components-auth.bb264047) · [research.frontend-src-components-auth.9d828014](#research.frontend-src-components-auth.9d828014) · [research.frontend-src-components-auth.5364eb81](#research.frontend-src-components-auth.5364eb81)
+[research.frontend-src-components-auth.303282e0](#research.frontend-src-components-auth.303282e0) · [research.frontend-src-components-auth.bb264047](#research.frontend-src-components-auth.bb264047) · [research.frontend-src-components-auth.9d828014](#research.frontend-src-components-auth.9d828014) · [research.frontend-src-components-auth.5364eb81](#research.frontend-src-components-auth.5364eb81) · [research.frontend-src-components-auth.553a2e3c](#research.frontend-src-components-auth.553a2e3c)

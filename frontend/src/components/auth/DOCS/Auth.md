@@ -4,8 +4,8 @@ kind: component
 unit: frontend/src/components/auth
 title: Auth
 status: draft
-written_at_commit: 0a54880da611d9c7e4ea67064b17ed0c465e1f7b
-written_at: "2026-09-15T00:38:08.984Z"
+written_at_commit: 4bc0d28f554a393cdace00be17f85dbca6e86ea8
+written_at: "2026-09-15T12:59:24.527Z"
 research: frontend/src/components/auth/DOCS/Research.md
 sources: []
 accepted: null
@@ -105,7 +105,7 @@ This unit declares no entities; the components render UI driven by their props, 
 
 Both components are client components ('use client' directive), so they render and interact on the client; the unit exports no server components. <!-- ev:research.frontend-src-components-auth.303282e0 --><sup>[1](Auth.evidence.md#research.frontend-src-components-auth.303282e0)</sup> <!-- ev:research.frontend-src-components-auth.bb264047 --><sup>[2](Auth.evidence.md#research.frontend-src-components-auth.bb264047)</sup>
 
-GoogleLoginButton is documented as following Google's branding guidelines and as satisfying requirements 3.1 and 7.1; UserAvatar is documented as satisfying requirements 3.3 and 3.4. <!-- ev:research.frontend-src-components-auth.9d828014 --><sup>[14](Auth.evidence.md#research.frontend-src-components-auth.9d828014)</sup> <!-- ev:research.frontend-src-components-auth.5364eb81 --><sup>[15](Auth.evidence.md#research.frontend-src-components-auth.5364eb81)</sup>
+GoogleLoginButton is documented as following Google's branding guidelines and as satisfying requirements 3.1 and 7.1; UserAvatar is documented as satisfying requirements 3.3 and 3.4; and the barrel module is documented as satisfying requirements 3.1 and 3.3. <!-- ev:research.frontend-src-components-auth.9d828014 --><sup>[14](Auth.evidence.md#research.frontend-src-components-auth.9d828014)</sup> <!-- ev:research.frontend-src-components-auth.5364eb81 --><sup>[15](Auth.evidence.md#research.frontend-src-components-auth.5364eb81)</sup> <!-- ev:research.frontend-src-components-auth.553a2e3c --><sup>[16](Auth.evidence.md#research.frontend-src-components-auth.553a2e3c)</sup>
 
 <!-- tyto-docs:generated:navigation -->
 - **Schedule:** 27 of 30, wave 1
