@@ -4,14 +4,14 @@ kind: component
 unit: frontend/src/app/terms
 title: Terms
 status: draft
-written_at_commit: 28b66165d3e7f4122da1b0c3ef9e53148b75d0e1
-written_at: "2026-09-14T18:33:21.181Z"
+written_at_commit: 007ab4c29aba37bef0d694acdf76b215f5056d97
+written_at: "2026-09-15T12:49:34.952Z"
 research: frontend/src/app/terms/DOCS/Research.md
 sources: []
 accepted: null
 evidence: Terms.evidence.md
 critic:
-  attempts: 2
+  attempts: 3
   findings: []
   review_complete: true
   sections_reviewed: 8
