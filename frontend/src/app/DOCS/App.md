@@ -49,7 +49,7 @@ critic:
 # App
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](App.evidence.md#summary)
@@ -138,5 +138,5 @@ The root layout hard-codes data-theme='schedule-light' on the <html> element, so
 The landing page is a client component whose content is static: the hero copy and the 'How It Works' feature cards are hard-coded in frontend/src/app/page.tsx. <!-- ev:research.frontend-src-app.4cbacf2a --><sup>[9](App.evidence.md#research.frontend-src-app.4cbacf2a)</sup> <!-- ev:research.frontend-src-app.04e4ad6e --><sup>[3](App.evidence.md#research.frontend-src-app.04e4ad6e)</sup> <!-- ev:research.frontend-src-app.c3887a51 --><sup>[10](App.evidence.md#research.frontend-src-app.c3887a51)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 21 of 30, wave 1
+- **Schedule:** 26 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

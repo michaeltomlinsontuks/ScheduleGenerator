@@ -38,6 +38,7 @@ critic:
 # Health
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Health.evidence.md#summary)
@@ -79,11 +80,13 @@ sequenceDiagram
 | GET /health (check) | — | Promise<HealthCheckResult> | Delegates to HealthCheckService with an empty indicators array; documented responses 200 and 503 <!-- ev:research.backend-src-health.477a1b9f --><sup>[5](Health.evidence.md#research.backend-src-health.477a1b9f)</sup> <!-- ev:research.backend-src-health.1a874f32 --><sup>[7](Health.evidence.md#research.backend-src-health.1a874f32)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Health.evidence.md#dependencies)
@@ -94,6 +97,13 @@ sequenceDiagram
 | @nestjs/swagger | @ApiTags, @ApiOperation, @ApiResponse | Documents the endpoint and its responses in OpenAPI output <!-- ev:research.backend-src-health.8c65ecde --><sup>[6](Health.evidence.md#research.backend-src-health.8c65ecde)</sup> <!-- ev:research.backend-src-health.1a874f32 --><sup>[7](Health.evidence.md#research.backend-src-health.1a874f32)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_health["backend/src/health"]
+    backend_src["backend/src"]
+    backend_src --> backend_src_health
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Health.evidence.md#data-model)
@@ -101,6 +111,7 @@ sequenceDiagram
 This unit declares no entities; the endpoint's return type, HealthCheckResult, is the only data shape the unit references. <!-- ev:research.backend-src-health.477a1b9f --><sup>[5](Health.evidence.md#research.backend-src-health.477a1b9f)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Health.evidence.md#decisions-and-limitations)
@@ -108,4 +119,6 @@ This unit declares no entities; the endpoint's return type, HealthCheckResult, i
 The check endpoint calls HealthCheckService.check with an empty indicators array, so no dependency indicators are registered even though its @ApiOperation summary describes checking the status of all dependencies. <!-- ev:research.backend-src-health.477a1b9f --><sup>[5](Health.evidence.md#research.backend-src-health.477a1b9f)</sup> <!-- ev:research.backend-src-health.1a874f32 --><sup>[7](Health.evidence.md#research.backend-src-health.1a874f32)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 17 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

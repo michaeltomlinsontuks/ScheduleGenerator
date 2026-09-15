@@ -138,5 +138,5 @@ This unit declares no entities; the guards consume IpBlockingService and the req
 Both guards trust the first entry of the X-Forwarded-For header as the client IP, falling back to the direct connection address and finally to the literal 'unknown'; a request that reaches the guard without a usable address is treated as the string 'unknown'. <!-- ev:research.backend-src-auth-guards.43ae735e --><sup>[9](Guards.evidence.md#research.backend-src-auth-guards.43ae735e)</sup> <!-- ev:research.backend-src-auth-guards.7518b4ff --><sup>[10](Guards.evidence.md#research.backend-src-auth-guards.7518b4ff)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 3 of 30, wave 1
+- **Schedule:** 4 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

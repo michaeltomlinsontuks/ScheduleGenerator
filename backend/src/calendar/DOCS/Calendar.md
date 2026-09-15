@@ -38,6 +38,7 @@ critic:
 # Calendar
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Calendar.evidence.md#summary)
@@ -97,11 +98,13 @@ flowchart LR
 | IcsService.generateIcs | events, semester dates? | iCalendar 2.0 string | Produces a complete ICS document with one VEVENT per event <!-- ev:research.backend-src-calendar.28d61066 --><sup>[2](Calendar.evidence.md#research.backend-src-calendar.28d61066)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Calendar.evidence.md#dependencies)
@@ -114,6 +117,17 @@ flowchart LR
 | dto unit | CalendarDto, CalendarListDto, CreateCalendarDto, AddEventsDto, GenerateIcsDto, and EventConfigDto | Types the endpoints and the payloads the services exchange with Google <!-- ev:research.backend-src-calendar.ff0005af --><sup>[9](Calendar.evidence.md#research.backend-src-calendar.ff0005af)</sup> <!-- ev:research.backend-src-calendar.a993a83c --><sup>[10](Calendar.evidence.md#research.backend-src-calendar.a993a83c)</sup> <!-- ev:research.backend-src-calendar.fa2d817c --><sup>[11](Calendar.evidence.md#research.backend-src-calendar.fa2d817c)</sup> <!-- ev:research.backend-src-calendar.884e28b4 --><sup>[12](Calendar.evidence.md#research.backend-src-calendar.884e28b4)</sup> <!-- ev:research.backend-src-calendar.2dca828d --><sup>[8](Calendar.evidence.md#research.backend-src-calendar.2dca828d)</sup> <!-- ev:research.backend-src-calendar.803ee401 --><sup>[13](Calendar.evidence.md#research.backend-src-calendar.803ee401)</sup> <!-- ev:research.backend-src-calendar.441cec18 --><sup>[14](Calendar.evidence.md#research.backend-src-calendar.441cec18)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_calendar["backend/src/calendar"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_calendar_dto["backend/src/calendar/dto"]
+    backend_src["backend/src"]
+    backend_src_calendar --> backend_src_auth
+    backend_src_calendar --> backend_src_calendar_dto
+    backend_src --> backend_src_calendar
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Calendar.evidence.md#data-model)
@@ -121,6 +135,7 @@ flowchart LR
 The unit declares no entities of its own; it references the DTOs from the dto unit — EventConfigDto for events, CalendarDto and CalendarListDto for calendar responses, CreateCalendarDto for creation, AddEventsDto for adding events, and GenerateIcsDto for ICS generation. <!-- ev:research.backend-src-calendar.2dca828d --><sup>[8](Calendar.evidence.md#research.backend-src-calendar.2dca828d)</sup> <!-- ev:research.backend-src-calendar.ff0005af --><sup>[9](Calendar.evidence.md#research.backend-src-calendar.ff0005af)</sup> <!-- ev:research.backend-src-calendar.a993a83c --><sup>[10](Calendar.evidence.md#research.backend-src-calendar.a993a83c)</sup> <!-- ev:research.backend-src-calendar.fa2d817c --><sup>[11](Calendar.evidence.md#research.backend-src-calendar.fa2d817c)</sup> <!-- ev:research.backend-src-calendar.884e28b4 --><sup>[12](Calendar.evidence.md#research.backend-src-calendar.884e28b4)</sup> <!-- ev:research.backend-src-calendar.803ee401 --><sup>[13](Calendar.evidence.md#research.backend-src-calendar.803ee401)</sup> <!-- ev:research.backend-src-calendar.441cec18 --><sup>[14](Calendar.evidence.md#research.backend-src-calendar.441cec18)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Calendar.evidence.md#decisions-and-limitations)
@@ -128,4 +143,7 @@ The unit declares no entities of its own; it references the DTOs from the dto un
 Events are posted to the Google Calendar API sequentially to avoid rate limiting. <!-- ev:research.backend-src-calendar.441cec18 --><sup>[14](Calendar.evidence.md#research.backend-src-calendar.441cec18)</sup> Dates are formatted as local time without UTC conversion because the Google Calendar API expects local time when a timeZone is specified. <!-- ev:research.backend-src-calendar.441f9b4d --><sup>[18](Calendar.evidence.md#research.backend-src-calendar.441f9b4d)</sup> When recurring events arrive without semester dates, the controller derives the semester from environment variables and throws a 400 MISSING_SEMESTER_DATES error when it cannot be determined. <!-- ev:research.backend-src-calendar.fa2d817c --><sup>[11](Calendar.evidence.md#research.backend-src-calendar.fa2d817c)</sup> A 401 Google API error surfaces as 'Google authentication expired. Please re-authenticate.' <!-- ev:research.backend-src-calendar.195d974f --><sup>[20](Calendar.evidence.md#research.backend-src-calendar.195d974f)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Calendar dto](../dto/DOCS/Dto.md)
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 7 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

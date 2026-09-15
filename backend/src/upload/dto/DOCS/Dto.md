@@ -45,7 +45,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -133,6 +133,7 @@ This unit declares three data-transfer entities — UploadResponseDto, StorageUs
 StorageQuotaExceededDto hard-codes its HTTP semantics: the constructor fixes statusCode to 413 and message to 'STORAGE_QUOTA_EXCEEDED', coupling the DTO to the quota error rather than a generic error body. <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageUsageDto rounds usedPercentage to a whole number, so the reported percentage is an approximation. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Used by:** [Exceptions](../../exceptions/DOCS/Exceptions.md)
-- **Schedule:** 18 of 30, wave 1
+- **Direct dependencies:** [Src common](../../../common/DOCS/Common.md)
+- **Used by:** [Src upload](../../DOCS/Upload.md), [Exceptions](../../exceptions/DOCS/Exceptions.md)
+- **Schedule:** 23 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

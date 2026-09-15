@@ -30,6 +30,7 @@ critic:
 # Services
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Services.evidence.md#summary)
@@ -92,11 +93,13 @@ flowchart TB
 | calendarService.generateIcs | request | blob | Posts to /api/generate/ics requesting a blob response for download <!-- ev:research.frontend-src-services.41cf2849 --><sup>[9](Services.evidence.md#research.frontend-src-services.41cf2849)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Services.evidence.md#dependencies)
@@ -110,6 +113,7 @@ The unit's HTTP calls are made through the shared api instance, which is built o
 | '@/types' path alias | ParsedEvent type | uploadService imports the event shape from it <!-- ev:research.frontend-src-services.288f5df7 --><sup>[10](Services.evidence.md#research.frontend-src-services.288f5df7)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Services.evidence.md#data-model)
@@ -117,6 +121,7 @@ The unit's HTTP calls are made through the shared api instance, which is built o
 The unit declares the domain types it exchanges with the backend: ApiError, AuthUser, AuthStatus, Calendar, CalendarListResponse, EventConfig, PdfType, GenerateIcsRequest, AddEventsRequest, AddEventsResponse, ParsedEvent, JobStatus, JobResult, and UploadResponse. <!-- ev:research.frontend-src-services.451b12b7 --><sup>[2](Services.evidence.md#research.frontend-src-services.451b12b7)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Services.evidence.md#decisions-and-limitations)
@@ -126,4 +131,5 @@ uploadService.ts imports ParsedEvent from the '@/types' path alias while jobServ
 The upload flow is synchronous: uploadPdf returns parsed events directly in the response rather than creating a job to poll, unlike the job-based flow jobService supports. <!-- ev:research.frontend-src-services.1c57fcaf --><sup>[7](Services.evidence.md#research.frontend-src-services.1c57fcaf)</sup> <!-- ev:research.frontend-src-services.534cf769 --><sup>[8](Services.evidence.md#research.frontend-src-services.534cf769)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 42 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

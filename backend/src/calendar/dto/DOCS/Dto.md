@@ -152,5 +152,7 @@ This unit declares the DTO classes that shape the calendar module's request and 
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 6 of 30, wave 1
+- **Direct dependencies:** [Src common](../../../common/DOCS/Common.md)
+- **Used by:** [Calendar](../../DOCS/Calendar.md)
+- **Schedule:** 8 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

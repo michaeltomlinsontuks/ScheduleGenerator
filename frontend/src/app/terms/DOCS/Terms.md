@@ -112,5 +112,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the terms means editing the page source directly, since it takes no props, holds no state, and performs no data fetching. <!-- ev:research.frontend-src-app-terms.709797fa --><sup>[2](Terms.evidence.md#research.frontend-src-app-terms.709797fa)</sup> The 'Last updated: December 2025' date is hard-coded in the page. <!-- ev:research.frontend-src-app-terms.6c7397f6 --><sup>[5](Terms.evidence.md#research.frontend-src-app-terms.6c7397f6)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 25 of 30, wave 1
+- **Schedule:** 35 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

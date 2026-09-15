@@ -49,6 +49,7 @@ critic:
 # Preview
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Preview.evidence.md#summary)
@@ -102,11 +103,13 @@ flowchart TB
 | PreviewPage (default export of page.tsx) | none — the component takes no props (inference) | The schedule review page | Renders the mode-aware preview with filtering, selection, and Back/Continue navigation <!-- ev:research.frontend-src-app-preview.fbdcc574 --><sup>[1](Preview.evidence.md#research.frontend-src-app-preview.fbdcc574)</sup> <!-- ev:research.frontend-src-app-preview.a41bc9c7 --><sup>[15](Preview.evidence.md#research.frontend-src-app-preview.a41bc9c7)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Preview.evidence.md#dependencies)
@@ -123,6 +126,7 @@ The unit's imports are declared in frontend/src/app/preview/page.tsx, which pull
 | ParsedEvent type | event shape | Types the events the page groups, filters, and renders <!-- ev:research.frontend-src-app-preview.f6e2cbdb --><sup>[3](Preview.evidence.md#research.frontend-src-app-preview.f6e2cbdb)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Preview.evidence.md#data-model)
@@ -130,6 +134,7 @@ The unit's imports are declared in frontend/src/app/preview/page.tsx, which pull
 The unit declares a DayOfWeek type restricted to the five weekdays Monday through Friday and a DAYS_ORDER constant listing those days in that order, and references the ParsedEvent type from the shared types. <!-- ev:research.frontend-src-app-preview.61da71e8 --><sup>[17](Preview.evidence.md#research.frontend-src-app-preview.61da71e8)</sup> <!-- ev:research.frontend-src-app-preview.f6e2cbdb --><sup>[3](Preview.evidence.md#research.frontend-src-app-preview.f6e2cbdb)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Preview.evidence.md#decisions-and-limitations)
@@ -139,4 +144,5 @@ The page is a single client component that keeps its filter and selection state 
 The page is documented as 'Preview Page - Display parsed events with selection and filtering' and cites requirements 6.1, 6.2, 6.9, 1.1, 2.1, 3.1, 7.1, and 7.5. <!-- ev:research.frontend-src-app-preview.b3310fff --><sup>[18](Preview.evidence.md#research.frontend-src-app-preview.b3310fff)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 33 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

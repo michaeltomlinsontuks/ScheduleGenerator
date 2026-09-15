@@ -133,5 +133,5 @@ This unit declares the eight DTO classes that shape the auth module's request an
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 2 of 30, wave 1
+- **Schedule:** 3 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -45,7 +45,7 @@ critic:
 # Dto
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Dto.evidence.md#summary)
@@ -128,6 +128,7 @@ This unit declares the three DTO classes that shape the jobs module's payloads. 
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Src common](../../../common/DOCS/Common.md)
 - **Used by:** [Jobs](../../DOCS/Jobs.md)
-- **Schedule:** 15 of 30, wave 1
+- **Schedule:** 19 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

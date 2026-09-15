@@ -40,7 +40,7 @@ critic:
 # Filters
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Filters.evidence.md#summary)
@@ -118,5 +118,6 @@ This unit declares two data shapes: the exported ErrorResponse interface, the JS
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 8 of 30, wave 1
+- **Used by:** [Src](../../../DOCS/Src.md)
+- **Schedule:** 11 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

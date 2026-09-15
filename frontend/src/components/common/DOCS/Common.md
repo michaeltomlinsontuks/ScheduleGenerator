@@ -56,7 +56,7 @@ critic:
 # Common
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Common.evidence.md#summary)
@@ -154,5 +154,5 @@ All five components are client components ('use client' directive), so they rend
 Modal is a controlled dialog: it drives the native <dialog> element's showModal() and close() from the isOpen prop via useEffect, and treats a click on the dialog element itself as a backdrop click that invokes onClose. <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 28 of 30, wave 1
+- **Schedule:** 38 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

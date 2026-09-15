@@ -18,6 +18,7 @@ critic:
 # Customize
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Customize.evidence.md#summary)
@@ -80,11 +81,13 @@ flowchart TB
 | handleGenerate | none | Navigates to '/generate' | Routes to the generate step via the router <!-- ev:research.frontend-src-app-customize.1cf75697 --><sup>[22](Customize.evidence.md#research.frontend-src-app-customize.1cf75697)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Customize.evidence.md#dependencies)
@@ -102,6 +105,7 @@ The page's imports are declared in frontend/src/app/customize/page.tsx. <!-- ev:
 | @/hooks/useWorkflowGuard | workflow guard for 'customize' | Redirects to the preview page when no events or selections exist <!-- ev:research.frontend-src-app-customize.6f4ed280 --><sup>[5](Customize.evidence.md#research.frontend-src-app-customize.6f4ed280)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Customize.evidence.md#data-model)
@@ -109,6 +113,7 @@ The page's imports are declared in frontend/src/app/customize/page.tsx. <!-- ev:
 This unit declares no entities; it consumes the selected events and PDF type from the event store and the semester dates, module colors, and selected calendar from the config store, deriving uniqueModules from the selected events' module names. <!-- ev:research.frontend-src-app-customize.5e283c25 --><sup>[6](Customize.evidence.md#research.frontend-src-app-customize.5e283c25)</sup> <!-- ev:research.frontend-src-app-customize.32e11e57 --><sup>[7](Customize.evidence.md#research.frontend-src-app-customize.32e11e57)</sup> <!-- ev:research.frontend-src-app-customize.796f3745 --><sup>[10](Customize.evidence.md#research.frontend-src-app-customize.796f3745)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Customize.evidence.md#decisions-and-limitations)
@@ -116,4 +121,5 @@ This unit declares no entities; it consumes the selected events and PDF type fro
 The page is a single client component that returns null until mounted to guard against hydration mismatches. <!-- ev:research.frontend-src-app-customize.739a2070 --><sup>[18](Customize.evidence.md#research.frontend-src-app-customize.739a2070)</sup> It assigns a default color to each unique module that lacks one, rotating through color ids 1 through 11. <!-- ev:research.frontend-src-app-customize.5cb83107 --><sup>[11](Customize.evidence.md#research.frontend-src-app-customize.5cb83107)</sup> Validation is mode-aware: lecture mode requires both semester dates and no date error, while test and exam modes require only a selected event. <!-- ev:research.frontend-src-app-customize.6aba5291 --><sup>[13](Customize.evidence.md#research.frontend-src-app-customize.6aba5291)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 28 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

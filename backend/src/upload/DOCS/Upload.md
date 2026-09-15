@@ -18,6 +18,7 @@ critic:
 # Upload
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Upload.evidence.md#summary)
@@ -76,11 +77,13 @@ sequenceDiagram
 | UploadService.getStorageUsage | user ID | Storage usage with usedBytes, quotaBytes, usedPercentage, availableBytes | Deprecated; returns dummy values with MAX_FILE_SIZE as the quota <!-- ev:research.backend-src-upload.32e10734 --><sup>[16](Upload.evidence.md#research.backend-src-upload.32e10734)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Upload.evidence.md#dependencies)
@@ -97,6 +100,29 @@ sequenceDiagram
 | uuid (uuidv4) | Job ID generation | processUpload generates a random UUID for frontend compatibility <!-- ev:research.backend-src-upload.1c2ae083 --><sup>[13](Upload.evidence.md#research.backend-src-upload.1c2ae083)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_upload["backend/src/upload"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_common["backend/src/common"]
+    backend_src_common_dto["backend/src/common/dto"]
+    backend_src_common_pipes["backend/src/common/pipes"]
+    backend_src_common_validators["backend/src/common/validators"]
+    backend_src_parser["backend/src/parser"]
+    backend_src_upload_dto["backend/src/upload/dto"]
+    backend_src_upload_exceptions["backend/src/upload/exceptions"]
+    backend_src["backend/src"]
+    backend_src_upload --> backend_src_auth
+    backend_src_upload --> backend_src_common
+    backend_src_upload --> backend_src_common_dto
+    backend_src_upload --> backend_src_common_pipes
+    backend_src_upload --> backend_src_common_validators
+    backend_src_upload --> backend_src_parser
+    backend_src_upload --> backend_src_upload_dto
+    backend_src_upload --> backend_src_upload_exceptions
+    backend_src --> backend_src_upload
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Upload.evidence.md#data-model)
@@ -104,6 +130,7 @@ sequenceDiagram
 This unit declares no entities of its own: the response it returns is an UploadResponseDto owned by the upload dto unit, and the events it carries are ParsedEvent values produced by the parser unit. <!-- ev:research.backend-src-upload.b64e5ae9 --><sup>[4](Upload.evidence.md#research.backend-src-upload.b64e5ae9)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Upload.evidence.md#decisions-and-limitations)
@@ -111,4 +138,7 @@ This unit declares no entities of its own: the response it returns is an UploadR
 The upload path is stateless: job IDs are random UUIDs local to the request/response cycle, releaseStorageForJob is a no-op, and getStorageUsage returns dummy values, so nothing survives the response. <!-- ev:research.backend-src-upload.1c2ae083 --><sup>[13](Upload.evidence.md#research.backend-src-upload.1c2ae083)</sup> <!-- ev:research.backend-src-upload.f9aa8124 --><sup>[15](Upload.evidence.md#research.backend-src-upload.f9aa8124)</sup> <!-- ev:research.backend-src-upload.32e10734 --><sup>[16](Upload.evidence.md#research.backend-src-upload.32e10734)</sup> Semester filtering reverts to the original events when it would remove all of them, which happens when a file for a different semester is uploaded; and when any semester environment variable is unset, getCurrentSemesterInfo returns null and no filtering occurs. <!-- ev:research.backend-src-upload.1acb5b6d --><sup>[14](Upload.evidence.md#research.backend-src-upload.1acb5b6d)</sup> <!-- ev:research.backend-src-upload.9fb6b98f --><sup>[8](Upload.evidence.md#research.backend-src-upload.9fb6b98f)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Src common](../../common/DOCS/Common.md), [Common dto](../../common/dto/DOCS/Dto.md), [Pipes](../../common/pipes/DOCS/Pipes.md), [Validators](../../common/validators/DOCS/Validators.md), [Parser](../../parser/DOCS/Parser.md), [Upload dto](../dto/DOCS/Dto.md), [Exceptions](../exceptions/DOCS/Exceptions.md)
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 22 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

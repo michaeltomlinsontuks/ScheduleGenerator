@@ -39,6 +39,7 @@ critic:
 # Types
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Types.evidence.md#summary)
@@ -82,11 +83,13 @@ flowchart TB
 | GenerateRequest (exported interface) | none — a type declaration | A calendar generation request shape | Declares events, moduleColors, semesterStart, semesterEnd and outputType, with calendarId optional <!-- ev:research.frontend-src-types.214c5ea9 --><sup>[8](Types.evidence.md#research.frontend-src-types.214c5ea9)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Types.evidence.md#dependencies)
@@ -94,6 +97,7 @@ flowchart TB
 The unit declares no imports: index.ts is a pure type module with no runtime dependencies (inference: the research records no imports for this unit). <!-- ev:research.frontend-src-types.7ceb4e79 --><sup>[5](Types.evidence.md#research.frontend-src-types.7ceb4e79)</sup>
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Types.evidence.md#data-model)
@@ -101,6 +105,7 @@ The unit declares no imports: index.ts is a pure type module with no runtime dep
 The unit's data model is the three interfaces it declares: ParsedEvent, ProcessingJob, and GenerateRequest. ParsedEvent is the event shape that ProcessingJob's events field and GenerateRequest's events field both reference. <!-- ev:research.frontend-src-types.e2134e2a --><sup>[7](Types.evidence.md#research.frontend-src-types.e2134e2a)</sup> <!-- ev:research.frontend-src-types.214c5ea9 --><sup>[8](Types.evidence.md#research.frontend-src-types.214c5ea9)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Types.evidence.md#decisions-and-limitations)
@@ -108,4 +113,5 @@ The unit's data model is the three interfaces it declares: ParsedEvent, Processi
 The interfaces are documented as mirroring the backend's structures — ParsedEvent matches the backend ParsedEvent structure and ProcessingJob reports the backend's job status — so the frontend's type definitions must stay in sync with the backend's API. <!-- ev:research.frontend-src-types.b97d18d1 --><sup>[2](Types.evidence.md#research.frontend-src-types.b97d18d1)</sup> <!-- ev:research.frontend-src-types.7abb8e7e --><sup>[3](Types.evidence.md#research.frontend-src-types.7abb8e7e)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 43 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

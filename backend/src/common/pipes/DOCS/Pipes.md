@@ -41,7 +41,7 @@ critic:
 # Pipes
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Pipes.evidence.md#summary)
@@ -115,5 +115,6 @@ This unit declares two data shapes: the MulterFile interface, describing an uplo
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 11 of 30, wave 1
+- **Used by:** [Src upload](../../../upload/DOCS/Upload.md)
+- **Schedule:** 14 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

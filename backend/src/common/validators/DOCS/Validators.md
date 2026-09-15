@@ -135,5 +135,7 @@ This unit declares one enum, PdfContentError, with the members INVALID_PDF_CONTE
 - No test files exist for this unit. <!-- ev:research.backend-src-common-validators.153ec0f0 --><sup>[14](Validators.evidence.md#research.backend-src-common-validators.153ec0f0)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 12 of 30, wave 1
+- **Direct dependencies:** [Src common](../../DOCS/Common.md)
+- **Used by:** [Src upload](../../../upload/DOCS/Upload.md)
+- **Schedule:** 15 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

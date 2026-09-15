@@ -18,6 +18,7 @@ critic:
 # Cv
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Cv.evidence.md#summary)
@@ -61,11 +62,13 @@ flowchart TB
 | VersionCard | section: VersionSection | A version card | Renders a color-derived card with the version badge, title, period, and content blocks <!-- ev:research.frontend-src-app-cv.96a7476a --><sup>[6](Cv.evidence.md#research.frontend-src-app-cv.96a7476a)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Cv.evidence.md#dependencies)
@@ -78,6 +81,7 @@ The page's imports are declared in frontend/src/app/cv/page.tsx, and its styling
 | React | Client component rendering | The page is a 'use client' component that renders the timeline <!-- ev:research.frontend-src-app-cv.e0639369 --><sup>[1](Cv.evidence.md#research.frontend-src-app-cv.e0639369)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Cv.evidence.md#data-model)
@@ -85,6 +89,7 @@ The page's imports are declared in frontend/src/app/cv/page.tsx, and its styling
 The unit declares the VersionSection interface, which models each timeline entry with version, title, period, color, and content fields, where color is one of 'primary', 'secondary', or 'accent' and content is an array of blocks each with an optional heading and a list of items. <!-- ev:research.frontend-src-app-cv.c374f011 --><sup>[7](Cv.evidence.md#research.frontend-src-app-cv.c374f011)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Cv.evidence.md#decisions-and-limitations)
@@ -92,4 +97,5 @@ The unit declares the VersionSection interface, which models each timeline entry
 The page is a client component whose content is static: the timeline data is hard-coded in the timelineData constant rather than fetched or derived. <!-- ev:research.frontend-src-app-cv.e0639369 --><sup>[1](Cv.evidence.md#research.frontend-src-app-cv.e0639369)</sup> <!-- ev:research.frontend-src-app-cv.651fd033 --><sup>[5](Cv.evidence.md#research.frontend-src-app-cv.651fd033)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 29 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

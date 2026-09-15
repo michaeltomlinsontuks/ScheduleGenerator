@@ -18,6 +18,7 @@ critic:
 # Common
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Common.evidence.md#summary)
@@ -59,11 +60,13 @@ flowchart LR
 | JobStatus | A job lifecycle state: PENDING, PROCESSING, COMPLETED, or FAILED | The string values 'pending', 'processing', 'completed', or 'failed' | Represents the lifecycle of a PDF processing job: queued and waiting, being processed by the PDF worker, finished successfully, or failed <!-- ev:research.backend-src-common.7fb2a50a --><sup>[8](Common.evidence.md#research.backend-src-common.7fb2a50a)</sup> <!-- ev:research.backend-src-common.b02968d6 --><sup>[4](Common.evidence.md#research.backend-src-common.b02968d6)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Common.evidence.md#dependencies)
@@ -71,6 +74,25 @@ flowchart LR
 The research records no external dependencies for this unit: the declarations in types.ts are plain TypeScript enums and an interface. <!-- ev:research.backend-src-common.ff5bc729 --><sup>[1](Common.evidence.md#research.backend-src-common.ff5bc729)</sup>
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src_common["backend/src/common"]
+    backend_src_calendar_dto["backend/src/calendar/dto"]
+    backend_src_common_validators["backend/src/common/validators"]
+    backend_src_jobs["backend/src/jobs"]
+    backend_src_jobs_dto["backend/src/jobs/dto"]
+    backend_src_parser["backend/src/parser"]
+    backend_src_upload["backend/src/upload"]
+    backend_src_upload_dto["backend/src/upload/dto"]
+    backend_src_calendar_dto --> backend_src_common
+    backend_src_common_validators --> backend_src_common
+    backend_src_jobs --> backend_src_common
+    backend_src_jobs_dto --> backend_src_common
+    backend_src_parser --> backend_src_common
+    backend_src_upload --> backend_src_common
+    backend_src_upload_dto --> backend_src_common
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Common.evidence.md#data-model)
@@ -78,7 +100,10 @@ The research records no external dependencies for this unit: the declarations in
 This unit declares three data shapes: the PdfType enum, the ParsedEvent interface, and the JobStatus enum. <!-- ev:research.backend-src-common.ff5bc729 --><sup>[1](Common.evidence.md#research.backend-src-common.ff5bc729)</sup> They are shared type declarations imported by nine files across the calendar, jobs, parser, upload, and common/validators units. <!-- ev:research.backend-src-common.42ee29f8 --><sup>[5](Common.evidence.md#research.backend-src-common.42ee29f8)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 <!-- tyto-docs:generated:navigation -->
+- **Used by:** [Calendar dto](../../calendar/dto/DOCS/Dto.md), [Validators](../validators/DOCS/Validators.md), [Jobs](../../jobs/DOCS/Jobs.md), [Jobs dto](../../jobs/dto/DOCS/Dto.md), [Parser](../../parser/DOCS/Parser.md), [Src upload](../../upload/DOCS/Upload.md), [Upload dto](../../upload/dto/DOCS/Dto.md)
+- **Schedule:** 9 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

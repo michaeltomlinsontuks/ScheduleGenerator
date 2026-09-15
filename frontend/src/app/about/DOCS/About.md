@@ -118,5 +118,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the about content means editing the page source directly (inference: the unit holds a single presentational component). <!-- ev:research.frontend-src-app-about.0ed6fab4 --><sup>[1](About.evidence.md#research.frontend-src-app-about.0ed6fab4)</sup> The profile image is served from /pfp.png, and the GitHub repository URL and contact email are hard-coded in the page. <!-- ev:research.frontend-src-app-about.168ca24f --><sup>[5](About.evidence.md#research.frontend-src-app-about.168ca24f)</sup> <!-- ev:research.frontend-src-app-about.c2a091ec --><sup>[8](About.evidence.md#research.frontend-src-app-about.c2a091ec)</sup> <!-- ev:research.frontend-src-app-about.d25948de --><sup>[9](About.evidence.md#research.frontend-src-app-about.d25948de)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 22 of 30, wave 1
+- **Schedule:** 27 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

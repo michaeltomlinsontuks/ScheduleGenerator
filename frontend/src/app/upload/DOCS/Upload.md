@@ -132,5 +132,5 @@ The page contains an effect that emulates progress during the 'processing' phase
 The page holds a completion state for 800 ms before redirecting to /preview, and simulates processing progress capped at 90% until completion. <!-- ev:research.frontend-src-app-upload.e1e0b822 --><sup>[3](Upload.evidence.md#research.frontend-src-app-upload.e1e0b822)</sup> <!-- ev:research.frontend-src-app-upload.52b1453f --><sup>[12](Upload.evidence.md#research.frontend-src-app-upload.52b1453f)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 26 of 30, wave 1
+- **Schedule:** 36 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

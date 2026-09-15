@@ -140,5 +140,6 @@ This unit declares no entities. It reads the rateLimitInfo object — with limit
 RateLimitHeadersInterceptor is defined and exported but no repository file imports it — the only importers of this unit are app.module.ts and main.ts, which use LoggingInterceptor and QueryTimeoutInterceptor — so it is not registered as a global interceptor (inferred from the import scan). <!-- ev:research.backend-src-common-interceptors.c22ec7bf --><sup>[16](Interceptors.evidence.md#research.backend-src-common-interceptors.c22ec7bf)</sup> When the throttler guard has not attached rateLimitInfo, the interceptor cannot determine the remaining count and omits X-RateLimit-Remaining. <!-- ev:research.backend-src-common-interceptors.5d2a50a2 --><sup>[7](Interceptors.evidence.md#research.backend-src-common-interceptors.5d2a50a2)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 10 of 30, wave 1
+- **Used by:** [Src](../../../DOCS/Src.md)
+- **Schedule:** 13 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -143,6 +143,7 @@ This unit declares no entities of its own; its endpoints reference the JobStatus
 The unit runs in stateless mode: jobs are not stored, so JobsService.getJobById always throws a 404 JOB_NOT_FOUND NotFoundException, and both controller endpoints currently fail every request with that response. <!-- ev:research.backend-src-jobs.d01fa15b --><sup>[5](Jobs.evidence.md#research.backend-src-jobs.d01fa15b)</sup> <!-- ev:research.backend-src-jobs.111c1710 --><sup>[11](Jobs.evidence.md#research.backend-src-jobs.111c1710)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Direct dependencies:** [Common dto](../../common/dto/DOCS/Dto.md), [Jobs dto](../dto/DOCS/Dto.md)
-- **Schedule:** 14 of 30, wave 1
+- **Direct dependencies:** [Src common](../../common/DOCS/Common.md), [Common dto](../../common/dto/DOCS/Dto.md), [Jobs dto](../dto/DOCS/Dto.md)
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 18 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

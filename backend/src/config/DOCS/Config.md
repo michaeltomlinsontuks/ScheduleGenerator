@@ -124,5 +124,6 @@ This module declares and references no entities (inference: the research records
 The minio section prefers MINIO_* variables but falls back to AWS S3/Tigris variables, and auto-enables SSL whenever an S3 endpoint URL is set. <!-- ev:research.backend-src-config.6c6f7892 --><sup>[8](Config.evidence.md#research.backend-src-config.6c6f7892)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 13 of 30, wave 1
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 16 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

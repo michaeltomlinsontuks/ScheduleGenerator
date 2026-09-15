@@ -46,6 +46,7 @@ critic:
 # Generate
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Generate.evidence.md#summary)
@@ -101,11 +102,13 @@ flowchart TB
 | handleBack | none | Navigates to '/customize' | Routes back to the customize step via the router <!-- ev:research.frontend-src-app-generate.98c279a7 --><sup>[11](Generate.evidence.md#research.frontend-src-app-generate.98c279a7)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Generate.evidence.md#dependencies)
@@ -128,6 +131,7 @@ The page's imports are declared in frontend/src/app/generate/page.tsx. <!-- ev:r
 | @/utils/stateManagement | clearAllState | Clears all workflow and config state when uploading another PDF <!-- ev:research.frontend-src-app-generate.0e728abf --><sup>[4](Generate.evidence.md#research.frontend-src-app-generate.0e728abf)</sup> <!-- ev:research.frontend-src-app-generate.086b7cce --><sup>[10](Generate.evidence.md#research.frontend-src-app-generate.086b7cce)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Generate.evidence.md#data-model)
@@ -135,6 +139,7 @@ The page's imports are declared in frontend/src/app/generate/page.tsx. <!-- ev:r
 This unit declares no entities; it consumes the selected events and semester configuration held by the event and config stores, mapping selected events to the EventConfig format for both output paths. <!-- ev:research.frontend-src-app-generate.60f6dab7 --><sup>[5](Generate.evidence.md#research.frontend-src-app-generate.60f6dab7)</sup> <!-- ev:research.frontend-src-app-generate.aa4a1844 --><sup>[6](Generate.evidence.md#research.frontend-src-app-generate.aa4a1844)</sup> <!-- ev:research.frontend-src-app-generate.a8c47d82 --><sup>[8](Generate.evidence.md#research.frontend-src-app-generate.a8c47d82)</sup> <!-- ev:research.frontend-src-app-generate.8f6ab7aa --><sup>[9](Generate.evidence.md#research.frontend-src-app-generate.8f6ab7aa)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Generate.evidence.md#decisions-and-limitations)
@@ -142,4 +147,5 @@ This unit declares no entities; it consumes the selected events and semester con
 Both output paths require the semester dates to be set in lecture mode before they will run. <!-- ev:research.frontend-src-app-generate.a8c47d82 --><sup>[8](Generate.evidence.md#research.frontend-src-app-generate.a8c47d82)</sup> <!-- ev:research.frontend-src-app-generate.8f6ab7aa --><sup>[9](Generate.evidence.md#research.frontend-src-app-generate.8f6ab7aa)</sup> The Google Calendar path additionally requires a selected calendar and prompts re-authentication on 401 or unauthorized responses. <!-- ev:research.frontend-src-app-generate.8f6ab7aa --><sup>[9](Generate.evidence.md#research.frontend-src-app-generate.8f6ab7aa)</sup> handleUploadAnother falls back to resetEvents and resetConfig if clearAllState fails. <!-- ev:research.frontend-src-app-generate.086b7cce --><sup>[10](Generate.evidence.md#research.frontend-src-app-generate.086b7cce)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 32 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -139,5 +139,5 @@ useWorkflowGuard encodes the workflow order — upload, preview, customize, gene
 useAuth checks the authentication status once on mount, guarded by a hasChecked ref so the check runs only a single time. <!-- ev:research.frontend-src-hooks.d56cd0d3 --><sup>[8](Hooks.evidence.md#research.frontend-src-hooks.d56cd0d3)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 30 of 30, wave 1
+- **Schedule:** 41 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -132,5 +132,7 @@ The unit declares no entities of its own; it references ParsedEvent and PdfType 
 ParserService generates event ids with crypto.randomUUID when available, falling back to a template-based UUID v4 generator, so ids stay unique even where randomUUID is missing. <!-- ev:research.backend-src-parser.bf0fdbff --><sup>[9](Parser.evidence.md#research.backend-src-parser.bf0fdbff)</sup> <!-- ev:research.backend-src-parser.bcfc00c5 --><sup>[10](Parser.evidence.md#research.backend-src-parser.bcfc00c5)</sup> The parser URL defaults to 'http://localhost:5000' when 'parser.url' is not configured, so non-local deployments must set it explicitly. <!-- ev:research.backend-src-parser.7c1b30b5 --><sup>[6](Parser.evidence.md#research.backend-src-parser.7c1b30b5)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 16 of 30, wave 1
+- **Direct dependencies:** [Src common](../../common/DOCS/Common.md)
+- **Used by:** [Src](../../DOCS/Src.md), [Src upload](../../upload/DOCS/Upload.md)
+- **Schedule:** 20 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

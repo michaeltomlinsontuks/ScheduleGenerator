@@ -108,5 +108,5 @@ Both components are client components ('use client' directive), so they render a
 GoogleLoginButton is documented as following Google's branding guidelines and as satisfying requirements 3.1 and 7.1; UserAvatar is documented as satisfying requirements 3.3 and 3.4; and the barrel module is documented as satisfying requirements 3.1 and 3.3. <!-- ev:research.frontend-src-components-auth.9d828014 --><sup>[14](Auth.evidence.md#research.frontend-src-components-auth.9d828014)</sup> <!-- ev:research.frontend-src-components-auth.5364eb81 --><sup>[15](Auth.evidence.md#research.frontend-src-components-auth.5364eb81)</sup> <!-- ev:research.frontend-src-components-auth.553a2e3c --><sup>[16](Auth.evidence.md#research.frontend-src-components-auth.553a2e3c)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 27 of 30, wave 1
+- **Schedule:** 37 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

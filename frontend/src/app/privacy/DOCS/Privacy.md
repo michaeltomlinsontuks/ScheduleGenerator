@@ -47,7 +47,7 @@ critic:
 # Privacy
 
 <!-- tyto-docs:generated:status -->
-> **Status: Draft**
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Privacy.evidence.md#summary)
@@ -127,5 +127,5 @@ This page declares and references no entities (inference: the research records n
 The page is static: any change to the policy means editing the page source directly, since it takes no props, holds no state, and performs no data fetching. <!-- ev:research.frontend-src-app-privacy.a786a279 --><sup>[2](Privacy.evidence.md#research.frontend-src-app-privacy.a786a279)</sup> The 'Last updated: December 2025' date is hard-coded in the page. <!-- ev:research.frontend-src-app-privacy.828771e3 --><sup>[5](Privacy.evidence.md#research.frontend-src-app-privacy.828771e3)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 24 of 30, wave 1
+- **Schedule:** 34 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

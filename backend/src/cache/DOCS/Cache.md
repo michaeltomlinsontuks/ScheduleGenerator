@@ -111,5 +111,6 @@ This module declares and references no entities (inference: the research records
 CacheModule applies a default TTL of 300000 milliseconds (5 minutes) and a maximum of 1000 cached items to every entry that does not override them. <!-- ev:research.backend-src-cache.7f2e5345 --><sup>[1](Cache.evidence.md#research.backend-src-cache.7f2e5345)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 5 of 30, wave 1
+- **Used by:** [Src](../../DOCS/Src.md)
+- **Schedule:** 6 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

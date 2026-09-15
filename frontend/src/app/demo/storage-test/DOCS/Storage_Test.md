@@ -110,5 +110,5 @@ testStorageQuota treats a QuotaExceededError as expected behavior rather than a 
 testStorageDisabled cannot run automatically; it records step-by-step instructions for testing disabled storage and points the tester to the console. <!-- ev:research.frontend-src-app-demo-storage-test.1151c4eb --><sup>[10](Storage_Test.evidence.md#research.frontend-src-app-demo-storage-test.1151c4eb)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 23 of 30, wave 1
+- **Schedule:** 31 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

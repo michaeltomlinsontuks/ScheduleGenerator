@@ -105,5 +105,5 @@ ParsedEventDto is the unit's single entity: a data transfer object whose fields 
 startTime and endTime are restricted to the HH:MM format, so times carrying seconds or timezone offsets are rejected by validation. <!-- ev:research.backend-src-parser-dto.e0cd8a63 --><sup>[2](Dto.evidence.md#research.backend-src-parser-dto.e0cd8a63)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 17 of 30, wave 1
+- **Schedule:** 21 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

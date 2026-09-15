@@ -18,6 +18,7 @@ critic:
 # Customize
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Customize.evidence.md#summary)
@@ -75,11 +76,13 @@ flowchart TB
 | index.ts (barrel) | — | Re-exports of the four components and their prop types | A single import point for the unit's public surface <!-- ev:research.frontend-src-components-customize.68b3ae8e --><sup>[2](Customize.evidence.md#research.frontend-src-components-customize.68b3ae8e)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Customize.evidence.md#dependencies)
@@ -93,6 +96,7 @@ The unit's components draw on the calendar service, common components, and color
 | GOOGLE_CALENDAR_COLORS, getColorById (@/utils/colors) | Color palette | ModuleColorPicker builds its palette and resolves colors by id <!-- ev:research.frontend-src-components-customize.4f3a0599 --><sup>[5](Customize.evidence.md#research.frontend-src-components-customize.4f3a0599)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Customize.evidence.md#data-model)
@@ -100,6 +104,7 @@ The unit's components draw on the calendar service, common components, and color
 This unit declares no entities; the components render UI driven by their props, with CalendarSelector's calendars prop typed as Calendar, a type defined outside this unit (inference: the findings record the reference but no definition in this unit). <!-- ev:research.frontend-src-components-customize.320c84c5 --><sup>[3](Customize.evidence.md#research.frontend-src-components-customize.320c84c5)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Customize.evidence.md#decisions-and-limitations)
@@ -107,4 +112,5 @@ This unit declares no entities; the components render UI driven by their props, 
 ModuleColorPicker defers rendering its interactive color dropdowns until after mount, showing a static placeholder list first, to avoid hydration mismatch. <!-- ev:research.frontend-src-components-customize.4a705995 --><sup>[16](Customize.evidence.md#research.frontend-src-components-customize.4a705995)</sup> CalendarSelector is documented as covering requirements 4.2, 4.3, and 4.4. <!-- ev:research.frontend-src-components-customize.88aa4669 --><sup>[6](Customize.evidence.md#research.frontend-src-components-customize.88aa4669)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 39 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

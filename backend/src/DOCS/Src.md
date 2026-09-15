@@ -18,6 +18,7 @@ critic:
 # Src
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Src.evidence.md#summary)
@@ -64,11 +65,13 @@ flowchart LR
 | bootstrap | — | A running HTTP server | Applies security, session, CORS, global filters, timeout, and validation, then serves Swagger at /api/docs and listens on the configured port (default 3001) on 0.0.0.0 <!-- ev:research.backend-src.c2aad9fb --><sup>[4](Src.evidence.md#research.backend-src.c2aad9fb)</sup> <!-- ev:research.backend-src.d9944d03 --><sup>[9](Src.evidence.md#research.backend-src.d9944d03)</sup> <!-- ev:research.backend-src.a6d50bb5 --><sup>[5](Src.evidence.md#research.backend-src.a6d50bb5)</sup> <!-- ev:research.backend-src.5f8caa7a --><sup>[6](Src.evidence.md#research.backend-src.5f8caa7a)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Src.evidence.md#dependencies)
@@ -83,6 +86,31 @@ flowchart LR
 | @nestjs/common | ValidationPipe and HttpExceptionFilter | Global validation with whitelist, forbidNonWhitelisted, and transform, and global exception handling <!-- ev:research.backend-src.a6d50bb5 --><sup>[5](Src.evidence.md#research.backend-src.a6d50bb5)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+```mermaid
+%% tyto-docs:generated
+flowchart LR
+    backend_src["backend/src"]
+    backend_src_auth["backend/src/auth"]
+    backend_src_cache["backend/src/cache"]
+    backend_src_calendar["backend/src/calendar"]
+    backend_src_common_filters["backend/src/common/filters"]
+    backend_src_common_guards["backend/src/common/guards"]
+    backend_src_common_interceptors["backend/src/common/interceptors"]
+    backend_src_config["backend/src/config"]
+    backend_src_health["backend/src/health"]
+    backend_src_jobs["backend/src/jobs"]
+    backend_src_parser["backend/src/parser"]
+    backend_src --> backend_src_auth
+    backend_src --> backend_src_cache
+    backend_src --> backend_src_calendar
+    backend_src --> backend_src_common_filters
+    backend_src --> backend_src_common_guards
+    backend_src --> backend_src_common_interceptors
+    backend_src --> backend_src_config
+    backend_src --> backend_src_health
+    backend_src --> backend_src_jobs
+    backend_src --> backend_src_parser
+```
 <!-- /tyto-docs:generated:module-graph -->
 
 ## Data model
@@ -90,6 +118,7 @@ flowchart LR
 This unit declares no entities: it is the application root, wiring modules and global providers rather than defining data shapes, so the generated ERD region is empty.
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Src.evidence.md#decisions-and-limitations)
@@ -97,4 +126,6 @@ This unit declares no entities: it is the application root, wiring modules and g
 Global rate limiting allows 100 requests per 60,000 ms window, enforced by CustomThrottlerGuard. <!-- ev:research.backend-src.46f509a2 --><sup>[2](Src.evidence.md#research.backend-src.46f509a2)</sup> The session cookie is secure only in production, and CORS permits requests without an origin and localhost origins outside production, so the API is reachable from non-browser clients and local development. <!-- ev:research.backend-src.c2aad9fb --><sup>[4](Src.evidence.md#research.backend-src.c2aad9fb)</sup> <!-- ev:research.backend-src.d9944d03 --><sup>[9](Src.evidence.md#research.backend-src.d9944d03)</sup> A global 60-second query timeout bounds every request. <!-- ev:research.backend-src.a6d50bb5 --><sup>[5](Src.evidence.md#research.backend-src.a6d50bb5)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Direct dependencies:** [Cache](../cache/DOCS/Cache.md), [Calendar](../calendar/DOCS/Calendar.md), [Filters](../common/filters/DOCS/Filters.md), [Common guards](../common/guards/DOCS/Guards.md), [Interceptors](../common/interceptors/DOCS/Interceptors.md), [Config](../config/DOCS/Config.md), [Health](../health/DOCS/Health.md), [Jobs](../jobs/DOCS/Jobs.md), [Parser](../parser/DOCS/Parser.md), [Src upload](../upload/DOCS/Upload.md)
+- **Schedule:** 2 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

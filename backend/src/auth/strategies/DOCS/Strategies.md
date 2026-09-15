@@ -106,5 +106,5 @@ GoogleStrategy requests the scopes 'email', 'profile', 'https://www.googleapis.c
 The constructor reads the OAuth client ID, client secret, and callback URL from ConfigService, defaulting each to an empty string when the value is unset. <!-- ev:research.backend-src-auth-strategies.fe4be2b9 --><sup>[5](Strategies.evidence.md#research.backend-src-auth-strategies.fe4be2b9)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 4 of 30, wave 1
+- **Schedule:** 5 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

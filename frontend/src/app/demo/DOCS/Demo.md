@@ -18,6 +18,7 @@ critic:
 # Demo
 
 <!-- tyto-docs:generated:status -->
+> **Status: Draft**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Demo.evidence.md#summary)
@@ -69,11 +70,13 @@ flowchart TB
 | CustomizeDemo | uniqueModules: string[] | The customize components section | Tests ModuleColorPicker and DateRangePicker against the config store and validates the end date is after the start date <!-- ev:research.frontend-src-app-demo.f6ae26b3 --><sup>[15](Demo.evidence.md#research.frontend-src-app-demo.f6ae26b3)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Demo.evidence.md#dependencies)
@@ -89,6 +92,7 @@ flowchart TB
 | @/types (ParsedEvent) | ParsedEvent type | MOCK_EVENTS and the event store are typed with ParsedEvent <!-- ev:research.frontend-src-app-demo.76170512 --><sup>[1](Demo.evidence.md#research.frontend-src-app-demo.76170512)</sup> <!-- ev:research.frontend-src-app-demo.8b8222cb --><sup>[5](Demo.evidence.md#research.frontend-src-app-demo.8b8222cb)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Demo.evidence.md#data-model)
@@ -96,6 +100,7 @@ flowchart TB
 The page declares no entities of its own; its only data is the MOCK_EVENTS constant array of seven ParsedEvent mock events. The event and config stores it reads and writes are owned by their own units. <!-- ev:research.frontend-src-app-demo.8b8222cb --><sup>[5](Demo.evidence.md#research.frontend-src-app-demo.8b8222cb)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Demo.evidence.md#decisions-and-limitations)
@@ -105,4 +110,5 @@ The page seeds the event store with MOCK_EVENTS on mount only when the store is 
 CustomizeDemo validates that the semester end date is after the start date and surfaces an error otherwise. <!-- ev:research.frontend-src-app-demo.f6ae26b3 --><sup>[15](Demo.evidence.md#research.frontend-src-app-demo.f6ae26b3)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 30 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->

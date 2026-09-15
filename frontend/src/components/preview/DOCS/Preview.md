@@ -128,5 +128,5 @@ All four components are client components ('use client' directive), so they rend
 EventCard's unfinalised-exam detection depends on the event venue or date containing the text 'unfinalised' or 'tba', so an event that spells the marker differently is not flagged. <!-- ev:research.frontend-src-components-preview.a7bf4a97 --><sup>[10](Preview.evidence.md#research.frontend-src-components-preview.a7bf4a97)</sup>
 
 <!-- tyto-docs:generated:navigation -->
-- **Schedule:** 29 of 30, wave 1
+- **Schedule:** 40 of 43, wave 1
 <!-- /tyto-docs:generated:navigation -->
