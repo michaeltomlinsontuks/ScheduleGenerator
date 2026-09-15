@@ -3,44 +3,54 @@ tyto_docs: 1
 kind: component
 unit: frontend/src/components/common
 title: Common
-status: draft
-written_at_commit: 6d2581df94e60485c5cb985b12e41a3fb38b13ba
-written_at: "2026-09-14T23:34:08.355Z"
+status: current
+written_at_commit: cf47c9c68f3edce31993084b317f60401e8ff97f
+written_at: "2026-09-15T06:10:34.022Z"
 research: frontend/src/components/common/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T06:13:39.837Z"
+  commit: cf47c9c68f3edce31993084b317f60401e8ff97f
+  research_fingerprint: "sha256:b38cbd8378e937e74773a42c611b60057fa2368a4a78b5f3de8f55240c9c5bbe"
+  research_findings:
+    - research.frontend-src-components-common.1da5943e
+    - research.frontend-src-components-common.206ce3a0
+    - research.frontend-src-components-common.3a868828
+    - research.frontend-src-components-common.4c93d27b
+    - research.frontend-src-components-common.50ccbeea
+    - research.frontend-src-components-common.513b77f1
+    - research.frontend-src-components-common.67d14761
+    - research.frontend-src-components-common.71789013
+    - research.frontend-src-components-common.80dbf7cf
+    - research.frontend-src-components-common.8146bcfd
+    - research.frontend-src-components-common.836f7ded
+    - research.frontend-src-components-common.8fc44071
+    - research.frontend-src-components-common.a2a4d929
+    - research.frontend-src-components-common.d0e43f76
+    - research.frontend-src-components-common.f9bbb9f7
+  critic_pass: critic.frontend-src-components-common.2
+  sources:
+    - path: frontend/src/components/common/Alert.tsx
+      blob_sha: 45e80dc3ab6d067e3e24f205d8f1db604e7b5925
+    - path: frontend/src/components/common/Button.tsx
+      blob_sha: 5bdd051ef172f715e08776a06c6358c5363991f9
+    - path: frontend/src/components/common/Card.tsx
+      blob_sha: cbbb554d5121e77c823f62c7eac16034fefc795c
+    - path: frontend/src/components/common/Loading.tsx
+      blob_sha: 84f7e41162ca3f5c35594a745ad4ec853b661ea1
+    - path: frontend/src/components/common/Modal.tsx
+      blob_sha: 2a680719d31ca6d04866104433510d35e22e1740
+    - path: frontend/src/components/common/index.ts
+      blob_sha: 4fab4baba5649f0f980d81be939b4d00c28030f0
 evidence: Common.evidence.md
 critic:
-  attempts: 1
-  findings:
-    - key: critic.frontend-src-components-common.e2ba9ca2
-      owner: writer
-      claim: "The Dependencies table's React row claims 'ButtonProps extends React.ButtonHTMLAttributes and Modal drives the dialog with useEffect and useRef', but no research finding records useRef usage: the cited findings (research.frontend-src-components-common.8fc44071, research.frontend-src-components-common.a2a4d929) establish ButtonProps and the useEffect-driven showModal()/close() behaviour only, and the useRef claim is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: Dependencies
-      severity: blocking
-      raised_at: "2026-09-15T01:34:00+02:00"
-      raised_in_pass: critic-057
-    - key: critic.frontend-src-components-common.5abdd728
-      owner: writer
-      claim: "The Purpose and boundaries 'Uses' row claims React is used for 'component and hook types (React.ReactNode, React.ButtonHTMLAttributes, useEffect, useRef)', but no research finding records useRef usage: the cited findings (research.frontend-src-components-common.8fc44071, research.frontend-src-components-common.a2a4d929, research.frontend-src-components-common.1da5943e) establish ReactNode/ButtonHTMLAttributes, useEffect, and the Alert typeClasses map only, and the useRef claim is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: "Purpose and boundaries"
-      severity: blocking
-      raised_at: "2026-09-15T01:34:00+02:00"
-      raised_in_pass: critic-057
-    - key: critic.frontend-src-components-common.2afdccf4
-      owner: writer
-      claim: "The Purpose and boundaries 'Does not own' row asserts that 'Feature-specific components and pages, which live in sibling units such as frontend/src/app and frontend/src/components/layout', a claim no research finding supports (the cited finding research.frontend-src-components-common.71789013 establishes only that the five components are client components) and not marked as inference (the parenthetical inference covers only the unit's file list), violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: "Purpose and boundaries"
-      severity: blocking
-      raised_at: "2026-09-15T01:34:00+02:00"
-      raised_in_pass: critic-057
+  attempts: 2
+  findings: []
   review_complete: true
   sections_reviewed: 8
   sections_total: 8
-  last_reviewed_document: "sha256:64532caf6ec91e842976fe16031792068bb089f85fc23aca753276ad19df99f4"
+  last_reviewed_document: "sha256:8a956ec5ffb50de3fa81589e63076c8630bf1f6b33e6eb7d78397c4f9ac08309"
+  retired: []
 -->
 
 # Common
@@ -58,8 +68,8 @@ The common components unit owns the shared UI primitives of the Tuks Schedule Ge
 | | |
 |---|---|
 | Owns | The five shared UI primitives of the frontend — Alert, Button, Card, Loading, and Modal — implemented as client components in frontend/src/components/common, together with the barrel module index.ts that re-exports each component and its prop types. <!-- ev:research.frontend-src-components-common.71789013 --><sup>[2](Common.evidence.md#research.frontend-src-components-common.71789013)</sup> <!-- ev:research.frontend-src-components-common.4c93d27b --><sup>[1](Common.evidence.md#research.frontend-src-components-common.4c93d27b)</sup> |
-| Uses | React for component and hook types (React.ReactNode, React.ButtonHTMLAttributes, useEffect, useRef) and DaisyUI utility classes for styling. <!-- ev:research.frontend-src-components-common.8fc44071 --><sup>[3](Common.evidence.md#research.frontend-src-components-common.8fc44071)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> <!-- ev:research.frontend-src-components-common.1da5943e --><sup>[5](Common.evidence.md#research.frontend-src-components-common.1da5943e)</sup> |
-| Does not own | Feature-specific components and pages, which live in sibling units such as frontend/src/app and frontend/src/components/layout and are not implemented here (inference: the unit holds only Alert.tsx, Button.tsx, Card.tsx, Loading.tsx, Modal.tsx, and index.ts). <!-- ev:research.frontend-src-components-common.71789013 --><sup>[2](Common.evidence.md#research.frontend-src-components-common.71789013)</sup> |
+| Uses | React for component and hook types (React.ReactNode, React.ButtonHTMLAttributes, useEffect) and DaisyUI utility classes for styling. <!-- ev:research.frontend-src-components-common.8fc44071 --><sup>[3](Common.evidence.md#research.frontend-src-components-common.8fc44071)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> <!-- ev:research.frontend-src-components-common.1da5943e --><sup>[5](Common.evidence.md#research.frontend-src-components-common.1da5943e)</sup> |
+| Does not own | Feature-specific components and pages, which are not implemented in this unit (inference: the research records only Alert.tsx, Button.tsx, Card.tsx, Loading.tsx, Modal.tsx, and index.ts here). <!-- ev:research.frontend-src-components-common.71789013 --><sup>[2](Common.evidence.md#research.frontend-src-components-common.71789013)</sup> |
 
 ## [How it works](Common.evidence.md#how-it-works)
 
@@ -122,7 +132,7 @@ The unit's components are built on React and styled with DaisyUI utility classes
 
 | Dependency | Capability used | Why |
 |---|---|---|
-| React | Component and hook types | ButtonProps extends React.ButtonHTMLAttributes and Modal drives the dialog with useEffect and useRef <!-- ev:research.frontend-src-components-common.8fc44071 --><sup>[3](Common.evidence.md#research.frontend-src-components-common.8fc44071)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> |
+| React | Component and hook types | ButtonProps extends React.ButtonHTMLAttributes and Modal drives the dialog with useEffect <!-- ev:research.frontend-src-components-common.8fc44071 --><sup>[3](Common.evidence.md#research.frontend-src-components-common.8fc44071)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> |
 | DaisyUI / Tailwind | Utility classes for styling | Provides the alert, button, card, loading, and modal classes the components compose <!-- ev:research.frontend-src-components-common.1da5943e --><sup>[5](Common.evidence.md#research.frontend-src-components-common.1da5943e)</sup> <!-- ev:research.frontend-src-components-common.206ce3a0 --><sup>[8](Common.evidence.md#research.frontend-src-components-common.206ce3a0)</sup> <!-- ev:research.frontend-src-components-common.513b77f1 --><sup>[9](Common.evidence.md#research.frontend-src-components-common.513b77f1)</sup> <!-- ev:research.frontend-src-components-common.f9bbb9f7 --><sup>[10](Common.evidence.md#research.frontend-src-components-common.f9bbb9f7)</sup> <!-- ev:research.frontend-src-components-common.a2a4d929 --><sup>[4](Common.evidence.md#research.frontend-src-components-common.a2a4d929)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
