@@ -3,16 +3,47 @@ tyto_docs: 1
 kind: component
 unit: frontend/src/app
 title: App
-status: draft
-written_at_commit: 19a9e0043e2a79783d62618aef1fccbd51438dc4
-written_at: "2026-09-14T22:58:33.796Z"
+status: current
+written_at_commit: d5098e9fe726b9787a70b319f19df21b0d4f4347
+written_at: "2026-09-15T12:27:32.661Z"
 research: frontend/src/app/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T12:33:18.167Z"
+  commit: d5098e9fe726b9787a70b319f19df21b0d4f4347
+  research_fingerprint: "sha256:0a815c309ed064f8dc0c11928ff2ae2099336f6ea9256d7b4fff21c5ff67337f"
+  research_findings:
+    - research.frontend-src-app.04e4ad6e
+    - research.frontend-src-app.0e104ca6
+    - research.frontend-src-app.1c965720
+    - research.frontend-src-app.300cc84c
+    - research.frontend-src-app.3f5ad31d
+    - research.frontend-src-app.3fed86c7
+    - research.frontend-src-app.415ff023
+    - research.frontend-src-app.4cbacf2a
+    - research.frontend-src-app.665ac2f9
+    - research.frontend-src-app.856b96aa
+    - research.frontend-src-app.9ceebbfe
+    - research.frontend-src-app.c1fc1b65
+    - research.frontend-src-app.c3887a51
+    - research.frontend-src-app.d210f15b
+    - research.frontend-src-app.fc596589
+    - research.frontend-src-app.ff2ac21d
+  critic_pass: critic.frontend-src-app.1
+  sources:
+    - path: frontend/src/app/layout.tsx
+      blob_sha: ac8514eb46d20a154682562a9ef0f956863c644c
+    - path: frontend/src/app/page.tsx
+      blob_sha: 7b9a8502d909ea59c9e3cab7597b80d3936d0397
 evidence: App.evidence.md
 critic:
-  attempts: 0
+  attempts: 1
   findings: []
+  review_complete: true
+  sections_reviewed: 8
+  sections_total: 8
+  last_reviewed_document: "sha256:de40ed389c370c89bb8b5f04da0a7ecf772ba982d3c0bb8be2f1c2bcc6ddcaef"
+  retired: []
 -->
 
 # App
