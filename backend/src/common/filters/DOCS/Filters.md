@@ -3,28 +3,38 @@ tyto_docs: 1
 kind: component
 unit: backend/src/common/filters
 title: Filters
-status: draft
-written_at_commit: 6ef68f8b90fcc6c4e1481cfad214d2538151a7aa
-written_at: "2026-09-14T20:53:34.427Z"
+status: current
+written_at_commit: a67a72167408b9b0dfd781ad03e7fb629abc289d
+written_at: "2026-09-15T05:28:29.256Z"
 research: backend/src/common/filters/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T05:33:13.541Z"
+  commit: a67a72167408b9b0dfd781ad03e7fb629abc289d
+  research_fingerprint: "sha256:9e13fb663ab026dd66cdc74f4ee9ef646cb209c5492e4417b5ba701600776228"
+  research_findings:
+    - research.backend-src-common-filters.1f111551
+    - research.backend-src-common-filters.2b8aaaa3
+    - research.backend-src-common-filters.4bfeab06
+    - research.backend-src-common-filters.4e746b8d
+    - research.backend-src-common-filters.8ad937c6
+    - research.backend-src-common-filters.af259114
+    - research.backend-src-common-filters.afca5efd
+    - research.backend-src-common-filters.bda5b518
+    - research.backend-src-common-filters.fcc49163
+  critic_pass: critic.backend-src-common-filters.2
+  sources:
+    - path: backend/src/common/filters/http-exception.filter.ts
+      blob_sha: 6efae5217b95230058b7804c072d82a641de6f05
 evidence: Filters.evidence.md
 critic:
-  attempts: 1
-  findings:
-    - key: critic.backend-src-common-filters.85c531ae
-      owner: writer
-      claim: "The Data model sentence 'Neither is a persisted entity.' is a claim no research finding supports (no finding addresses persistence) and is not marked as inference, violating the contract's inference convention ('A claim no finding supports is written as inference and says so in the sentence, or it is left out')."
-      locus:
-        document_section: "Data model"
-      severity: blocking
-      raised_at: "2026-09-14T20:57:36.000Z"
-      raised_in_pass: critic-001
+  attempts: 2
+  findings: []
   review_complete: true
   sections_reviewed: 7
   sections_total: 7
-  last_reviewed_document: "sha256:16406a3f32f2b4b378d7d2867f419637831245651d5570394ab2739a60b248f3"
+  last_reviewed_document: "sha256:85de05a2bf34344ec4b72b62de667e85427573eb631d6cf6ee93b0e69dc0be07"
+  retired: []
 -->
 
 # Filters
@@ -101,7 +111,7 @@ flowchart LR
 
 ## [Data model](Filters.evidence.md#data-model)
 
-This unit declares two data shapes: the exported ErrorResponse interface, the JSON error body the filter sends to clients, and the internal RequestWithContext interface, which extends Express's Request with optional requestId and userId fields. <!-- ev:research.backend-src-common-filters.afca5efd --><sup>[8](Filters.evidence.md#research.backend-src-common-filters.afca5efd)</sup> <!-- ev:research.backend-src-common-filters.4e746b8d --><sup>[9](Filters.evidence.md#research.backend-src-common-filters.4e746b8d)</sup> Neither is a persisted entity.
+This unit declares two data shapes: the exported ErrorResponse interface, the JSON error body the filter sends to clients, and the internal RequestWithContext interface, which extends Express's Request with optional requestId and userId fields. <!-- ev:research.backend-src-common-filters.afca5efd --><sup>[8](Filters.evidence.md#research.backend-src-common-filters.afca5efd)</sup> <!-- ev:research.backend-src-common-filters.4e746b8d --><sup>[9](Filters.evidence.md#research.backend-src-common-filters.4e746b8d)</sup> Neither is a persisted entity — an inference, since no finding addresses persistence.
 
 <!-- tyto-docs:generated:erd -->
 <!-- This leaf unit has no descendant scope for a focused ERD. -->
