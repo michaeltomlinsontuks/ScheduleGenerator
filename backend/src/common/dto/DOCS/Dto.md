@@ -4,8 +4,8 @@ kind: component
 unit: backend/src/common/dto
 title: Dto
 status: draft
-written_at_commit: 99b4d2789888aba8808bfab36ccf58919b09bd08
-written_at: "2026-09-14T19:18:58.701Z"
+written_at_commit: ea4605e763655e5b4f06f3aecfc921967a895b96
+written_at: "2026-09-15T12:11:45.830Z"
 research: backend/src/common/dto/DOCS/Research.md
 sources: []
 accepted: null
