@@ -4,8 +4,8 @@ kind: component
 unit: backend/src/auth/strategies
 title: Strategies
 status: draft
-written_at_commit: 8283f838bf5461a61796bcaf955a0b402d924ea3
-written_at: "2026-09-14T21:06:27.029Z"
+written_at_commit: b42c91b0db75ffb893e4348bc51e096af3160d2b
+written_at: "2026-09-15T11:54:25.539Z"
 research: backend/src/auth/strategies/DOCS/Research.md
 sources: []
 accepted: null
