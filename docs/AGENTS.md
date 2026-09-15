@@ -54,6 +54,33 @@ built from — not something to fix by editing the sidecar.
 
 | Unit | Document | Evidence |
 | --- | --- | --- |
+| `backend` | [Backend](../backend/DOCS/Backend.md) | [evidence](../backend/DOCS/Backend.evidence.md) |
+| `backend/src/auth/dto` | [Auth dto](../backend/src/auth/dto/DOCS/Dto.md) | [evidence](../backend/src/auth/dto/DOCS/Dto.evidence.md) |
+| `backend/src/auth/guards` | [Auth guards](../backend/src/auth/guards/DOCS/Guards.md) | [evidence](../backend/src/auth/guards/DOCS/Guards.evidence.md) |
+| `backend/src/auth/strategies` | [Strategies](../backend/src/auth/strategies/DOCS/Strategies.md) | [evidence](../backend/src/auth/strategies/DOCS/Strategies.evidence.md) |
 | `backend/src/cache` | [Cache](../backend/src/cache/DOCS/Cache.md) | [evidence](../backend/src/cache/DOCS/Cache.evidence.md) |
+| `backend/src/calendar/dto` | [Calendar dto](../backend/src/calendar/dto/DOCS/Dto.md) | [evidence](../backend/src/calendar/dto/DOCS/Dto.evidence.md) |
+| `backend/src/common/dto` | [Common dto](../backend/src/common/dto/DOCS/Dto.md) | [evidence](../backend/src/common/dto/DOCS/Dto.evidence.md) |
+| `backend/src/common/filters` | [Filters](../backend/src/common/filters/DOCS/Filters.md) | [evidence](../backend/src/common/filters/DOCS/Filters.evidence.md) |
+| `backend/src/common/guards` | [Common guards](../backend/src/common/guards/DOCS/Guards.md) | [evidence](../backend/src/common/guards/DOCS/Guards.evidence.md) |
+| `backend/src/common/interceptors` | [Interceptors](../backend/src/common/interceptors/DOCS/Interceptors.md) | [evidence](../backend/src/common/interceptors/DOCS/Interceptors.evidence.md) |
+| `backend/src/common/pipes` | [Pipes](../backend/src/common/pipes/DOCS/Pipes.md) | [evidence](../backend/src/common/pipes/DOCS/Pipes.evidence.md) |
+| `backend/src/common/validators` | [Validators](../backend/src/common/validators/DOCS/Validators.md) | [evidence](../backend/src/common/validators/DOCS/Validators.evidence.md) |
 | `backend/src/config` | [Config](../backend/src/config/DOCS/Config.md) | [evidence](../backend/src/config/DOCS/Config.evidence.md) |
+| `backend/src/jobs` | [Jobs](../backend/src/jobs/DOCS/Jobs.md) | [evidence](../backend/src/jobs/DOCS/Jobs.evidence.md) |
+| `backend/src/jobs/dto` | [Jobs dto](../backend/src/jobs/dto/DOCS/Dto.md) | [evidence](../backend/src/jobs/dto/DOCS/Dto.evidence.md) |
+| `backend/src/parser` | [Parser](../backend/src/parser/DOCS/Parser.md) | [evidence](../backend/src/parser/DOCS/Parser.evidence.md) |
+| `backend/src/parser/dto` | [Parser dto](../backend/src/parser/dto/DOCS/Dto.md) | [evidence](../backend/src/parser/dto/DOCS/Dto.evidence.md) |
+| `backend/src/upload/dto` | [Upload dto](../backend/src/upload/dto/DOCS/Dto.md) | [evidence](../backend/src/upload/dto/DOCS/Dto.evidence.md) |
+| `backend/src/upload/exceptions` | [Exceptions](../backend/src/upload/exceptions/DOCS/Exceptions.md) | [evidence](../backend/src/upload/exceptions/DOCS/Exceptions.evidence.md) |
+| `frontend` | [Frontend](../frontend/DOCS/Frontend.md) | [evidence](../frontend/DOCS/Frontend.evidence.md) |
+| `frontend/src/app` | [App](../frontend/src/app/DOCS/App.md) | [evidence](../frontend/src/app/DOCS/App.evidence.md) |
+| `frontend/src/app/about` | [About](../frontend/src/app/about/DOCS/About.md) | [evidence](../frontend/src/app/about/DOCS/About.evidence.md) |
+| `frontend/src/app/demo/storage-test` | [Storage Test](../frontend/src/app/demo/storage-test/DOCS/Storage_Test.md) | [evidence](../frontend/src/app/demo/storage-test/DOCS/Storage_Test.evidence.md) |
+| `frontend/src/app/privacy` | [Privacy](../frontend/src/app/privacy/DOCS/Privacy.md) | [evidence](../frontend/src/app/privacy/DOCS/Privacy.evidence.md) |
 | `frontend/src/app/terms` | [Terms](../frontend/src/app/terms/DOCS/Terms.md) | [evidence](../frontend/src/app/terms/DOCS/Terms.evidence.md) |
+| `frontend/src/app/upload` | [Upload](../frontend/src/app/upload/DOCS/Upload.md) | [evidence](../frontend/src/app/upload/DOCS/Upload.evidence.md) |
+| `frontend/src/components/auth` | [Auth](../frontend/src/components/auth/DOCS/Auth.md) | [evidence](../frontend/src/components/auth/DOCS/Auth.evidence.md) |
+| `frontend/src/components/common` | [Common](../frontend/src/components/common/DOCS/Common.md) | [evidence](../frontend/src/components/common/DOCS/Common.evidence.md) |
+| `frontend/src/components/preview` | [Preview](../frontend/src/components/preview/DOCS/Preview.md) | [evidence](../frontend/src/components/preview/DOCS/Preview.evidence.md) |
+| `frontend/src/hooks` | [Hooks](../frontend/src/hooks/DOCS/Hooks.md) | [evidence](../frontend/src/hooks/DOCS/Hooks.evidence.md) |

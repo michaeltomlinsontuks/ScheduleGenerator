@@ -3,7 +3,7 @@ tyto_docs: 1
 kind: component
 unit: frontend
 title: Frontend
-status: current
+status: stale
 written_at_commit: 7c06166782b5e9a27e267eee38f69cd517fa1bfc
 written_at: "2026-09-14T20:21:56.071Z"
 research: frontend/DOCS/Research.md
@@ -51,6 +51,7 @@ critic:
 # Frontend
 
 <!-- tyto-docs:generated:status -->
+> **Status: Stale**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Frontend.evidence.md#summary)
@@ -106,11 +107,13 @@ flowchart LR
 | HTTP service | HTTP requests | Web application on port 3000 | Served by the standalone server; force_https in production <!-- ev:research.frontend.67a7c90f --><sup>[10](Frontend.evidence.md#research.frontend.67a7c90f)</sup> <!-- ev:research.frontend.10e6abc2 --><sup>[12](Frontend.evidence.md#research.frontend.10e6abc2)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Frontend.evidence.md#dependencies)
@@ -127,6 +130,7 @@ flowchart LR
 Dependencies are pinned through frontend/package-lock.json, the npm lockfile (lockfileVersion 3) recording the resolved dependency tree. <!-- ev:research.frontend.fde1b1b5 --><sup>[15](Frontend.evidence.md#research.frontend.fde1b1b5)</sup>
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## Data model
@@ -134,6 +138,7 @@ Dependencies are pinned through frontend/package-lock.json, the npm lockfile (lo
 This unit declares and references no entities (inference: the research records only configuration files for this unit).
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Frontend.evidence.md#decisions-and-limitations)
@@ -145,4 +150,5 @@ The 2026 semester dates are passed as build arguments in fly.toml, so they are b
 The README is the stock create-next-app README and describes Vercel deployment, while the unit actually deploys to Fly.io via fly.toml. <!-- ev:research.frontend.d63ba81e --><sup>[16](Frontend.evidence.md#research.frontend.d63ba81e)</sup> <!-- ev:research.frontend.10e6abc2 --><sup>[12](Frontend.evidence.md#research.frontend.10e6abc2)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 20 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

@@ -1,0 +1,19 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+overrides:
+  '@tytoltd/tyto-docs-engine': link:/Users/michaeltomlinson/Documents/TYTO/AI_DOCS_CLAUDE_PLUGIN/packages/tyto-docs-engine
+
+importers:
+
+  .:
+    devDependencies:
+      '@tytoltd/tyto-docs':
+        specifier: link:/Users/michaeltomlinson/Documents/TYTO/AI_DOCS_CLAUDE_PLUGIN/packages/tyto-docs-cli
+        version: link:../../TYTO/AI_DOCS_CLAUDE_PLUGIN/packages/tyto-docs-cli
+      '@tytoltd/tyto-docs-engine':
+        specifier: link:/Users/michaeltomlinson/Documents/TYTO/AI_DOCS_CLAUDE_PLUGIN/packages/tyto-docs-engine
+        version: link:../../TYTO/AI_DOCS_CLAUDE_PLUGIN/packages/tyto-docs-engine

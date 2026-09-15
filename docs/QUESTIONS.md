@@ -57,4 +57,12 @@ it, or replacing the text underneath.
 
 **Earliest Action Tick:** after:20260914T105112Z
 
+**Answered By:** themikezilla
+
+**Answered At:** 2026-09-14T18:17:09.430Z
+
 Critic finding critic.frontend-src-app-terms.ebd3c353 was still present after the configured rework cap: The research records no finding for the page's 'Acceptance of Terms' section (page.tsx L39-L46), which is the first section of the page; the document's 'How it works' prose and its behaviour diagram therefore enumerate the page's sections without it, so the document's claim of 'Terms sections, in fixed order' does not fully represent the page it documents.
+
+**Answer:**
+
+Confirmed. The research includes "Acceptance of Terms," but Terms.md still omits it from the prose and diagram, so the critic finding remains valid.

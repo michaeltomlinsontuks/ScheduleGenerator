@@ -47,6 +47,7 @@ critic:
 # Backend
 
 <!-- tyto-docs:generated:status -->
+> **Status: Current**
 <!-- /tyto-docs:generated:status -->
 
 ## [Summary](Backend.evidence.md#summary)
@@ -93,11 +94,13 @@ flowchart LR
 | fly.toml | Container image | Deployed service | Deploys to Fly.io as schedgen-backend with force_https <!-- ev:research.backend.ac621e01 --><sup>[4](Backend.evidence.md#research.backend.ac621e01)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
+<!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
 <!-- /tyto-docs:generated:endpoints -->
 
 ## Source files
 
 <!-- tyto-docs:generated:file-table -->
+<!-- This unit owns no source files. -->
 <!-- /tyto-docs:generated:file-table -->
 
 ## [Dependencies](Backend.evidence.md#dependencies)
@@ -115,6 +118,7 @@ flowchart LR
 | PostgreSQL, MinIO, Google OAuth | External services the app connects to | Documented as required environment configuration in .env.example <!-- ev:research.backend.e7a20a37 --><sup>[14](Backend.evidence.md#research.backend.e7a20a37)</sup> |
 
 <!-- tyto-docs:generated:module-graph -->
+<!-- No module dependency graph is available for this unit. -->
 <!-- /tyto-docs:generated:module-graph -->
 
 ## [Data model](Backend.evidence.md#data-model)
@@ -122,6 +126,7 @@ flowchart LR
 This unit declares and references no entities (inference: the research records none for this unit). It owns build, test, and deployment configuration only. <!-- ev:research.backend.e5c8e0f5 --><sup>[1](Backend.evidence.md#research.backend.e5c8e0f5)</sup>
 
 <!-- tyto-docs:generated:erd -->
+<!-- This leaf unit has no descendant scope for a focused ERD. -->
 <!-- /tyto-docs:generated:erd -->
 
 ## [Decisions and limitations](Backend.evidence.md#decisions-and-limitations)
@@ -129,4 +134,5 @@ This unit declares and references no entities (inference: the research records n
 Production builds exclude tests and spec files, and the production image runs as a non-root 'nestjs' user, so the shipped artifact is a minimal, least-privilege container. <!-- ev:research.backend.e90724d2 --><sup>[12](Backend.evidence.md#research.backend.e90724d2)</sup> <!-- ev:research.backend.6b9bdeb3 --><sup>[8](Backend.evidence.md#research.backend.6b9bdeb3)</sup> The deployment targets Fly.io region 'jnb' with force_https, and ESLint leaves @typescript-eslint/no-explicit-any disabled. <!-- ev:research.backend.ac621e01 --><sup>[4](Backend.evidence.md#research.backend.ac621e01)</sup> <!-- ev:research.backend.b213f18f --><sup>[6](Backend.evidence.md#research.backend.b213f18f)</sup>
 
 <!-- tyto-docs:generated:navigation -->
+- **Schedule:** 1 of 30, wave 1
 <!-- /tyto-docs:generated:navigation -->

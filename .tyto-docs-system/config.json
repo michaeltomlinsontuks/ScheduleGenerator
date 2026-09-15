@@ -40,7 +40,7 @@
     "routes": []
   },
   "lock": {
-    "stale_after_seconds": 5400
+    "stale_after_seconds": 43200
   },
   "harness": {
     "role_timeout_seconds": 900,
@@ -51,11 +51,12 @@
     "role_idle_timeout_seconds": 300,
     "writer_idle_timeout_seconds": 900,
     "role_min_distinct_lines": 12,
-    "tick_budget_seconds": 3600,
+    "tick_budget_seconds": 36000,
     "tool_output_bytes": 46000,
     "commit_per_unit": 1,
     "workers": 1,
-    "runaway_spend_fuse_usd": 2,
+    "runaway_spend_fuse_usd": 10.0,
+    "role_spend_cap_usd": 2.0,
     "consecutive_fuse_trips": 3,
     "critic_rework_attempts": 0
   },
