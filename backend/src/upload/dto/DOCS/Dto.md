@@ -3,28 +3,43 @@ tyto_docs: 1
 kind: component
 unit: backend/src/upload/dto
 title: Dto
-status: draft
-written_at_commit: 410140243e8024e19688be0c0911b04ee4c66dd6
-written_at: "2026-09-14T21:41:37.457Z"
+status: current
+written_at_commit: d62229f998b8b1c6c6dbfe73a050c8b743e0717f
+written_at: "2026-09-15T06:01:09.529Z"
 research: backend/src/upload/dto/DOCS/Research.md
 sources: []
-accepted: null
+accepted:
+  at: "2026-09-15T06:04:24.632Z"
+  commit: d62229f998b8b1c6c6dbfe73a050c8b743e0717f
+  research_fingerprint: "sha256:e47935addfa92e24594c7b8ec3cf6123e7370a0511ec8ffc070af80c5e67088d"
+  research_findings:
+    - research.backend-src-upload-dto.0f7f178a
+    - research.backend-src-upload-dto.0f841c82
+    - research.backend-src-upload-dto.1c90203b
+    - research.backend-src-upload-dto.1f924985
+    - research.backend-src-upload-dto.5fdc6946
+    - research.backend-src-upload-dto.7ff4b838
+    - research.backend-src-upload-dto.884c10ce
+    - research.backend-src-upload-dto.af8a9e0e
+    - research.backend-src-upload-dto.f24995c3
+    - research.backend-src-upload-dto.f2d958d5
+  critic_pass: critic.backend-src-upload-dto.2
+  sources:
+    - path: backend/src/upload/dto/storage-quota-exceeded.dto.ts
+      blob_sha: fb1af9c07ae996cf90f8ed18493b56901217e9fa
+    - path: backend/src/upload/dto/storage-usage.dto.ts
+      blob_sha: 81bd448603db9511faf29237860b60505a86848e
+    - path: backend/src/upload/dto/upload-response.dto.ts
+      blob_sha: c6b3120946d79fa220170067f821a6634e2bf8df
 evidence: Dto.evidence.md
 critic:
-  attempts: 1
-  findings:
-    - key: critic.backend-src-upload-dto.8bb85862
-      owner: writer
-      claim: "The document states 'The three DTOs are plain classes built by explicit constructors' (How it works) and 'each a plain class whose constructor fixes or computes its fields' (Data model), but UploadResponseDto declares no constructor: its fields are set via definite-assignment declarations and decorators (upload-response.dto.ts L6-L60). Only StorageUsageDto and StorageQuotaExceededDto have explicit constructors. The cited findings (research.backend-src-upload-dto.af8a9e0e, .0f841c82, .7ff4b838) do not support a constructor for UploadResponseDto, so the sentence misrepresents the evidence."
-      locus:
-        document_section: "How it works"
-      severity: blocking
-      raised_at: "2026-09-14T23:41:00+02:00"
-      raised_in_pass: critic-036
+  attempts: 2
+  findings: []
   review_complete: true
   sections_reviewed: 8
   sections_total: 8
-  last_reviewed_document: "sha256:48dc2e63620622b3bf602cf95972942631d4ab8a777e33f2ce17e58b4e8f2c0f"
+  last_reviewed_document: "sha256:0f36cf9155faf172e8f129e939e3ec761ec34f181c2c003fcdbac52f1d1bb1e3"
+  retired: []
 -->
 
 # Dto
@@ -47,13 +62,13 @@ The dto unit owns the upload module's data-transfer types: the response shape fo
 
 ## [How it works](Dto.evidence.md#how-it-works)
 
-The three DTOs are plain classes built by explicit constructors. UploadResponseDto is the upload endpoint's declared return type: UploadController.uploadPdf and UploadService.processUpload both return it, carrying the job id, the detected PDF type, the processing status, parsed events, a message, and detected semester dates. <!-- ev:research.backend-src-upload-dto.f2d958d5 --><sup>[7](Dto.evidence.md#research.backend-src-upload-dto.f2d958d5)</sup> <!-- ev:research.backend-src-upload-dto.af8a9e0e --><sup>[1](Dto.evidence.md#research.backend-src-upload-dto.af8a9e0e)</sup>
+Two of the DTOs — StorageUsageDto and StorageQuotaExceededDto — are plain classes built by explicit constructors; UploadResponseDto declares its fields with definite-assignment and decorators rather than a constructor. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup> UploadResponseDto is the upload endpoint's declared return type: UploadController.uploadPdf and UploadService.processUpload both return it, carrying the job id, the detected PDF type, the processing status, parsed events, a message, and detected semester dates. <!-- ev:research.backend-src-upload-dto.f2d958d5 --><sup>[7](Dto.evidence.md#research.backend-src-upload-dto.f2d958d5)</sup> <!-- ev:research.backend-src-upload-dto.af8a9e0e --><sup>[1](Dto.evidence.md#research.backend-src-upload-dto.af8a9e0e)</sup>
 
-Its fields are typed: jobId is a UUID string, pdfType is a PdfType enum value, status is 'completed' or 'failed', events is an optional ParsedEvent array, and semesterDates is an optional object with semester, startDate, and endDate. <!-- ev:research.backend-src-upload-dto.0f7f178a --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.0f7f178a)</sup> Swagger ApiProperty and class-validator decorators (IsUUID, IsEnum, IsString, IsArray, ValidateNested, IsOptional) plus a class-transformer Type decorator describe and validate those fields. <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup>
+Its fields are typed: jobId is a UUID string, pdfType is a PdfType enum value, status is 'completed' or 'failed', events is an optional ParsedEvent array, and semesterDates is an optional object with semester, startDate, and endDate. <!-- ev:research.backend-src-upload-dto.0f7f178a --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.0f7f178a)</sup> Swagger ApiProperty and class-validator decorators (IsUUID, IsEnum, IsString, IsArray, ValidateNested, IsOptional) plus a class-transformer Type decorator describe and validate those fields. <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup>
 
-StorageUsageDto models storage usage: its constructor takes usedBytes and quotaBytes, computes usedPercentage as Math.round((usedBytes / quotaBytes) * 100), and derives availableBytes as quotaBytes - usedBytes. <!-- ev:research.backend-src-upload-dto.0f841c82 --><sup>[2](Dto.evidence.md#research.backend-src-upload-dto.0f841c82)</sup> <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
+StorageUsageDto models storage usage: its constructor takes usedBytes and quotaBytes, computes usedPercentage as Math.round((usedBytes / quotaBytes) * 100), and derives availableBytes as quotaBytes - usedBytes. <!-- ev:research.backend-src-upload-dto.0f841c82 --><sup>[2](Dto.evidence.md#research.backend-src-upload-dto.0f841c82)</sup> <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
 
-StorageQuotaExceededDto models the HTTP 413 response body for a storage-quota-exceeded error. Its constructor takes currentUsage, quota, and fileSize, fixes statusCode to 413, message to 'STORAGE_QUOTA_EXCEEDED', and error to 'Storage quota exceeded', and computes wouldExceedBy as currentUsage + fileSize - quota. <!-- ev:research.backend-src-upload-dto.7ff4b838 --><sup>[3](Dto.evidence.md#research.backend-src-upload-dto.7ff4b838)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageQuotaExceededException, in the upload exceptions unit, instantiates the DTO and passes it to HttpException with HttpStatus.PAYLOAD_TOO_LARGE. <!-- ev:research.backend-src-upload-dto.5fdc6946 --><sup>[6](Dto.evidence.md#research.backend-src-upload-dto.5fdc6946)</sup>
+StorageQuotaExceededDto models the HTTP 413 response body for a storage-quota-exceeded error. Its constructor takes currentUsage, quota, and fileSize, fixes statusCode to 413, message to 'STORAGE_QUOTA_EXCEEDED', and error to 'Storage quota exceeded', and computes wouldExceedBy as currentUsage + fileSize - quota. <!-- ev:research.backend-src-upload-dto.7ff4b838 --><sup>[3](Dto.evidence.md#research.backend-src-upload-dto.7ff4b838)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageQuotaExceededException, in the upload exceptions unit, instantiates the DTO and passes it to HttpException with HttpStatus.PAYLOAD_TOO_LARGE. <!-- ev:research.backend-src-upload-dto.5fdc6946 --><sup>[6](Dto.evidence.md#research.backend-src-upload-dto.5fdc6946)</sup>
 
 ```mermaid
 %% required: behaviour
@@ -68,9 +83,9 @@ flowchart LR
 
 | Name | Input | Output | Guarantee |
 |---|---|---|---|
-| UploadResponseDto | jobId (UUID), pdfType (PdfType), status ('completed' \| 'failed'), events (ParsedEvent[]), message, semesterDates | The upload endpoint's response object | Declared return type of UploadController.uploadPdf and UploadService.processUpload; fields described by Swagger and validated by class-validator <!-- ev:research.backend-src-upload-dto.af8a9e0e --><sup>[1](Dto.evidence.md#research.backend-src-upload-dto.af8a9e0e)</sup> <!-- ev:research.backend-src-upload-dto.0f7f178a --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.0f7f178a)</sup> <!-- ev:research.backend-src-upload-dto.f2d958d5 --><sup>[7](Dto.evidence.md#research.backend-src-upload-dto.f2d958d5)</sup> <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup> |
-| StorageUsageDto | usedBytes, quotaBytes — numbers | Storage usage with usedPercentage and availableBytes | Constructor derives usedPercentage and availableBytes from the two byte counts <!-- ev:research.backend-src-upload-dto.0f841c82 --><sup>[2](Dto.evidence.md#research.backend-src-upload-dto.0f841c82)</sup> <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup> |
-| StorageQuotaExceededDto | currentUsage, quota, fileSize — numbers | HTTP 413 response body with statusCode, message, error, and details | Constructor fixes statusCode 413 and message 'STORAGE_QUOTA_EXCEEDED', and computes wouldExceedBy <!-- ev:research.backend-src-upload-dto.7ff4b838 --><sup>[3](Dto.evidence.md#research.backend-src-upload-dto.7ff4b838)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> |
+| UploadResponseDto | jobId (UUID), pdfType (PdfType), status ('completed' \| 'failed'), events (ParsedEvent[]), message, semesterDates | The upload endpoint's response object | Declared return type of UploadController.uploadPdf and UploadService.processUpload; fields described by Swagger and validated by class-validator <!-- ev:research.backend-src-upload-dto.af8a9e0e --><sup>[1](Dto.evidence.md#research.backend-src-upload-dto.af8a9e0e)</sup> <!-- ev:research.backend-src-upload-dto.0f7f178a --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.0f7f178a)</sup> <!-- ev:research.backend-src-upload-dto.f2d958d5 --><sup>[7](Dto.evidence.md#research.backend-src-upload-dto.f2d958d5)</sup> <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup> |
+| StorageUsageDto | usedBytes, quotaBytes — numbers | Storage usage with usedPercentage and availableBytes | Constructor derives usedPercentage and availableBytes from the two byte counts <!-- ev:research.backend-src-upload-dto.0f841c82 --><sup>[2](Dto.evidence.md#research.backend-src-upload-dto.0f841c82)</sup> <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup> |
+| StorageQuotaExceededDto | currentUsage, quota, fileSize — numbers | HTTP 413 response body with statusCode, message, error, and details | Constructor fixes statusCode 413 and message 'STORAGE_QUOTA_EXCEEDED', and computes wouldExceedBy <!-- ev:research.backend-src-upload-dto.7ff4b838 --><sup>[3](Dto.evidence.md#research.backend-src-upload-dto.7ff4b838)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> |
 
 <!-- tyto-docs:generated:endpoints -->
 <!-- No framework adapter is active, so no endpoints were extracted for this unit. -->
@@ -107,7 +122,7 @@ flowchart LR
 
 ## [Data model](Dto.evidence.md#data-model)
 
-This unit declares three data-transfer entities — UploadResponseDto, StorageUsageDto, and StorageQuotaExceededDto — each a plain class whose constructor fixes or computes its fields. The types they reference, PdfType and ParsedEvent, are owned by backend/src/common/types.ts. <!-- ev:research.backend-src-upload-dto.884c10ce --><sup>[4](Dto.evidence.md#research.backend-src-upload-dto.884c10ce)</sup>
+This unit declares three data-transfer entities — UploadResponseDto, StorageUsageDto, and StorageQuotaExceededDto. StorageUsageDto and StorageQuotaExceededDto are plain classes whose constructors fix or compute their fields; UploadResponseDto declares its fields with definite-assignment and decorators instead. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup> <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> <!-- ev:research.backend-src-upload-dto.1c90203b --><sup>[5](Dto.evidence.md#research.backend-src-upload-dto.1c90203b)</sup> The types they reference, PdfType and ParsedEvent, are owned by backend/src/common/types.ts. <!-- ev:research.backend-src-upload-dto.884c10ce --><sup>[4](Dto.evidence.md#research.backend-src-upload-dto.884c10ce)</sup>
 
 <!-- tyto-docs:generated:erd -->
 <!-- This leaf unit has no descendant scope for a focused ERD. -->
@@ -115,7 +130,7 @@ This unit declares three data-transfer entities — UploadResponseDto, StorageUs
 
 ## [Decisions and limitations](Dto.evidence.md#decisions-and-limitations)
 
-StorageQuotaExceededDto hard-codes its HTTP semantics: the constructor fixes statusCode to 413 and message to 'STORAGE_QUOTA_EXCEEDED', coupling the DTO to the quota error rather than a generic error body. <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[10](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageUsageDto rounds usedPercentage to a whole number, so the reported percentage is an approximation. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
+StorageQuotaExceededDto hard-codes its HTTP semantics: the constructor fixes statusCode to 413 and message to 'STORAGE_QUOTA_EXCEEDED', coupling the DTO to the quota error rather than a generic error body. <!-- ev:research.backend-src-upload-dto.f24995c3 --><sup>[9](Dto.evidence.md#research.backend-src-upload-dto.f24995c3)</sup> StorageUsageDto rounds usedPercentage to a whole number, so the reported percentage is an approximation. <!-- ev:research.backend-src-upload-dto.1f924985 --><sup>[8](Dto.evidence.md#research.backend-src-upload-dto.1f924985)</sup>
 
 <!-- tyto-docs:generated:navigation -->
 - **Used by:** [Exceptions](../../exceptions/DOCS/Exceptions.md)

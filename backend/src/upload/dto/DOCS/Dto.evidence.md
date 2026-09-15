@@ -21,12 +21,12 @@
 - <a id="research.backend-src-upload-dto.f2d958d5"></a>**7. UploadResponseDto is the declared return type of UploadController.uploadPdf and UploadService.processUpload.**
   [`upload.controller.ts:175-175`](../../upload.controller.ts#L175-L175)
   [`upload.service.ts:37-37`](../../upload.service.ts#L37-L37)
-- <a id="research.backend-src-upload-dto.0f7f178a"></a>**8. In UploadResponseDto, jobId is a UUID string, pdfType is a PdfType enum value, status is 'completed' or 'failed', events is an optional ParsedEvent array, message is a string, and semesterDates is an optional object with semester ('S1' | 'S2' | null), startDate, and endDate.**
-  [`upload-response.dto.ts:7-59`](../upload-response.dto.ts#L7-L59)
-- <a id="research.backend-src-upload-dto.1f924985"></a>**9. The StorageUsageDto constructor computes usedPercentage as Math.round((usedBytes / quotaBytes) * 100) and availableBytes as quotaBytes - usedBytes.**
+- <a id="research.backend-src-upload-dto.1f924985"></a>**8. The StorageUsageDto constructor computes usedPercentage as Math.round((usedBytes / quotaBytes) * 100) and availableBytes as quotaBytes - usedBytes.**
   [`storage-usage.dto.ts:7-12`](../storage-usage.dto.ts#L7-L12)
-- <a id="research.backend-src-upload-dto.f24995c3"></a>**10. The StorageQuotaExceededDto constructor fixes statusCode to 413, message to 'STORAGE_QUOTA_EXCEEDED', and error to 'Storage quota exceeded', and computes wouldExceedBy as currentUsage + fileSize - quota.**
+- <a id="research.backend-src-upload-dto.f24995c3"></a>**9. The StorageQuotaExceededDto constructor fixes statusCode to 413, message to 'STORAGE_QUOTA_EXCEEDED', and error to 'Storage quota exceeded', and computes wouldExceedBy as currentUsage + fileSize - quota.**
   [`storage-quota-exceeded.dto.ts:12-22`](../storage-quota-exceeded.dto.ts#L12-L22)
+- <a id="research.backend-src-upload-dto.0f7f178a"></a>**10. In UploadResponseDto, jobId is a UUID string, pdfType is a PdfType enum value, status is 'completed' or 'failed', events is an optional ParsedEvent array, message is a string, and semesterDates is an optional object with semester ('S1' | 'S2' | null), startDate, and endDate.**
+  [`upload-response.dto.ts:7-59`](../upload-response.dto.ts#L7-L59)
 
 ## Cited by
 <a id="cited-by"></a>
@@ -44,7 +44,7 @@
 ### How it works
 <a id="how-it-works"></a>
 
-[research.backend-src-upload-dto.f2d958d5](#research.backend-src-upload-dto.f2d958d5) · [research.backend-src-upload-dto.af8a9e0e](#research.backend-src-upload-dto.af8a9e0e) · [research.backend-src-upload-dto.0f7f178a](#research.backend-src-upload-dto.0f7f178a) · [research.backend-src-upload-dto.1c90203b](#research.backend-src-upload-dto.1c90203b) · [research.backend-src-upload-dto.0f841c82](#research.backend-src-upload-dto.0f841c82) · [research.backend-src-upload-dto.1f924985](#research.backend-src-upload-dto.1f924985) · [research.backend-src-upload-dto.7ff4b838](#research.backend-src-upload-dto.7ff4b838) · [research.backend-src-upload-dto.f24995c3](#research.backend-src-upload-dto.f24995c3) · [research.backend-src-upload-dto.5fdc6946](#research.backend-src-upload-dto.5fdc6946)
+[research.backend-src-upload-dto.1f924985](#research.backend-src-upload-dto.1f924985) · [research.backend-src-upload-dto.f24995c3](#research.backend-src-upload-dto.f24995c3) · [research.backend-src-upload-dto.1c90203b](#research.backend-src-upload-dto.1c90203b) · [research.backend-src-upload-dto.f2d958d5](#research.backend-src-upload-dto.f2d958d5) · [research.backend-src-upload-dto.af8a9e0e](#research.backend-src-upload-dto.af8a9e0e) · [research.backend-src-upload-dto.0f7f178a](#research.backend-src-upload-dto.0f7f178a) · [research.backend-src-upload-dto.0f841c82](#research.backend-src-upload-dto.0f841c82) · [research.backend-src-upload-dto.7ff4b838](#research.backend-src-upload-dto.7ff4b838) · [research.backend-src-upload-dto.5fdc6946](#research.backend-src-upload-dto.5fdc6946)
 
 ### Interfaces
 <a id="interfaces"></a>
@@ -59,7 +59,7 @@
 ### Data model
 <a id="data-model"></a>
 
-[research.backend-src-upload-dto.884c10ce](#research.backend-src-upload-dto.884c10ce)
+[research.backend-src-upload-dto.1f924985](#research.backend-src-upload-dto.1f924985) · [research.backend-src-upload-dto.f24995c3](#research.backend-src-upload-dto.f24995c3) · [research.backend-src-upload-dto.1c90203b](#research.backend-src-upload-dto.1c90203b) · [research.backend-src-upload-dto.884c10ce](#research.backend-src-upload-dto.884c10ce)
 
 ### Decisions and limitations
 <a id="decisions-and-limitations"></a>
